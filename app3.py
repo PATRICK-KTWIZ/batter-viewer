@@ -251,31 +251,17 @@ def show_login_page():
             margin-top: 5px !important;
         }
 
-        /* 커스텀 체크박스 컨테이너 스타일 */
-        .custom-checkbox-container {
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-            width: 100%;
-        }
-        
-        /* 체크박스와 텍스트 컨테이너 */
-        .checkbox-wrapper {
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
-        }
-        
-        /* 체크박스 스타일 */
-        .checkbox-wrapper input[type="checkbox"] {
-            margin-right: 5px;
+        /* 체크박스 컨테이너 스타일 */
+        .stCheckbox {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
         }
         
         /* 체크박스 라벨 스타일 */
-        .checkbox-label {
-            font-size: 14px;
-            margin: 0;
-            padding: 0;
+        .stCheckbox > label {
+            font-size: 14px !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         
         /* 안내 텍스트 스타일 */
@@ -286,9 +272,13 @@ def show_login_page():
             padding: 0;
         }
         
-        /* 숨김 체크박스 컨테이너 */
-        .hidden-checkbox {
-            display: none;
+        /* 체크박스 행 컨테이너 */
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0 !important;
+            padding-top: 0 !important;
         }
        
     </style>
@@ -331,32 +321,14 @@ def show_login_page():
         
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # HTML로 직접 체크박스와 텍스트 구현
-        st.markdown("""
-        <div class="custom-checkbox-container">
-            <div class="checkbox-wrapper">
-                <input type="checkbox" id="remember-id-custom">
-                <label for="remember-id-custom" class="checkbox-label">아이디 저장</label>
-            </div>
-            <div class="info-text-custom">아이디와 비밀번호를 입력하여 로그인 후 사용해 주세요.</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # 숨김 체크박스 - 실제 값을 저장하기 위한 용도
-        with st.container():
-            st.markdown('<div class="hidden-checkbox">', unsafe_allow_html=True)
-            remember_id = st.checkbox("", key="remember_id_hidden", label_visibility="collapsed")
-            st.markdown('</div>', unsafe_allow_html=True)
-            
-            # JavaScript로 두 체크박스 연결
-            st.markdown("""
-            <script>
-                // 이 스크립트는 Streamlit의 제한으로 인해 실행되지 않을 수 있습니다
-                document.getElementById('remember-id-custom').addEventListener('change', function() {
-                    // 이 부분은 실제로 작동하지 않을 수 있음
-                });
-            </script>
-            """, unsafe_allow_html=True)
+        # 체크박스와 안내 텍스트를 같은 행에 배치
+        checkbox_col1, checkbox_col2 = st.columns([1, 3])
+        with checkbox_col1:
+            remember_id = st.checkbox("아이디 저장", key="remember_id")
+        with checkbox_col2:
+            st.markdown('<div class="info-text-custom">아이디와 비밀번호를 입력하여 로그인 후 사용해 주세요.</div>', unsafe_allow_html=True)
+    
+        st.markdown('</div>', unsafe_allow_html=True)
         
         # Close the login container div
         st.markdown('</div>', unsafe_allow_html=True)
