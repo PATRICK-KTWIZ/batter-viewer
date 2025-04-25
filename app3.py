@@ -33,7 +33,7 @@ st.markdown("""
         /* 로그인 컨테이너 스타일 */
         .login-container {
             max-width: 400px;
-            margin: 30px 0 0 auto;
+            margin: 10px 0 0 auto;
             padding: 20px;
             background-color: #f0f0f0;
             border-radius: 0;
