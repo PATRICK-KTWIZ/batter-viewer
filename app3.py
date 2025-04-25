@@ -69,6 +69,7 @@ st.markdown("""
         .stCheckbox > div {
             display: flex;
             align-items: center;
+            margin-bottom: 0px;
         }
         
         /* 푸터 스타일 */
@@ -93,7 +94,7 @@ st.markdown("""
         .subheader-text {
             color: #c0c0c0;
             font-size: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         
         /* 안내 텍스트 스타일 */
@@ -119,7 +120,7 @@ st.markdown("""
         
         /* 체크박스 라벨 조정 */
         .stCheckbox label {
-            font-size: 14px;
+            font-size: 12px;
         }
         
         /* Hide streamlit branding */
