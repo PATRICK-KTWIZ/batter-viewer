@@ -251,6 +251,52 @@ def show_login_page():
             margin-top: 5px !important;
         }
 
+        /* 체크박스 컨테이너 스타일링 */
+        .stCheckbox > div {
+            display: flex !important;
+            align-items: center !important;
+            margin-top: 5px !important;
+            margin-bottom: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            min-height: 0 !important;
+        }
+        
+        /* 체크박스 라벨 스타일링 */
+        .stCheckbox label {
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: 14px !important;
+            line-height: 1 !important;
+        }
+
+        /* 체크박스 자체 스타일링 */
+        .stCheckbox input[type="checkbox"] {
+            margin: 0 5px 0 0 !important;
+            padding: 0 !important;
+        }
+        
+        /* 안내 텍스트 스타일링 */
+        .info-text {
+            font-size: 14px !important;
+            color: #666 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1 !important;
+            display: flex !important;
+            align-items: center !important;
+            height: 100% !important;
+        }
+
+        /* 체크박스와 안내 텍스트를 포함하는 열 스타일링 */
+        [data-testid="column"] {
+            display: flex !important;
+            align-items: center !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
        
     </style>
     """, unsafe_allow_html=True)
