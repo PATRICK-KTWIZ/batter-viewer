@@ -3,16 +3,139 @@ import pandas as pd
 from definition import select_league, stats, period_stats, seoson_inplay_events, period_inplay_events, season_pthrows, period_pthrows, stats_viewer_pkind, swing_viewer_pkind, stats_viewer_pitchname, swing_viewer_pitchname
 from definition import season_pkind, period_pkind, season_pitchname, period_pitchname, stats_viewer, swing_viewer, event_viewer, stats_viewer_pthrows, swing_viewer_pthrows, swingmap_df, spraychart_df
 from dataframe import dataframe
-from map import select_count_option, select_sum_option, select_sum_plate_option, swingmap_count_option, season_spraychart, season_period_spraychart, factor_year_count_map, factor_year_sum_map,factor_year_sum_plate_map, swingmap_count_map, season_hangtime_spraychart, zone_spraychart_fig
+from map import select_count_option, select_sum_option, select_sum_plate_option, swingmap_count_option, season_spraychart, season_period_spraychart, factor_year_count_map, factor_year_sum_map,factor_year_sum_plate_map, swingmap_count_map, season_hangtime_spraychart, zone_spraychart_fig, factor_year_sum_map_scatter, factor_year_count_map_scatter, factor_year_sum_plate_map_scatter, factor_year_count_map_scatter_swing, swingmap_count_map_scatter
 import time
 from PIL import Image
 from user import login
+import plotly.express as px
+import plotly.graph_objects as go
 
 # Set a unique token for the cookie
 COOKIE_TOKEN = "my_unique_cookie_token"
 
 st.set_page_config(page_title="Batting Analytics Page", layout="wide")
-st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
+
+if 'loggedIn' not in st.session_state:
+    st.session_state.loggedIn = False
+
+# 로그인 페이지 CSS 스타일 추가
+st.markdown("""
+    <style>
+        /* 배경 스타일 */
+        .stApp {
+            background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
+            background-attachment: fixed;
+            height: 95vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
+            max-height: 1000px; /* 최대 높이 설정 */
+            overflow: auto;
+        }
+        
+        /* 로그인 컨테이너 스타일 */
+        .login-container {
+            max-width: 400px;
+            margin: 50px 0 0 auto;
+            padding: 30px;
+            background-color: #f0f0f0;
+            border-radius: 0;
+        }
+        
+        /* 로고 컨테이너 */
+        .logo-container {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        /* 로그인 폼 스타일 */
+        .stTextInput > div > div > input {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 0;
+            width: 100%;
+        }
+        
+        /* 버튼 스타일 */
+        .stButton > button {
+            background-color: #333333;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+        }
+        
+        /* 체크박스 스타일 */
+        .stCheckbox > div {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* 푸터 스타일 */
+        .footer {
+            text-align: center;
+            position: fixed;
+            bottom: 80px;
+            width: 100%;
+            color: #333;
+            font-size: 15px;
+        }
+        
+        /* 헤더 텍스트 스타일 */
+        .header-text {
+            font-size: 38px;
+            font-weight: bold;
+            color: #c0c0c0;
+            margin-bottom: 5px;
+        }
+        
+        /* 서브헤더 텍스트 스타일 */
+        .subheader-text {
+            color: #c0c0c0;
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+        
+        /* 안내 텍스트 스타일 */
+        .info-text {
+            font-size: 15px;
+            color: #666;
+        }
+            
+        /* 경고 텍스트 스타일 */
+        .warning-text {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-size: 16px;
+            text-align: right;
+        }
+    
+        
+        /* 컬럼 간격 조정 */
+        [data-testid="stHorizontalBlock"] {
+            gap: 0 !important;
+        }
+        
+        /* 체크박스 라벨 조정 */
+        .stCheckbox label {
+            font-size: 14px;
+        }
+        
+        /* Hide streamlit branding */
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        
+        /* Fix column padding */
+        .block-container {
+            padding-top: 1rem;
+            padding-bottom: 0;
+            max-width: 100%;
+        }
+</style>
+
+""", unsafe_allow_html=True)
+
+# st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
 
 headerSection = st.container()
 mainSection = st.container()
@@ -27,6 +150,10 @@ def get_user_id():
 def set_user_id(user_id):
     st.session_state[COOKIE_TOKEN] = user_id
 
+# Define a function to check if the user is logged in
+def is_user_logged_in():
+    return st.session_state.get('loggedIn', False)
+
 def find_id(player_dataset, select_player):
     find_player = player_dataset[player_dataset['NAME'] == select_player]
     id = find_player.iloc[0]['TM_ID']
@@ -36,7 +163,7 @@ def LoggedOut_Clicked():
     st.session_state['loggedIn'] = False
   
 def show_logout_page():
-    loginSection.empty();
+    loginSection.empty()
     with logOutSection:
         st.sidebar.button("Log Out", key="logout", on_click=LoggedOut_Clicked)
 
@@ -45,23 +172,203 @@ def LoggedIn_Clicked(userName, password):
         set_user_id(userName)  # Set the user ID in the session cookie
         st.session_state['loggedIn'] = True
     else:
-        st.session_state['loggedIn'] = False;
+        st.session_state['loggedIn'] = False
         st.error("유효하지 않은 ID 또는 패스워드 입니다.")
 
 def show_login_page():
-    with loginSection:
-        if st.session_state['loggedIn'] == False:
-            userName = st.text_input(label="", value="", placeholder="ID를 입력하시오")
-            password = st.text_input(label="", value="", placeholder="패스워드를 입력하시오", type="password")
-            st.button("Log In", on_click=LoggedIn_Clicked, args=(userName, password))
+
+    st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>", unsafe_allow_html=True)
+
+    # Main layout with two columns
+    left_col, middle_col, right_col = st.columns([0.5, 3, 4])
+
+    with middle_col:
+        # Logo area
+        st.markdown("""
+        <div class="logo-container" style="padding-top: 100px;">
+        """, unsafe_allow_html=True)
+        st.image("ktwiz_emblem.png", width=300)
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with right_col:
+        # Login form container
+        st.markdown('<div class="login-container">', unsafe_allow_html=True)
+        st.markdown('<div class="warning-text">※허가된 사용자 외 사용을 금함</div>', unsafe_allow_html=True)
+
+        # Header text
+        st.markdown('<div class="header-text">케이티 위즈</div>', unsafe_allow_html=True)
+        st.markdown('<div class="subheader-text">타자 분석페이지에 오신것을 환영합니다.</div>', unsafe_allow_html=True)
+        
+        # Horizontal line
+        st.markdown('<hr style="margin: 20px 0;">', unsafe_allow_html=True)
+        
+        # Login fields
+        userName = st.text_input("", placeholder="아이디")
+        password = st.text_input("", placeholder="비밀번호", type="password")
+        
+        # Store password in session state for later use
+        st.session_state['password'] = password
+        
+        # Login button
+        login_button = st.button("로그인", on_click=LoggedIn_Clicked, args=(userName, password))
+        
+        # Remember ID checkbox and text
+        col1, col2 = st.columns([1, 3])
+        with col1:
+            remember_id = st.checkbox("아이디 저장")
+        with col2:
+            st.markdown('<div class="info-text">아이디와 비밀번호를 입력하여 로그인 후 사용해 주세요.</div>', unsafe_allow_html=True)
+        
+        # Close the login container div
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Footer
+    st.markdown("""
+    <div class="footer">
+        Copyright © 2025 kt wiz baseball club. All rights reserved.
+    </div>
+    """, unsafe_allow_html=True)
 
 def show_main_page():
     # Check if the user is logged in
-    if not st.session_state.get('loggedIn'):
+    
+    if not is_user_logged_in():
         show_login_page()
         return
 
+    # if not st.session_state.get('loggedIn'):
+    #     show_login_page()
+    #     return
+
     with mainSection:
+
+        st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
+
+        st.markdown("""
+                    <style>
+                        /* 전체 페이지 스타일 */
+                        .main {
+                            background-color: #f5f5f5;
+                        }
+                        
+                        /* 로그인 컨테이너 스타일 */
+                        .login-container {
+                            max-width: 450px;
+                            margin: 50px auto;
+                            padding: 30px;
+                            background-color: white;
+                            border-radius: 5px;
+                            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                        }
+                        
+                        /* 로고 컨테이너 */
+                        .logo-container {
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        
+                        /* 로그인 폼 스타일 */
+                        .stTextInput > div > div > input {
+                            border: 1px solid #ddd;
+                            padding: 10px;
+                            border-radius: 3px;
+                        }
+                        
+                        /* 버튼 스타일 */
+                        .stButton > button {
+                            background-color: #333333;
+                            color:  #c0c0c0;
+                            width: 100%;
+                            padding: 10px;
+                            border: none;
+                            border-radius: 3px;
+                            cursor: pointer;
+                        }
+                        
+                        /* 체크박스 스타일 */
+                        .stCheckbox > div {
+                            display: flex;
+                            align-items: center;
+                        }
+                        
+                        /* 푸터 스타일 */
+                        .footer {
+                            text-align: center;
+                            margin-top: 20px;
+                            color: #666;
+                            font-size: 12px;
+                        }
+                        
+                        /* 로그인 페이지 배경 */
+                        .login-background {
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: linear-gradient(135deg, #333333 25%, #e6e6e6 25%, #e6e6e6 50%, #ff1a1a 50%);
+                            background-size: cover;
+                            z-index: -1;
+                        }
+                        
+                        /* 헤더 텍스트 스타일 */
+                        .header-text {
+                            text-align: center;
+                            color: #333;
+                            margin-bottom: 5px;
+                        }
+                        
+                        /* 서브헤더 텍스트 스타일 */
+                        .subheader-text {
+                            text-align: center;
+                            color: #666;
+                            font-size: 14px;
+                            margin-bottom: 20px;
+                        }
+                    </style>
+
+                    """, unsafe_allow_html=True)
+        
+        st.markdown("""
+                    <style>
+                        /* 사이드바 배경색 변경 */
+                        [data-testid="stSidebar"] {
+                            background-color: #2d2d2d;
+                        }
+                        
+                        /* 사이드바 selectbox 라벨 색상 변경 (옅은 회색) */
+                        [data-testid="stSidebar"] .css-81oif8,
+                        [data-testid="stSidebar"] .css-1inwz65,
+                        [data-testid="stSidebar"] label,
+                        [data-testid="stSidebar"] .stSelectbox > div > label {
+                            color: #cccccc !important;
+                        }
+                        
+                        /* 사이드바 selectbox 내부 텍스트 색상 변경 */
+                        [data-testid="stSidebar"] .stSelectbox > div > div > div {
+                            color: #cccccc !important;
+                        }
+                        
+                        /* 드롭다운 메뉴 텍스트 색상 */
+                        .stSelectbox option {
+                            color: #cccccc;
+                        }
+                        
+                        /* 사이드바 버튼 배경색 및 텍스트 색상 변경 */
+                        [data-testid="stSidebar"] .stButton > button {
+                            background-color: #cccccc !important;
+                            color: black !important;
+                            border: none;
+                            border-radius: 7px;  /* 모서리 둥글기 */
+                            padding: 0.5rem 1rem;  /* 패딩 */
+                        }
+                        
+                        /* 사이드바 버튼 호버 효과 (선택사항) */
+                        [data-testid="stSidebar"] .stButton > button:hover {
+                            background-color: #dddddd !important;
+                        }
+                    </style>
+                    """, unsafe_allow_html=True)
 
         st.markdown("""<style>[data-testid=stSidebar] [data-testid=stImage]{text-align: center;display: block;margin-left: auto; margin-right: auto; width: 85%;}</style>""", unsafe_allow_html=True)
         with st.sidebar:
@@ -69,8 +376,9 @@ def show_main_page():
 
         st.markdown("""<style>[data-testid="stSidebar"][aria-expanded="true"] > div:first-child{width: 340px; }""", unsafe_allow_html=True,)
 
-        id_dataset = pd.read_csv('./player_id_info_2024.csv')
-        id_dataset = id_dataset[['team','NAME','POS','TM_ID','Height']]
+        id_dataset = pd.read_csv('./player_id_info_2025.csv')
+        id_dataset = id_dataset[['team','NAME','POS','TM_ID']]
+        # id_dataset = id_dataset[['team','NAME','POS','TM_ID','Height']]
         id_dataset = id_dataset[id_dataset['POS'] != 'P']
 
         #------------------------------------------------------------------------------
@@ -81,7 +389,7 @@ def show_main_page():
         sidebar_text = '<p style="text-align: center; font-family:sans-serif; color:red; font-size: 22px;font-weight:bold">[타자분석 페이지]</p>'
         st.sidebar.markdown(sidebar_text, unsafe_allow_html=True)
 
-        sidebar_text = '<p style="text-align: center; font-family:sans-serif; color:gray; font-size: 14px;">본 웹페이지는 kt wiz 전략데이터팀이<br> 개발 및 발행하였으며 허용되는 사용자 외 <br>배포 및 사용을 엄금함</p>'
+        sidebar_text = '<p style="text-align: center; font-family:sans-serif; color: #c0c0c0; font-size: 14px;">본 웹페이지는 kt wiz 전략데이터팀이<br> 개발 및 발행하였으며 허용되는 사용자 외 <br>배포 및 사용을 엄금함</p>'
         st.sidebar.markdown(sidebar_text, unsafe_allow_html=True)
 
         #-------------------------------------------------------------------------
@@ -90,15 +398,19 @@ def show_main_page():
         teams_list = id_dataset['team'].unique().tolist()
         select_team = st.sidebar.selectbox('팀명 선택', teams_list)
         player_dataset = id_dataset[id_dataset['team'] == select_team]
+
         player_list = player_dataset['NAME'].unique().tolist()
         select_player = st.sidebar.selectbox('선수 선택', player_list)
+
         player_id = find_id(player_dataset, select_player)
 
-        height = int(player_dataset.iloc[0]['Height'])
-        top_line = height * 0.5635
-        bottom_line = height * 0.2764
+        # height = int(player_dataset.iloc[0]['Height'])
+        # top_line = height * 0.5635
+        # bottom_line = height * 0.2764
         
-        option = st.sidebar.selectbox('리그 선택', ("-", "KBO(1군)", "KBO(2군)", "AAA(마이너)","KBA(아마)"))
+        option = st.sidebar.selectbox('리그 선택', ("-", "KBO(1군)", "KBO(2군)", "AAA","KBA(아마)"))
+
+
 
 
         # Create a session_state variable to store selected player information
@@ -122,15 +434,15 @@ def show_main_page():
         if st.sidebar.button('실행'):
             
             concatenated_df = pd.DataFrame()
-            final_results = pd.DataFrame()
+            # final_results = pd.DataFrame()
 
             for player_info in st.session_state.selected_players:
 
                 league = select_league(player_info['League'])
                 id = player_info['ID']
-                player_name = player_info['Player Name']
+                # player_name = player_info['Player Name']
 
-                player_df = dataframe(league, id)
+                player_df = dataframe(league, id, st.session_state['password'])
 
                 concatenated_df = pd.concat([concatenated_df, player_df])
             
@@ -169,7 +481,12 @@ def show_main_page():
 
             pd.set_option('display.max_colwidth', 100)
 
-            st.dataframe(season_stats_concat_df, width=1400)
+            s1 = dict(selector='th', props=[('text-align', 'center')])
+            s2 = dict(selector='td', props=[('text-align', 'center')])  
+
+            styled_df = season_stats_concat_df.style.set_table_styles([s1, s2])
+
+            st.dataframe(styled_df, width=1400)
             
             for batter, batter_df in batter_dataframes.items():
                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
@@ -264,7 +581,7 @@ def show_main_page():
                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
 
                 season_events_df = seoson_inplay_events(batter_raw_df)
-                season_events_df = season_events_df.rename(columns={'game_year':'연도', 'events':'구분','pitch_name':'인플레이수','exit_velocity':'타구속도','launch_angleX':'발사각도','hit_spin_rate':'타구스핀량','hit_distance':'비거리'})
+                season_events_df = season_events_df.rename(columns={'game_year':'연도', 'events':'구분','pitch_name':'인플레이수','exit_velocity':'타구속도','launch_angleX':'발사각도', 'hit_spin_rate':'타구스핀량','hit_distance':'비거리'})
 
                 batter_str = str(batter)
                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
@@ -549,10 +866,12 @@ def show_main_page():
                     season_swing_fig.update_coloraxes(showscale=False)
                     st.plotly_chart(season_swing_fig, layout="wide")
 
+                batter_recent_las4 = batter_recent_df[batter_recent_df['plus_lsa4'] == 1]
+
                 with col3:
                     original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
                     st.markdown(original_title, unsafe_allow_html=True)
-                    season_lsa_fig = factor_year_sum_map(batter_recent_df, lsa_factor)
+                    season_lsa_fig = factor_year_sum_map_scatter(batter_recent_las4)
                     season_lsa_fig.update_layout(height=450, width=450)
                     season_lsa_fig.update_coloraxes(showscale=False)
                     st.plotly_chart(season_lsa_fig, layout="wide")
@@ -560,10 +879,72 @@ def show_main_page():
                 with col4:
                     original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
                     st.markdown(original_title, unsafe_allow_html=True)
-                    season_lsa_fig = factor_year_sum_plate_map(batter_recent_df, lsa_factor)
+                    season_lsa_fig = factor_year_sum_plate_map_scatter(batter_recent_las4)
                     season_lsa_fig.update_layout(height=450, width=430)
                     season_lsa_fig.update_coloraxes(showscale=False)
                     st.plotly_chart(season_lsa_fig, layout="wide")
+                
+                st.markdown(""" <div style="text-align: right; font-size: 0.9em;">
+                                <span style="font-weight: bold;">색상 범례:</span> 
+                                붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
+                            </div>
+                            """, 
+                            unsafe_allow_html=True)
+
+                col1, col2, col3, col4 = st.columns(4)
+
+                    # 선수별 연도별 그림을 볼 수 있는 expander 추가
+                with st.expander(f"연도별: {batter_name}"):
+                    # 해당 선수의 모든 연도 데이터 가져오기
+                    years = sorted(batter_raw_df['game_year'].unique(), reverse=True)
+                    
+                    # 각 연도별로 그래프 표시
+                    for year in years:
+                        st.subheader(f"{year}년")
+                        
+                        # 해당 연도의 데이터 필터링
+                        year_df = batter_raw_df[batter_raw_df['game_year'] == year]
+                        year_swing_df = year_df[year_df['swing'] == 1]
+                        year_lsa4_df = year_df[year_df['plus_lsa4'] == 1]
+                        
+                        # 연도별 그래프 표시
+                        col1, col2, col3, col4 = st.columns(4)
+                        
+                        with col1:
+                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">투구지점 (히트맵)</p>'
+                            st.markdown(original_title, unsafe_allow_html=True)
+                            year_pitched_heatmap = factor_year_count_map(year_df, pitched_factor)
+                            year_pitched_heatmap.update_layout(height=450, width=450)
+                            year_pitched_heatmap.update_coloraxes(showscale=False)
+                            st.plotly_chart(year_pitched_heatmap, layout="wide")
+                        
+                        with col2:
+                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점 (히트맵)</p>'
+                            st.markdown(original_title, unsafe_allow_html=True)
+                            year_swing_heatmap = factor_year_sum_map(year_df, swing_factor)
+                            year_swing_heatmap.update_layout(height=450, width=450)
+                            year_swing_heatmap.update_coloraxes(showscale=False)
+                            st.plotly_chart(year_swing_heatmap, layout="wide")
+                        
+                        with col3:
+                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
+                            st.markdown(original_title, unsafe_allow_html=True)
+                            year_lsa_fig = factor_year_sum_map_scatter(year_lsa4_df)
+                            year_lsa_fig.update_layout(height=450, width=450)
+                            year_lsa_fig.update_coloraxes(showscale=False)
+                            st.plotly_chart(year_lsa_fig, layout="wide")
+                        
+                        with col4:
+                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
+                            st.markdown(original_title, unsafe_allow_html=True)
+                            year_lsa_plate_fig = factor_year_sum_plate_map_scatter(year_lsa4_df)
+                            year_lsa_plate_fig.update_layout(height=450, width=430)
+                            year_lsa_plate_fig.update_coloraxes(showscale=False)
+                            st.plotly_chart(year_lsa_plate_fig, layout="wide")
+                        
+  
+                        # 연도별 구분선 추가
+                        st.markdown("---")
 
             st.divider()
 
@@ -601,7 +982,10 @@ def show_main_page():
                 st.subheader(f"{batter_name}, {game_year}")
 
                 season_pitched_fig = swingmap_count_map(swingmap_dataframe, swingmap_factor)
+                season_pitched_fig_scatter = swingmap_count_map_scatter(swingmap_dataframe)
+
                 st.plotly_chart(season_pitched_fig, layout="wide")
+                st.plotly_chart(season_pitched_fig_scatter, layout="wide")
 
             st.divider()
 
@@ -622,19 +1006,302 @@ def show_main_page():
                 spraychart_dataframe = spraychart_df(batter_raw_df)
                 season_spraychart(spraychart_dataframe)
 
+                st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
+                            <span style="font-weight: bold;">색상 범례:</span> 
+                            붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
+                                </div>
+                                """, 
+                            unsafe_allow_html=True)
+
                 with st.expander(f" by 스트라이크 존:  {batter_name}(최근연도)"):
                     st.write("S존 기준차트")
                     zone_spraychart_fig(spraychart_dataframe)
+                    st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
+                            <span style="font-weight: bold;">색상 범례:</span> 
+                            붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
+                                </div>
+                                """, 
+                            unsafe_allow_html=True)
 
                 with st.expander( f" by 타구비행시간:  {batter_name}(최근연도)"):
                     st.write("타구 비행시간")
                     spraychart_hangtime_fig = season_hangtime_spraychart(spraychart_dataframe)
                     st.plotly_chart(spraychart_hangtime_fig)
-
+                    st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
+                            <span style="font-weight: bold;">색상 범례:</span> 
+                            붉은색: 1~4초 비행 / 살구색: 1초 미만 / 옅은 갈색: 4초 이상
+                                </div>
+                                """, 
+                            unsafe_allow_html=True)
+              
 
             st.divider()
 
+# -------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------
 
+
+            st.title('[시즌 :red[Plate Discipline]]')
+
+            # 최근 경기의 타석 결과를 타석별로 scatter chart로 표시
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
+                
+                # 최근 경기 데이터 필터링
+                recent_game_date = batter_raw_df['game_date'].max()
+                recent_game_df = batter_raw_df[batter_raw_df['game_date'] == recent_game_date]
+
+                st.subheader(f"{batter_name} ({recent_game_date})")
+
+                # formatted_date = recent_game_date
+
+                # # HTML을 사용하여 선수 이름과 날짜를 다른 크기로 표시
+                # st.markdown(f"""
+                #     <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">
+                #         {batter_name} <span style="font-size: 0.9rem; font-weight: normal; color: #666;">({formatted_date})</span>
+                #     </div>
+                # """, unsafe_allow_html=True)
+                
+                # 타석별 결과 시각화
+                colors = {
+                    'called_strike': 'rgba(24,85,144,0.6)', 
+                    'swinging_strike': 'rgba(244,247,143,0.9)', 
+                    'ball': 'rgba(108,122,137,0.7)', 
+                    'foul': 'rgba(241,106,227,0.5)', 
+                    'hit_into_play_no_out': 'rgba(255,105,97,1)', 
+                    'hit_into_play_score': 'rgba(255,105,97,1)',
+                    'hit_into_play': 'rgba(140,86,75,0.6)'
+                }
+                
+                symbols = {
+                    '4-Seam Fastball': 'circle', 
+                    '2-Seam Fastball': 'triangle-down', 
+                    'Cutter': 'triangle-se', 
+                    'Slider': 'triangle-right', 
+                    'Curveball': 'triangle-up', 
+                    'Changeup': 'diamond', 
+                    'Split-Finger': 'square', 
+                    'Sweeper': 'cross'
+                }
+                
+                # 최근 경기 이닝별 결과 차트 (facet_col 사용)
+                # 이닝 순서대로 정렬하고 최대 6개만 표시
+                innings = sorted(recent_game_df['inning'].unique())[:6]
+                facet_df = recent_game_df[recent_game_df['inning'].isin(innings)]
+                
+                # 각 이닝별로 투수 이름을 표시하기 위한 처리
+                facet_df['facet_title'] = facet_df.apply(lambda x: f"{x['inning']}이닝 - {x['player_name']}", axis=1)
+                
+                plate_discipline_fig = px.scatter(
+                    facet_df, 
+                    x='plate_x', 
+                    y='plate_z', 
+                    color='description', 
+                    symbol='pitch_name',
+                    text='pitch_number',
+                    color_discrete_map=colors,
+                    hover_name="player_name", 
+                    hover_data=["rel_speed(km)", "pitch_name", "events", "exit_velocity", "description", "launch_speed_angle", "launch_angle"],
+                    template="simple_white",
+                    facet_col='inning',  # 이닝별로 facet
+                    category_orders={"inning": innings},  # 이닝 순서대로 정렬
+                    height=400, 
+                    width=300 * len(set(facet_df['inning'])) 
+                )
+
+                plate_discipline_fig.update_layout(showlegend=False)
+                plate_discipline_fig.update_layout(
+                                                    autosize=False,
+                                                    margin=dict(l=50, r=50, t=80, b=50),  # 상단 여백(t)을 80으로 늘림
+                                                    plot_bgcolor='rgba(255,255,255,0.1)', 
+                                                    paper_bgcolor='rgba(255,255,255,1)',
+                                                )
+                
+                # facet 제목을 투수 이름으로 변경
+                for i, inning in enumerate(innings):
+                    inning_data = facet_df[facet_df['inning'] == inning]
+                    if not inning_data.empty:
+                        pitcher_name = inning_data['player_name'].iloc[0]
+                        plate_discipline_fig.layout.annotations[i].text = f"{inning}이닝 - {pitcher_name}"
+                        plate_discipline_fig.layout.annotations[i].y = 1.05  
+                        plate_discipline_fig.layout.annotations[i].font.size = 14  
+                
+                # 심볼 설정
+                for a, b in enumerate(plate_discipline_fig.data):
+                    pitch_name = plate_discipline_fig.data[a].name.split(', ')[1] if ',' in plate_discipline_fig.data[a].name else plate_discipline_fig.data[a].name
+                    if pitch_name in symbols:
+                        plate_discipline_fig.data[a].marker.symbol = symbols[pitch_name]
+                
+                # 차트 레이아웃 설정
+                plate_discipline_fig.update_layout(
+                    autosize=False,
+                    margin=dict(l=50, r=50, t=50, b=50),
+                    plot_bgcolor='rgba(255,255,255,0.1)', 
+                    paper_bgcolor='rgba(255,255,255,1)',
+                )
+                
+                # 모든 서브플롯에 동일한 x, y 범위 설정
+                plate_discipline_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+                plate_discipline_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+                
+                plate_discipline_fig.update_traces(marker=dict(size=30))  # 마커 크기 조정
+                plate_discipline_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
+                
+                # 각 서브플롯에 스트라이크 존과 코어 존 추가
+                for i in range(len(innings)):
+                    # 스트라이크 존 라인 추가
+                    plate_discipline_fig.add_hline(y=0.59, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
+                    plate_discipline_fig.add_hline(y=0.91, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
+                    plate_discipline_fig.add_vline(x=-0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
+                    plate_discipline_fig.add_vline(x=0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
+                    
+                    # Core Zone 추가
+                    homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
+                    homey = [0.59, 0.59, 0.91, 0.91, 0.59]
+                    plate_discipline_fig.add_trace(go.Scatter(
+                        x=homex, 
+                        y=homey, 
+                        mode='lines', 
+                        line=dict(color='red', width=2),
+                        showlegend=False
+                    ), row=1, col=i+1)
+                    
+                    # Strike Zone 추가
+                    homex = [-0.26, 0.26, 0.26, -0.26, -0.26]
+                    homey = [0.45, 0.45, 1.05, 1.05, 0.45]
+                    plate_discipline_fig.add_trace(go.Scatter(
+                        x=homex, 
+                        y=homey, 
+                        mode='lines', 
+                        line=dict(color='rgba(108,122,137,0.9)', width=2),
+                        showlegend=False
+                    ), row=1, col=i+1)
+                
+                st.plotly_chart(plate_discipline_fig)
+                
+                st.markdown("""
+                <div style="text-align: left; font-size: 0.9em;">
+                <span style="font-weight: bold;">색상 범례:</span> 
+                파란색: 콜드 스트라이크 / 노란색: 스윙 스트라이크 / 회색: 볼 / 분홍색: 파울 / 빨간색: 안타 / 갈색: 아웃
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # 선수별 expander로 시즌 경기별 타석 결과 차트 표시
+                with st.expander(f"시즌 경기별 타석 결과: {batter_name}"):
+                    # 시즌 데이터에서 게임 날짜 목록 가져오기
+                    game_dates = sorted(batter_raw_df['game_date'].unique(), reverse=True)
+                    
+                    for game_date in game_dates[:5]:  # 최근 5경기만 표시
+                        st.write(f"경기 날짜: {game_date}")
+                        
+                        # 해당 날짜의 데이터 필터링
+                        game_df = batter_raw_df[batter_raw_df['game_date'] == game_date]
+                        
+                        # 이닝 목록 가져오기 (최대 6개)
+                        innings = sorted(game_df['inning'].unique())[:6]
+                        facet_df = game_df[game_df['inning'].isin(innings)]
+                        
+                        # 각 이닝별로 투수 이름을 표시하기 위한 처리
+                        facet_df['facet_title'] = facet_df.apply(lambda x: f"{x['inning']}이닝 - {x['player_name']}", axis=1)
+                        
+                        # 이닝별 타석 결과 차트 (facet_col 사용)
+                        inning_fig = px.scatter(
+                            facet_df, 
+                            x='plate_x', 
+                            y='plate_z', 
+                            color='description', 
+                            symbol='pitch_name',
+                            text='pitch_number',  # 인덱스를 텍스트로 표시
+                            color_discrete_map=colors,
+                            hover_name="player_name", 
+                            hover_data=["rel_speed(km)", "pitch_name", "events", "exit_velocity", "description", "launch_speed_angle", "launch_angle"],
+                            template="simple_white",
+                            facet_col='inning',  # 이닝별로 facet
+                            category_orders={"inning": innings},  # 이닝 순서대로 정렬
+                            height=400, 
+                            width=300 * len(set(facet_df['inning'])) 
+                        )
+
+                        inning_fig.update_layout(showlegend=False)
+                        inning_fig.update_layout(
+                                                            autosize=False,
+                                                            margin=dict(l=50, r=50, t=80, b=50),  # 상단 여백(t)을 80으로 늘림
+                                                            plot_bgcolor='rgba(255,255,255,0.1)', 
+                                                            paper_bgcolor='rgba(255,255,255,1)',
+                                                        )
+                        
+                        # facet 제목을 투수 이름으로 변경
+                        for i, inning in enumerate(innings):
+                            inning_data = facet_df[facet_df['inning'] == inning]
+                            if not inning_data.empty:
+                                pitcher_name = inning_data['player_name'].iloc[0]
+                                inning_fig.layout.annotations[i].text = f"{inning}이닝 - {pitcher_name}"
+                                inning_fig.layout.annotations[i].y = 1.05  
+                                inning_fig.layout.annotations[i].font.size = 14  
+                        
+                        # 심볼 설정
+                        for a, b in enumerate(inning_fig.data):
+                            pitch_name = inning_fig.data[a].name.split(', ')[1] if ',' in inning_fig.data[a].name else inning_fig.data[a].name
+                            if pitch_name in symbols:
+                                inning_fig.data[a].marker.symbol = symbols[pitch_name]
+                        
+                        # 차트 레이아웃 설정
+                        inning_fig.update_layout(
+                            title=f"{game_date} 경기 타석 결과",
+                            autosize=False,
+                            margin=dict(l=50, r=50, t=50, b=50),
+                            plot_bgcolor='rgba(255,255,255,0.1)', 
+                            paper_bgcolor='rgba(255,255,255,1)',
+                        )
+                        
+                        # 모든 서브플롯에 동일한 x, y 범위 설정
+                        inning_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+                        inning_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+                        
+                        inning_fig.update_traces(marker=dict(size=30))  # 마커 크기 조정
+                        inning_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
+                        
+                        # 각 서브플롯에 스트라이크 존과 코어 존 추가
+                        for i in range(len(innings)):
+                            # 스트라이크 존 라인 추가
+                            inning_fig.add_hline(y=0.59, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
+                            inning_fig.add_hline(y=0.91, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
+                            inning_fig.add_vline(x=-0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
+                            inning_fig.add_vline(x=0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
+                            
+                            # Core Zone 추가
+                            homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
+                            homey = [0.59, 0.59, 0.91, 0.91, 0.59]
+                            inning_fig.add_trace(go.Scatter(
+                                x=homex, 
+                                y=homey, 
+                                mode='lines', 
+                                line=dict(color='red', width=2),
+                                showlegend=False
+                            ), row=1, col=i+1)
+                            
+                            # Strike Zone 추가
+                            homex = [-0.26, 0.26, 0.26, -0.26, -0.26]
+                            homey = [0.45, 0.45, 1.05, 1.05, 0.45]
+                            inning_fig.add_trace(go.Scatter(
+                                x=homex, 
+                                y=homey, 
+                                mode='lines', 
+                                line=dict(color='rgba(108,122,137,0.9)', width=2),
+                                showlegend=False
+                            ), row=1, col=i+1)
+                        
+                        st.plotly_chart(inning_fig)
+                        
+                        # 날짜별 구분선 추가
+                        st.markdown("---")
+
+
+            st.divider()
 # -------------------------------------------------------------------------------------------------------
 
 
@@ -648,3 +1315,4 @@ with headerSection:
     else:
         st.session_state['loggedIn'] = True
         show_main_page()
+
