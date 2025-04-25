@@ -214,13 +214,14 @@ def show_login_page():
     with middle_col:
         # Logo area
         st.markdown("""
-        /* 로고 컨테이너 */
-        .logo-container {
-            margin-bottom: 5px;
-            padding-left: 20px;
-        }
-        """, unsafe_allow_html=True)
-        st.image("ktwiz_emblem.png", width=300)
+                /* 로고 컨테이너 */
+                .logo-container {
+                    margin-top: 20px;
+                    margin-bottom: 5px;
+                    padding-left: 20px;
+                }
+                """, unsafe_allow_html=True)
+        st.image("ktwiz_emblem.png", width=200)
         st.markdown('</div>', unsafe_allow_html=True)
     
     with right_col:
