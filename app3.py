@@ -248,9 +248,9 @@ def show_login_page():
         st.markdown('<hr style="margin: 0px 0;">', unsafe_allow_html=True)
         
         # Login fields
-        st.markdown('<div class="login-field username-field"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="username-field"></div>', unsafe_allow_html=True)
         userName = st.text_input("", placeholder="아이디")
-        st.markdown('<div class="login-field password-field"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="password-field"></div>', unsafe_allow_html=True)
         password = st.text_input("", placeholder="비밀번호", type="password")
         
         # Store password in session state for later use
