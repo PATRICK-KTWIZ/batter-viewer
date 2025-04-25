@@ -142,14 +142,9 @@ st.markdown("""
 
         /* 전체 요소 위로 이동을 위한 추가 설정 */
         .element-container {
-            margin-bottom: 5px !important; /* 기본 여백 감소 */
+            margin-bottom: 0px !important; /* 기본 여백 감소 */
         }
 
-        /* 입력 필드 컨테이너 간격 감소 */
-        .stTextInput > div {
-            padding-bottom: 1px !important;
-        }        
-        
 </style>
 
 """, unsafe_allow_html=True)
