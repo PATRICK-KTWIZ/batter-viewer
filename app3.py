@@ -368,7 +368,7 @@ def show_main_page():
                     <style>
                         /* 전체 페이지 스타일 */
                         .main {
-                            background-color: #f5f5f5;
+                            background-color: #ffffff;
                         }
 
                    
