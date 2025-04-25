@@ -40,22 +40,22 @@ st.markdown("""
             border-radius: 0;
         }
 
-        /* 로그인 필드 여백 설정 - 더 강력한 선택자 사용 */
-        div[data-testid="stVerticalBlock"] > div > div > div[data-testid="stVerticalBlock"] > div {
-            margin-top: 0px !important;
-            margin-bottom: 0px !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-        }
+        # /* 로그인 필드 여백 설정 - 더 강력한 선택자 사용 */
+        # div[data-testid="stVerticalBlock"] > div > div > div[data-testid="stVerticalBlock"] > div {
+        #     margin-top: 0px !important;
+        #     margin-bottom: 0px !important;
+        #     padding-top: 0 !important;
+        #     padding-bottom: 0 !important;
+        # }
 
-        /* 텍스트 입력 필드 내부 여백 설정 */
-        .stTextInput > div > div > input {
-            padding: 5px 15px !important;
-            width: 100%;
-            margin: -5;
-            height: 35px !important;
-            min-height: 35px !important;
-        }
+        # /* 텍스트 입력 필드 내부 여백 설정 */
+        # .stTextInput > div > div > input {
+        #     padding: 5px 15px !important;
+        #     width: 100%;
+        #     margin: -5;
+        #     height: 35px !important;
+        #     min-height: 35px !important;
+        # }
 
         /* 아이디 필드 특별 여백 */
         .username-field {
@@ -99,7 +99,7 @@ st.markdown("""
         .stCheckbox > div {
             display: flex;
             align-items: center;
-            margin-bottom: 0px;
+            # margin-bottom: 0px;
         }
         
         /* 푸터 스타일 */
