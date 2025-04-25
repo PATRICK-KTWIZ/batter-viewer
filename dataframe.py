@@ -3,25 +3,9 @@ import pandas as pd
 import numpy as np
 import pymysql
 
-# from pymysqlpool import ConnectionPool
+def dataframe(level, player_id, password):
 
-# pool = ConnectionPool(
-#     host='14.49.30.59',
-#     port=33067,
-#     user='ktwiz',
-#     password='ktwiz1234!#',
-#     database='ktwiz',
-#     # autocommit=True,  # 필요에 따라 설정
-#     # charset='utf8mb4'  # 필요에 따라 설정
-# )
-
-# connection = pool.get_connection()
-
-# conn = st.experimental_connection("mydb", type="sql", autocommit=True)
-
-def dataframe(level, player_id):
-
-    db = pymysql.connect(host='14.49.30.59', port = 33067, user = 'ktwiz', passwd = 'ktwiz1234!#', db = 'ktwiz', charset='utf8', autocommit=True)
+    db = pymysql.connect(host='14.49.30.59', port = 33067, user = 'ktwiz', passwd = password, db = 'ktwiz', charset='utf8', autocommit=True)
 
     db.ping ()
   
@@ -60,45 +44,32 @@ def dataframe(level, player_id):
 
     -- events
     , case when playresult = 'Out' then 'field_out'
-    	when playresult = 'FieldersChoice' then 'fielders_choice_out'
-    	when playresult = 'Error' then 'field_error'
-    	when playresult = 'Single' then 'single'
-    	when playresult = 'Double' then 'double'
-    	when playresult = 'Triple' then 'triple'
-    	when playresult = 'HomeRun' then 'home_run'
-    	when playresult = 'Sacrifice' and distance >= 30 then 'sac_fly'
-    	when (playresult = 'Sacrifice' and distance < 30) or (playresult = 'Sacrifice' and TaggedHitType = "Bunt") then 'sac_bunt'
-    	when playresult = 'HitByPitch' or pitchcall = 'HitByPitch'  then 'hit_by_pitch'
-    	when playresult = 'Undefined' and korbb = 'Strikeout' then 'strikeout'
-    	when playresult = 'Undefined' and korbb = 'Walk' then 'walk' else NULL END as events
+        when playresult = 'FieldersChoice' then 'fielders_choice_out'
+        when playresult = 'Error' then 'field_error'
+        when playresult = 'Single' then 'single'
+        when playresult = 'Double' then 'double'
+        when playresult = 'Triple' then 'triple'
+        when playresult = 'HomeRun' then 'home_run'
+        when playresult = 'Sacrifice' and distance >= 30 then 'sac_fly'
+        when playresult = 'Sacrifice' and distance < 30 then 'sac_bunt'
+        when playresult = 'Undefined' and pitchcall = 'HitByPitch' then 'hit_by_pitch'
+        when playresult = 'Undefined' and korbb = 'Strikeout' then 'strikeout'
+        when playresult = 'Undefined' and korbb = 'Walk' then 'walk' else NULL END as events
 
     -- description
     , case when pitchCall in('FoulBall', 'FoulballFieldable', 'FoulballNotFieldable') then 'foul'
-    	when pitchCall in ('BallCalled', 'BallinDirt', 'BallAutomatic') then 'ball'
-    	when pitchCall in ('StrikeCalled', 'AutomaticStrike', 'StrikeAutomatic') then 'called_strike'
-    	when pitchCall = 'StrikeSwinging' then 'swinging_strike'
-    	when pitchCall = 'InPlay' and playresult in ('Double','Single','HomeRun','Error','Triple','FieldersChoice')  and  runsscored = 0 then 'hit_into_play_no_out'
-    	when pitchCall = 'InPlay' and runsscored >= 1 then 'hit_into_play_score'
-    	when pitchCall = 'InPlay' and playresult in ('Out','Sacrifice') and runsscored = 0 then 'hit_into_play'
-    	when pitchCall = 'HitByPitch' or playresult = 'HitByPitch'  then 'hit_by_pitch'
-    	when pitchCall = 'BallIntentional' then 'pitchout'
-     	else null END AS description
+        when pitchCall in ('BallCalled', 'BallinDirt', 'BallAutomatic') then 'ball'
+        when pitchCall in ('StrikeCalled', 'AutomaticStrike', 'StrikeAutomatic') then 'called_strike'
+        when pitchCall = 'StrikeSwinging' then 'swinging_strike'
+        when pitchCall = 'InPlay' and playresult in ('Double','Single','HomeRun','Error','Triple','FieldersChoice')  and  runsscored = 0 then 'hit_into_play_no_out'
+        when pitchCall = 'InPlay' and runsscored >= 1 then 'hit_into_play_score'
+        when pitchCall = 'InPlay' and playresult in ('Out','Sacrifice') and runsscored = 0 then 'hit_into_play'
+        when pitchCall = 'HitByPitch' or playresult = 'HitByPitch'  then 'hit_by_pitch'
+        when pitchCall = 'BallIntentional' then 'pitchout'
+        else null END AS description
 
     -- zone
-    , CASE WHEN PlateLocSide >= -0.25 AND PlateLocSide < -0.08333 AND PlateLocHeight >= 0.85 AND PlateLocHeight < 1.05 THEN 3 
-        WHEN PlateLocSide >= -0.08333 AND PlateLocSide < 0.08333 AND PlateLocHeight >= 0.85 AND PlateLocHeight < 1.05 THEN 2
-        WHEN PlateLocSide >= 0.08333 AND PlateLocSide < 0.25 AND PlateLocHeight >= 0.85 AND PlateLocHeight < 1.05 THEN 1
-        WHEN PlateLocSide >= -0.25 AND PlateLocSide < -0.08333 AND PlateLocHeight >= 0.65 AND PlateLocHeight < 0.85 THEN 6 
-        WHEN PlateLocSide >= -0.08333 AND PlateLocSide < 0.08333 AND PlateLocHeight >= 0.65 AND PlateLocHeight < 0.85 THEN 5
-        WHEN PlateLocSide >= 0.08333 AND PlateLocSide < 0.25 AND PlateLocHeight >= 0.65 AND PlateLocHeight < 0.85 THEN 4
-        WHEN PlateLocSide >= -0.25 AND PlateLocSide < -0.08333 AND PlateLocHeight >= 0.45 AND PlateLocHeight < 0.65 THEN 9 
-        WHEN PlateLocSide >= -0.08333 AND PlateLocSide < 0.08333 AND PlateLocHeight >= 0.45 AND PlateLocHeight < 0.65 THEN 8
-        WHEN PlateLocSide >= 0.08333 AND PlateLocSide < 0.25 AND PlateLocHeight >= 0.45 AND PlateLocHeight < 0.65 THEN 7
-        
-        WHEN ZONEIN ='OUT' AND PlateLocSide >= 0 AND PlateLocHeight >= 0.75 THEN 11 
-        WHEN ZONEIN ='OUT' AND PlateLocSide < 0 AND PlateLocHeight >= 0.75 THEN 12
-        WHEN ZONEIN ='OUT' AND PlateLocSide >= 0 AND PlateLocHeight < 0.75 THEN 13 
-        WHEN ZONEIN ='OUT' AND PlateLocSide < 0 AND PlateLocHeight < 0.75 THEN 14 ELSE 0 END AS 'zone'
+    , '' AS 'zone'
 
     -- des
     , 'des'
@@ -120,8 +91,8 @@ def dataframe(level, player_id):
 
     -- type
     , CASE WHEN pitchCall IN ('BallinDirt','BallCalled','HitByPitch','BallIntentional','BallAutomatic') THEN 'B'
-    	WHEN PITCHCALL IN ('StrikeCalled','FoulBall','StrikeSwinging','StrikeAutomatic','FoulBallNotFieldable','FoulBallFieldable') THEN 'S' 
-    	WHEN PITCHCALL IN ('InPlay') THEN 'X' ELSE NULL END AS 'type'
+        WHEN PITCHCALL IN ('StrikeCalled','FoulBall','StrikeSwinging','StrikeAutomatic','FoulBallNotFieldable','FoulBallFieldable') THEN 'S' 
+        WHEN PITCHCALL IN ('InPlay') THEN 'X' ELSE NULL END AS 'type'
 
     -- bb_type
     -- , CASE WHEN pitchcall='inplay' AND exitspeed >= 1 and angle < 10 then 'Groundball'
@@ -152,7 +123,7 @@ def dataframe(level, player_id):
 
     -- topbot
     , Top_Bottom as inning_topbot
-    
+
     -- hit_distance_sc
     , round(DISTANCE * 3.28084,0) AS hit_distance_sc
 
@@ -163,7 +134,7 @@ def dataframe(level, player_id):
     , round(ANGLE,0) AS launch_angle
 
     -- release_extension
-    , round(SpinRate,0) as release_spin_rate	, round(Extension * 3.28084,2) as release_extension
+    , round(SpinRate,0) as release_spin_rate	, round(SpinAxis,1) as release_spin_axis ,  round(Extension * 3.28084,2) as release_extension
 
     -- launch speed angle
     , case 
@@ -180,11 +151,11 @@ def dataframe(level, player_id):
         and angle between 0 and 52
         and pitchcall = 'InPlay'
         then 5 -- 'Solid-Contact'
-    
+
         when EXITSPEED/ 1.609344 <= 59
         and pitchcall = 'InPlay'
         then 1 -- 'Poorly-Weak'
-    
+
         when (EXITSPEED/ 1.609344 * 2 - angle) >= 87
         and angle <= 41
         and (EXITSPEED/ 1.609344 * 2 + angle) <= 175
@@ -192,19 +163,19 @@ def dataframe(level, player_id):
         and EXITSPEED/ 1.609344 between 59 and 72
         and pitchcall = 'InPlay'
         then 4 -- 'Flare-or-Burner'
-    
+
         when (EXITSPEED/ 1.609344 + angle * 1.3) <= 112
         and (EXITSPEED/ 1.609344 + angle * 1.55) >= 92
         and EXITSPEED/ 1.609344 between 72 and 86
         and pitchcall = 'InPlay'
         then 4 -- 'Flare-or-Burner'
-    
+
         when angle <= 20
         and (EXITSPEED/ 1.609344 + angle * 2.4) >= 98
         and EXITSPEED/ 1.609344 between 86 and 95
         and pitchcall = 'InPlay'
         then 4 -- 'Flare-or-Burner'
-    
+
         when (EXITSPEED/ 1.609344 - angle) >= 76
         and (EXITSPEED/ 1.609344 + angle * 2.4) >= 98
         and EXITSPEED/ 1.609344 >= 95
@@ -231,21 +202,20 @@ def dataframe(level, player_id):
 
     -- pitch name
     , CASE WHEN PITKIND = 'FF' THEN '4-Seam Fastball'
-    	WHEN PITKIND = 'CH' THEN 'Changeup'
-    	WHEN PITKIND = 'SL' THEN 'Slider'
-    	WHEN PITKIND = 'CU' THEN 'Curveball'
-    	WHEN PITKIND = 'ST' THEN 'Sweeper'
-    	WHEN PITKIND = 'FS' THEN 'Split-Finger'
-    	WHEN PITKIND IN ('FT','SI') THEN '2-Seam Fastball'
-    	WHEN PITKIND = 'FC' THEN 'Cutter' ELSE PITKIND END AS pitch_name
-     
+        WHEN PITKIND = 'CH' THEN 'Changeup'
+        WHEN PITKIND = 'SL' THEN 'Slider'
+        WHEN PITKIND = 'CU' THEN 'Curveball'
+        WHEN PITKIND = 'ST' THEN 'Sweeper'
+        WHEN PITKIND = 'FS' THEN 'Split-Finger'
+        WHEN PITKIND IN ('FT','SI') THEN '2-Seam Fastball'
+        WHEN PITKIND = 'FC' THEN 'Cutter' ELSE PITKIND END AS pitch_name
     -- , PlateLocSide, PlateLocHeight
 
     , home_score_cn
     , away_score_cn
     , LEVEL
     , vertrelangle
-    , case when bearing >= 0 then 'R' WHEN BEARING < 0 THEN 'L' ELSE NULL END
+    , case when bearing >= 0 then 'R' WHEN BEARING < 0 THEN 'L' ELSE NULL END as direction
     , round(ContactPositionX,2) , round(ContactPositionY,2) , round(ContactPositionZ,2)
 
     , case when pitchcall = 'inplay' and bearing >= 0 and bearing <= 45 then convert(round(distance *cos(radians(45-bearing)),0),int)
@@ -265,43 +235,47 @@ def dataframe(level, player_id):
     -- hangtime
     , HangTime
 
-     -- pitkind
-    	FROM 
-    		
-    		(
-    		SELECT a.*, substring(GameID ,1,4) as SEASON
-    		, CASE WHEN pit_kind_cd = '31' THEN 'FF'
-    		WHEN pit_kind_cd = '32' THEN 'CU'
-    		WHEN pit_kind_cd = '33' THEN 'SL'
-    		WHEN pit_kind_cd = '34' THEN 'CH'
-    		WHEN pit_kind_cd = '35' THEN 'FS'
-    		WHEN pit_kind_cd = '36' THEN 'SI'
-    		WHEN pit_kind_cd = '37' THEN 'FT'
-    		WHEN pit_kind_cd = '38' THEN 'FC'
-      		WHEN pit_kind_cd = '131' THEN 'ST'
-      		WHEN PIT_KIND_CD IS NULL and (AUTOPITCHTYPE = 'Fastball' OR AUTOPITCHTYPE = 'Four-Seam')  then 'FF'
-    		WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Sinker' then 'SI' 
-    		WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Curveball' then 'CU' 
-    		WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Slider' then 'SL'
-    		WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Changeup' then 'CH'
-    		WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Splitter' then 'FS'
-    		WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Cutter' then 'FC'
-      		WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Sweeper' then 'ST'
-    		ELSE 'OT' END  AS PITKIND
+    -- pitkind
+        FROM 
+            
+            (
+            SELECT a.*, substring(GameID ,1,4) as SEASON
+            , CASE WHEN pit_kind_cd = '31' THEN 'FF'
+            WHEN pit_kind_cd = '32' THEN 'CU'
+            WHEN pit_kind_cd = '33' THEN 'SL'
+            WHEN pit_kind_cd = '34' THEN 'CH'
+            WHEN pit_kind_cd = '35' THEN 'FS'
+            WHEN pit_kind_cd = '36' THEN 'SI'
+            WHEN pit_kind_cd = '37' THEN 'FT'
+            WHEN pit_kind_cd = '38' THEN 'FC'
+            WHEN pit_kind_cd = '131' THEN 'ST'
+            WHEN PIT_KIND_CD IS NULL and (AUTOPITCHTYPE = 'Fastball' OR AUTOPITCHTYPE = 'Four-Seam')  then 'FF'
+            WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Sinker' then 'SI' 
+            WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Curveball' then 'CU' 
+            WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Slider' then 'SL'
+            WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Changeup' then 'CH'
+            WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Splitter' then 'FS'
+            WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Cutter' then 'FC'
+            WHEN PIT_KIND_CD IS NULL and AUTOPITCHTYPE = 'Sweeper' then 'ST'
+            ELSE 'OT' END  AS PITKIND
             
             , PITCHER as pitname, BATTER as batname 
-            , CASE WHEN PlateLocSide >= -0.25 AND  PlateLocSide < 0.25 AND PlateLocHeight >= 0.45 AND PlateLocHeight < 1.05 THEN 'IN' ELSE 'OUT' END AS 'ZONEIN'
-            , CASE WHEN PlateLocSide >= -0.5 AND  PlateLocSide < 0.5 AND PlateLocHeight >= 0.2 AND PlateLocHeight < 1.3 THEN 'END' ELSE 'ENDOUT' END AS 'ENDOUT' 
+        
             , POS1_P_ID, POS2_P_ID, POS3_P_ID, POS4_P_ID, POS5_P_ID, POS6_P_ID, POS7_P_ID, POS8_P_ID, POS9_P_ID
             , home_score_cn , away_score_cn
+            , c.x0 as px0, x5, x10, x15, x20, x25, x30, x35, x40, x45, x50
+            , c.z0 as pz0, z5, z10, z15, z20, z25, z30, z35, z40, z45, z50
+
             FROM 
-                (SELECT* FROM pda_trackman ) a
+                pda_trackman a
             -- JOIN
                 Left outer join 
-                (SELECT* FROM pda_analyzer ) b
+                pda_analyzer b
                 ON a.game_seq = b.game_seq AND a.pit_seq = b.pit_seq
-            
-        
+                Left outer join 
+                pda_calculate c
+                ON a.game_seq = c.game_seq AND a.PitchNo = c.pitch_no
+                
             ) ZZ
         
         
@@ -309,13 +283,10 @@ def dataframe(level, player_id):
 
     -- game year
     -- gameid Like '2020%'
-    gameid >= '2022'
+    gameid >= '2023'
 
-    -- league(aaa, KoreaBaseballOrganization, npb, mlb, aa, KBO Minors)
     AND level IN ({0})
 
-    -- player id
-    -- AND pitcherid = '64004'
     AND batterid = {1}
 
     order by gameid, pitchno  """
@@ -326,15 +297,31 @@ def dataframe(level, player_id):
 
     df=pd.DataFrame([[item.decode('latin-1') if isinstance(item, bytes) else item for item in row] for row in raw],
                       columns = ['game_id','pitch_type', 'game_date', 'release_speed', 'release_pos_x', 'release_pos_z',  'player_name', 'batname', 'batter', 'pitcher', 'events', 'description', 'zone', 'des', 'stand', 'p_throw', 'pitcherteam','batterteam', 'home_team' , 'away_team',
-                                    'type', 'bb_type', 'balls', 'strikes', 'pfx_x', 'pfx_z', 'plate_x', 'plate_z', 'out_when_up', 'inning', 'inning_topbot', 'hit_distance_sc',
-                                    'launch_speed','launch_angle','release_spin_rate','release_extension',
-                                    'launch_speed_angle','pitch_number','PAofinning','pitch_name','home_score','away_score','level','verrelangle','launch_direction', 'contactX' , 'contactY' , 'contactZ', 'groundX','groundY','game_year','hit_spin_rate', 'catcher', 'hangtime'])
+                                'type', 'bb_type', 'balls', 'strikes', 'pfx_x', 'pfx_z', 'plate_x', 'plate_z', 'out_when_up', 'inning', 'inning_topbot', 'hit_distance_sc',
+                                'launch_speed','launch_angle','release_spin_rate', 'release_spin_axis', 'release_extension',
+                                'launch_speed_angle','pitch_number','PAofinning','pitch_name','home_score','away_score','level','verrelangle','launch_direction', 'contactX' , 'contactY' , 'contactZ', 'groundX','groundY','game_year','hit_spin_rate', 'catcher','hangtime'])
 
     # df.to_sql(name='dataframe', con=db, ttl=360)
   
+    cursor = db.cursor()
+    height_sql = """
+    select * from player_info  
+    where TM_ID = {0}
+    """
+
+    cursor.execute(height_sql.format(player_id))
+    height_raw = cursor.fetchall()
+
+    height_df=pd.DataFrame(height_raw, columns = ['game_year', 'team', 'team_tm_major', 'team_tm_minor','KBO_ID','batter','NAME','POS','BackNum','engName','Birthday','Height','Weight','PitcherThrows','BatterSide'])
+
+    df['game_year'] = df['game_year'].astype(int)
+    height_df['game_year'] = height_df['game_year'].astype(int)
+
+    df = pd.merge(df, height_df[['game_year', 'batter', 'Height', 'Weight']], on=['game_year', 'batter'], how='left')
+
     db.commit()  
     db.close()
-  
+
     if len(df) > 0:
 
         df['plate_x'] = df['plate_x'] * -1.0
@@ -360,6 +347,55 @@ def dataframe(level, player_id):
         df['side_arm'] = df['pitcher'].apply(lambda x: 'S' if x in y else 'Reg')
         df['p_throws'] = df['pitcher'].apply(lambda x: 'S' if x in y else list(set(df.loc[df['pitcher'] == x, 'p_throw'].unique()))[0])
 
+        df['Height'] = pd.to_numeric(df['Height'], errors='coerce')
+
+        # 신장 가져오기
+        df['high'] = np.where(df['Height'].isnull(), 1.049 , (df['Height'] * 0.5575 + 3.5) / 100)
+        df['low']  = np.where(df['Height'].isnull(), 0.463 , (df['Height'] * 0.2704 - 3.5) / 100)
+        # 신장이 없는 경우는 일단 183cm 기준으로 가져오는 것으로 함
+        df['1/3'] = (df['low'] + ((df['high'] - df['low']) / 3))
+        df['2/3'] = (df['high'] - ((df['high'] - df['low']) / 3))
+
+        df['zonehigh'] = df['high'] + 0.11
+        df['corehigh'] = df['high'] - 0.11
+        df['corelow'] = df['low'] + 0.11
+        df['zonelow'] = df['low'] - 0.11
+
+        condition9 = [
+            (df['plate_x'] > -0.271) & (df['plate_x'] < 0.271) & (df['plate_z'] > df['low'] ) & (df['plate_z'] < df['high']),
+            (df['plate_x'] > -0.381) & (df['plate_x'] < 0.381) & (df['plate_z'] > df['zonelow']) & (df['plate_z'] < df['zonehigh'])
+            
+        ]
+
+        choicelist9 = ['IN', 'OUT']
+
+        df['INOUT'] = np.select(condition9, choicelist9, default= 'Not Specified')
+
+        condition0 = [
+                    (df['plate_x'] > -0.271) & (df['plate_x'] < -0.0903) & (df['plate_z'] > df['2/3']) & (df['plate_z'] < df['high']),
+                    (df['plate_x'] > -0.0903) & (df['plate_x'] < 0.0903) & (df['plate_z'] > df['2/3']) & (df['plate_z'] < df['high']),
+                    (df['plate_x'] > 0.0903) & (df['plate_x'] < 0.271) & (df['plate_z'] > df['2/3']) & (df['plate_z'] < df['high']),
+                    
+                    (df['plate_x'] > -0.271) & (df['plate_x'] < -0.0903) & (df['plate_z'] > df['1/3']) & (df['plate_z'] < df['2/3']),
+                    (df['plate_x'] > -0.0903) & (df['plate_x'] < 0.0903) & (df['plate_z'] > df['1/3']) & (df['plate_z'] < df['2/3']),
+                    (df['plate_x'] > 0.0903) & (df['plate_x'] < 0.271) & (df['plate_z'] > df['1/3']) & (df['plate_z'] < df['2/3']),
+                    
+                    (df['plate_x'] > -0.271) & (df['plate_x'] < -0.0903) & (df['plate_z'] > df['low']) & (df['plate_z'] < df['1/3']),
+                    (df['plate_x'] > -0.0903) & (df['plate_x'] < 0.0903) & (df['plate_z'] > df['low']) & (df['plate_z'] < df['1/3']),
+                    (df['plate_x'] > 0.0903) & (df['plate_x'] < 0.271) & (df['plate_z'] > df['low']) & (df['plate_z'] < df['1/3']),
+                    
+                    (df['INOUT'] == 'OUT') & (df['plate_x'] < 0) & (df['plate_z'] > 0.75) ,
+                    (df['INOUT'] == 'OUT') & (df['plate_x'] > 0) & (df['plate_z'] > 0.75) ,
+                    (df['INOUT'] == 'OUT') & (df['plate_x'] < 0) & (df['plate_z'] < 0.75) ,
+                    (df['INOUT'] == 'OUT') & (df['plate_x'] > 0) & (df['plate_z'] < 0.75) ,
+                    
+                    
+        ]
+
+        choicelist0 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14]
+
+        df['zone'] = np.select(condition0, choicelist0, default= 99)
+
         pa = ['double','double_play','field_error','field_out','fielders_choice_out','force_out','grounded_into_double_play','hit_by_pitch','home_run','sac_bunt','sac_fly','sac_fly_double_play','single','strikeout','strikeout_double_play','triple','walk']
         ab = ['double','double_play','field_error','field_out','fielders_choice_out','force_out','grounded_into_double_play','home_run','single','strikeout','strikeout_double_play','triple']
         hit = ['double','home_run','single','triple']
@@ -376,8 +412,8 @@ def dataframe(level, player_id):
         df['whiff'] = df['description'].apply(lambda x: 1 if x in whiff else 0)
         df['foul'] = df['description'].apply(lambda x: 1 if x in foul else 0)
 
-        df['z_in'] = df['zone'].apply(lambda x: 1 if x < 10 else 0)
-        df['z_out'] = df['zone'].apply(lambda x: 1 if x > 10 else 0)
+        df['z_in'] = df['zone'].apply(lambda x: 1 if x < 10 else None)
+        df['z_out'] = df['zone'].apply(lambda x: 1 if x > 10 else None)
 
         df['balls'] = df['balls'].apply(str)
         df['strikes'] = df['strikes'].apply(str)
@@ -403,25 +439,25 @@ def dataframe(level, player_id):
         df['p_type'] = df['pitcher'].apply(lambda x: 'S' if x in y else 'R')
 
         def pkind(x):
-        
-          if x == '4-Seam Fastball':
-            return 'Fastball'
-          elif x == '2-Seam Fastball':
-            return 'Fastball'
-          elif x == 'Cutter':
-            return 'Fastball'
-          elif x == 'Slider':
-            return 'Breaking'
-          elif x == 'Curveball':
-            return 'Breaking'
-          elif x == 'Sweeper':
-            return 'Breaking'
-          elif x == 'Changeup':
-            return 'Off_Speed'
-          elif x == 'Split-Finger':
-            return 'Off_Speed'
-          else:
-            return 'OT'
+
+            if x == '4-Seam Fastball':
+                return 'Fastball'
+            elif x == '2-Seam Fastball':
+                return 'Fastball'
+            elif x == 'Cutter':
+                return 'Fastball'
+            elif x == 'Slider':
+                return 'Breaking'
+            elif x == 'Curveball':
+                return 'Breaking'
+            elif x == 'Sweeper':
+                return 'Breaking'
+            elif x == 'Changeup':
+                return 'Off_Speed'
+            elif x == 'Split-Finger':
+                return 'Off_Speed'
+            else:
+                return 'OT'
 
 
         df['p_kind'] = df['pitch_name'].apply(lambda x: pkind(x))
@@ -453,6 +489,8 @@ def dataframe(level, player_id):
             elif x == '3-1':
                 return 'Else'
 
+        df['count_value'] = df['count'].apply(lambda x: count(x))
+
         def hangtime(x):
             if x <= 1:
                 return 'short'
@@ -463,38 +501,39 @@ def dataframe(level, player_id):
 
         df['hangtime_type'] = df['hangtime'].apply(lambda x: hangtime(x))
 
-        df['count_value'] = df['count'].apply(lambda x: count(x))
+        df['after_2s'] = df['count_value'].apply(lambda x: 1 if x == 'After_2S' else None)
+        df['hitting'] = df['count_value'].apply(lambda x: 1 if x == 'Hitting' else None)
+        df['else'] = df['count_value'].apply(lambda x: 1 if x == 'Else' else None)
 
-        df['after_2s'] = df['count_value'].apply(lambda x: 1 if x == 'After_2S' else 0)
-        df['hitting'] = df['count_value'].apply(lambda x: 1 if x == 'Hitting' else 0)
-        df['else'] = df['count_value'].apply(lambda x: 1 if x == 'Else' else 0)
+        df['ld'] = df['bb_type'].apply(lambda x: 1 if x == 'Line_Drive' else None)
+        df['fb'] = df['bb_type'].apply(lambda x: 1 if x == 'Fly_Ball' else None)
+        df['gb'] = df['bb_type'].apply(lambda x: 1 if x == 'Ground_Ball' else None)
+        df['pu'] = df['bb_type'].apply(lambda x: 1 if x == 'Popup' else None)
 
-        df['ld'] = df['bb_type'].apply(lambda x: 1 if x == 'Line_Drive' else 0)
-        df['fb'] = df['bb_type'].apply(lambda x: 1 if x == 'Fly_Ball' else 0)
-        df['gb'] = df['bb_type'].apply(lambda x: 1 if x == 'Ground_Ball' else 0)
-        df['pu'] = df['bb_type'].apply(lambda x: 1 if x == 'Popup' else 0)
+        df['single'] = df['events'].apply(lambda x: 1 if x == 'single' else None)
+        df['double'] = df['events'].apply(lambda x: 1 if x == 'double' else None)
+        df['triple'] = df['events'].apply(lambda x: 1 if x == 'triple' else None)
+        df['home_run'] = df['events'].apply(lambda x: 1 if x == 'home_run' else None)
+        df['walk'] = df['events'].apply(lambda x: 1 if x == 'walk' else None)
+        df['hit_by_pitch'] = df['events'].apply(lambda x: 1 if x == 'hit_by_pitch' else None)
+        df['sac_fly'] = df['events'].apply(lambda x: 1 if x == 'sac_fly' else None)
+        df['sac_bunt'] = df['events'].apply(lambda x: 1 if x == 'sac_bunt' else None)
+        df['field_out'] = df['events'].apply(lambda x: 1 if x == 'field_out' else None)
 
-        df['single'] = df['events'].apply(lambda x: 1 if x == 'single' else 0)
-        df['double'] = df['events'].apply(lambda x: 1 if x == 'double' else 0)
-        df['triple'] = df['events'].apply(lambda x: 1 if x == 'triple' else 0)
-        df['home_run'] = df['events'].apply(lambda x: 1 if x == 'home_run' else 0)
-        df['walk'] = df['events'].apply(lambda x: 1 if x == 'walk' else 0)
-        df['hit_by_pitch'] = df['events'].apply(lambda x: 1 if x == 'hit_by_pitch' else 0)
-        df['sac_fly'] = df['events'].apply(lambda x: 1 if x == 'sac_fly' else 0)
-        df['sac_bunt'] = df['events'].apply(lambda x: 1 if x == 'sac_bunt' else 0)
-        df['field_out'] = df['events'].apply(lambda x: 1 if x == 'field_out' else 0)
+        df['inplay'] = df['type'].apply(lambda x: 1 if x == 'X' else None)
 
-        df['inplay'] = df['type'].apply(lambda x: 1 if x == 'X' else 0)
+        df['weak'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 1 else None)
+        df['topped'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 2 else None)
+        df['under'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 3 else None)
+        df['flare'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 4 else None)
+        df['solid_contact'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 5 else None)
+        df['barrel'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 6 else None)
+        df['plus_lsa4'] = df['launch_speed_angle'].apply(lambda x: 1 if x >=4 else None)
+        df['cs'] = df['description'].apply(lambda x: 1 if x == 'called_strike' else None)
 
-        df['weak'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 1 else 0)
-        df['topped'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 2 else 0)
-        df['under'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 3 else 0)
-        df['flare'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 4 else 0)
-        df['solid_contact'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 5 else 0)
-        df['barrel'] = df['launch_speed_angle'].apply(lambda x: 1 if x == 6 else 0)
-        df['plus_lsa4'] = df['launch_speed_angle'].apply(lambda x: 1 if x >=4 else 0)
 
         df['game_date'] = pd.to_datetime(df['game_date'], format='mixed', dayfirst=True)
+        # df['game_date'] = pd.to_datetime(df['game_date'], errors='coerce')
 
         condition1 = [
                     (df['zone'] == 1) & (df['swing'] != 1),
@@ -528,29 +567,32 @@ def dataframe(level, player_id):
         df['z_low'] = df['zone'].apply(lambda x: 1 if x == 7 or x == 8 or x== 9 else 0)
 
         condition3 = [
-                    (df['plate_x'] < -0.12) & (df['plate_x'] > -0.34) & (df['plate_z'] > 0.91) & (df['plate_z'] < 1.16),
-                    (df['plate_x'] > -0.12) & (df['plate_x'] < 0.12) & (df['plate_z'] > 0.91) & (df['plate_z'] < 1.16),
-                    (df['plate_x'] > 0.12) & (df['plate_x'] < 0.34) & (df['plate_z'] > 0.91) & (df['plate_z'] < 1.16),
-                    (df['plate_x'] > -0.34) & (df['plate_x'] < -0.14) & (df['plate_z'] > 0.59) & (df['plate_z'] < 0.91),
-                    (df['plate_x'] > -0.12) & (df['plate_x'] < 0.12) & (df['plate_z'] > 0.59) & (df['plate_z'] < 0.91),
-                    (df['plate_x'] > 0.12) & (df['plate_x'] < 0.34) & (df['plate_z'] > 0.59) & (df['plate_z'] < 0.91),
-                    (df['plate_x'] > -0.34) & (df['plate_x'] < -0.12) & (df['plate_z'] > 0.35) & (df['plate_z'] < 0.59),
-                    (df['plate_x'] > -0.12) & (df['plate_x'] < 0.12) & (df['plate_z'] > 0.35) & (df['plate_z'] < 0.59),
-                    (df['plate_x'] > 0.12) & (df['plate_x'] < 0.34) & (df['plate_z'] > 0.35) & (df['plate_z'] < 0.59),
+                    (df['plate_x'] > -0.381) & (df['plate_x'] < -0.161) & (df['plate_z'] > df['corehigh']) & (df['plate_z'] < df['zonehigh']),
+                    (df['plate_x'] > -0.161) & (df['plate_x'] < 0.161) & (df['plate_z'] > df['corehigh']) & (df['plate_z'] < df['zonehigh']),
+                    (df['plate_x'] > 0.161) & (df['plate_x'] < 0.381) & (df['plate_z'] > df['corehigh']) & (df['plate_z'] < df['zonehigh']),
+                    (df['plate_x'] > -0.381) & (df['plate_x'] < -0.161) & (df['plate_z'] > df['corelow']) & (df['plate_z'] < df['corehigh']),
+                    (df['plate_x'] > -0.161) & (df['plate_x'] < 0.161) & (df['plate_z'] > df['corelow']) & (df['plate_z'] < df['corehigh']),
+                    (df['plate_x'] > 0.161) & (df['plate_x'] < 0.381) & (df['plate_z'] > df['corelow']) & (df['plate_z'] < df['corehigh']),
+                    (df['plate_x'] > -0.381) & (df['plate_x'] < -0.161) & (df['plate_z'] > df['zonelow']) & (df['plate_z'] < df['corelow']),
+                    (df['plate_x'] > -0.161) & (df['plate_x'] < 0.161) & (df['plate_z'] > df['zonelow']) & (df['plate_z'] < df['corelow']),
+                    (df['plate_x'] > 0.161) & (df['plate_x'] < 0.381) & (df['plate_z'] > df['zonelow']) & (df['plate_z'] < df['corelow']),
         ]
 
         choicelist3 = ['nz1','nz2', 'nz3', 'nz4', 'core', 'nz6','nz7','nz8','nz9']
 
         df['new_zone'] = np.select(condition3, choicelist3, default='Not Specified')
 
+        df['DH'] = df['game_id'].str[-1]
+
         ndf = df[['game_year', 'game_date', 'inning', 'home_team','home_score', 'away_team','away_score',
                 'pitch_number','balls', 'strikes', 'zone', 'new_zone','stand', 'p_throw', 'p_throws', 'p_type', 'type', 'bb_type','events', 'description', 'hor_break','ver_break','plate_x','plate_z',
                 'pitcherteam', 'player_name', 'pitcher','catcher','batterteam', 'batname', 'batter',
-                'rel_speed(km)','release_spin_rate','rel_height', 'rel_side', 'extension','pitch_name', 'p_kind',
+                'rel_speed(km)','release_spin_rate', 'release_spin_axis','rel_height', 'rel_side', 'extension','pitch_name', 'p_kind',
                 'exit_speed(km)','launch_angle','launch_direction','hit_distance','hit_spin_rate','launch_speed_angle', 'contactX', 'contactY', 'contactZ', 'groundX', 'groundY', 'l_r','h_l',
                 'pa', 'ab', 'hit', 'swing', 'con', 'whiff','foul','z_in','z_out','count', 'count_value', 'z_left','z_right','z_high','z_low',
                 'ld','fb','gb','pu','single','double','triple','home_run','walk','hit_by_pitch','sac_fly','sac_bunt','field_out','inplay',
-                'weak','topped','under','flare','solid_contact','barrel','plus_lsa4', 'level', 'hangtime','hangtime_type'
+                'weak','topped','under','flare','solid_contact','barrel','plus_lsa4', 'level','hangtime','hangtime_type',
+                'DH','cs', 'Height', 'high', 'low', '2/3', '1/3', 'zonehigh', 'corehigh', 'corelow', 'zonelow'
                 ]]
 
         def ntype(x):
@@ -628,6 +670,8 @@ def dataframe(level, player_id):
         ot = ndf[ndf['p_kind'] == 'OT'].index
         ndf = ndf.drop(ot)
 
+        ndf['z_in'].fillna(0, inplace=True)
+
         ndf['month'] = ndf['game_date'].dt.month
 
         start18 = '2018-04-01'
@@ -643,7 +687,9 @@ def dataframe(level, player_id):
         start23 = '2023-04-01'
         end23 = '2023-10-30'
         start24 = '2024-03-23'
-        end24 = '2024-10-30'   
+        end24 = '2024-10-01'        
+        start25 = '2025-03-22'
+        end25 = '2025-10-01'    
 
         season18 = ndf[(ndf['game_date'] >= start18) & (ndf['game_date'] <= end18)]
         season19 = ndf[(ndf['game_date'] >= start19) & (ndf['game_date'] <= end19)]
@@ -652,8 +698,9 @@ def dataframe(level, player_id):
         season22 = ndf[(ndf['game_date'] >= start22) & (ndf['game_date'] <= end22)]
         season23 = ndf[(ndf['game_date'] >= start23) & (ndf['game_date'] <= end23)]
         season24 = ndf[(ndf['game_date'] >= start24) & (ndf['game_date'] <= end24)]
+        season25 = ndf[(ndf['game_date'] >= start25) & (ndf['game_date'] <= end25)]
 
-        ndf = pd.concat([season18, season19, season20, season21, season22, season23, season24], ignore_index=True)
+        ndf = pd.concat([season18, season19, season20, season21, season22, season23, season24, season25], ignore_index=True)
 
         player_df = ndf
 
@@ -665,6 +712,7 @@ def dataframe(level, player_id):
     
     return player_df
     
+
 
 
 def base_df(player_df):
@@ -768,13 +816,13 @@ def pivot_base_df(player_df, pivot_index):
 
 
 def stats_df(merged_base_df):
-
-    merged_base_df['inplay_pit'] = (merged_base_df['inplay'] / merged_base_df['player_name']).round(3)
-
+    
     merged_base_df['avg'] = 0 
     merged_base_df['obp'] = 0
     merged_base_df['slg'] = 0
     merged_base_df['ops'] = 0
+
+    merged_base_df['inplay_pit'] = merged_base_df['inplay'] / merged_base_df['player_name']
   
     # if merged_base_df['ab'] != 0:
     merged_base_df['avg'] = merged_base_df['hit'] / merged_base_df['ab']
@@ -825,7 +873,38 @@ def stats_df(merged_base_df):
     stats_output_df = merged_base_df[['game_date','player_name','pa','ab','hit','walk','rel_speed(km)','inplay_pit','exit_velocity','launch_angleX','hit_spin_rate','avg','obp','slg','ops',
                         'z%','z_swing%','z_con%', 'z_inplay%', 'o%','o_swing%', 'o_con%', 'o_inplay%', 'f_swing%', 'swing%', 'whiff%','inplay_sw',
                         'weak','topped','under','flare','solid_contact','barrel','approach', 'plus_lsa4']]
-    stats_output_df = stats_output_df.round({'pa':0,'ab':0,'hit':0,'ab':0,'walk':0,'rel_speed(km)':1, 'exit_velocity':1, 'launch_angleX':1, 'hit_spin_rate':0,'avg':3, 'obp':3, 'slg':3, 'ops':3 , 
-                                'z%': 3,'z_swing%':3,'z_con%':3,'z_inplay%':3, 'o%':3,'o_swing%':3, 'o_con%':3, 'o_inplay%':3, 'f_swing%':3, 'swing%':3, 'whiff%':3,'inplay_sw':3, 'inplay%':3, 'approach':3})
+    
+    round_dict = {
+        'pa': 0, 'ab': 0, 'hit': 0, 'walk': 0, 'rel_speed(km)': 1, 'inplay_pit': 3, 
+        'exit_velocity': 1, 'launch_angleX': 1, 'hit_spin_rate': 0, 'avg': 3, 
+        'obp': 3, 'slg': 3, 'ops': 3, 'z%': 3, 'z_swing%': 3, 'z_con%': 3, 
+        'z_inplay%': 3, 'o%': 3, 'o_swing%': 3, 'o_con%': 3, 'o_inplay%': 3, 
+        'f_swing%': 3, 'swing%': 3, 'whiff%': 3, 'inplay_sw': 3, 'inplay%': 3, 'approach': 3, 'plus_lsa4':3
+}
+    round_dict_corrected = {k: v for i, (k, v) in enumerate(round_dict.items()) if k not in list(round_dict.keys())[:i]}
+
+    existing_columns = {col: dec for col, dec in round_dict_corrected.items() if col in stats_output_df.columns}
+    if existing_columns:
+        stats_output_df = stats_output_df.round(existing_columns)
+
+    for column, decimals in round_dict_corrected.items():
+        if column in stats_output_df.columns:
+            try:
+                # NaN 값 처리를 위한 함수
+                def format_value(x):
+                    if pd.isna(x):
+                        return ""
+                    elif decimals == 0:
+                        return f"{int(x)}"  # 소수점 없는 정수
+                    else:
+                        return f"{x:.{decimals}f}"  # 소수점 고정 표시
+                
+                stats_output_df[column] = stats_output_df[column].apply(format_value)
+            except Exception as e:
+                print(f"열 '{column}' 처리 중 오류 발생: {e}")
+                continue
+
+    # stats_output_df = stats_output_df.round({'pa':0,'ab':0,'hit':0,'ab':0,'walk':0,'rel_speed(km)':1, 'inplay_pit':3, 'exit_velocity':1, 'launch_angleX':1, 'hit_spin_rate':0,'avg':3, 'obp':3, 'slg':3, 'ops':3 , 
+    #                             'z%': 3,'z_swing%':3,'z_con%':3,'z_inplay%':3, 'o%':3,'o_swing%':3, 'o_con%':3, 'o_inplay%':3, 'f_swing%':3, 'swing%':3, 'whiff%':3,'inplay_sw':3, 'inplay%':3, 'approach':3})
 
     return stats_output_df
