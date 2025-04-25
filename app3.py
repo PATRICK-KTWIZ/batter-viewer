@@ -1677,14 +1677,14 @@ def show_main_page():
 # -------------------------------------------------------------------------------------------------------
 
 
-with headerSection:
-    # Get the user's ID from the session cookie
-    user_id = get_user_id()
+# with headerSection:
+#     # Get the user's ID from the session cookie
+#     user_id = get_user_id()
 
-    if user_id is None:
-        st.session_state['loggedIn'] = False
-        show_login_page()
-    else:
-        st.session_state['loggedIn'] = True
-        show_main_page()
+#     if user_id is None:
+#         st.session_state['loggedIn'] = False
+#         show_login_page()
+#     else:
+#         st.session_state['loggedIn'] = True
+#         show_main_page()
 
