@@ -58,13 +58,13 @@ st.markdown("""
 
         /* 아이디 필드 특별 여백 */
         .username-field {
-            margin-top: 0px;
+            margin-top: -10px;
             margin-bottom: -10px !important;
         }
         
         /* 비밀번호 필드 특별 여백 */
         .password-field {
-            margin-bottom: 0px;
+            margin-bottom: -10px;
             margin-top: -10px !important;
         }
         
