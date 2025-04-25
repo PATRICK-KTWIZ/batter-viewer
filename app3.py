@@ -74,7 +74,7 @@ st.markdown("""
         .stCheckbox > div {
             display: flex;
             align-items: center;
-            margin-bottom: 8px !important;
+            margin-bottom: 1px !important;
         }
         
         /* 푸터 스타일 */
@@ -147,7 +147,7 @@ st.markdown("""
 
         /* 입력 필드 컨테이너 간격 감소 */
         .stTextInput > div {
-            padding-bottom: 5px !important;
+            padding-bottom: 1px !important;
         }        
         
 </style>
