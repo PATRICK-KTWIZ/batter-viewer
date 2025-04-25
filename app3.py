@@ -42,8 +42,8 @@ st.markdown("""
 
         /* 로그인 필드 여백 설정 - 더 강력한 선택자 사용 */
         div[data-testid="stVerticalBlock"] > div > div > div[data-testid="stVerticalBlock"] > div {
-            margin-top: -15px !important;
-            margin-bottom: -15px !important;
+            margin-top: 0px !important;
+            margin-bottom: 0px !important;
             padding-top: 0 !important;
             padding-bottom: 0 !important;
         }
