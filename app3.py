@@ -216,12 +216,12 @@ def show_login_page():
         st.markdown("""
                 /* 로고 컨테이너 */
                 .logo-container {
-                    margin-top: 20px;
+                    margin-top: 50px;
                     margin-bottom: 5px;
                     padding-left: 20px;
                 }
                 """, unsafe_allow_html=True)
-        st.image("ktwiz_emblem.png", width=200)
+        st.image("ktwiz_emblem.png", width=250)
         st.markdown('</div>', unsafe_allow_html=True)
     
     with right_col:
