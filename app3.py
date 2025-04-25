@@ -55,7 +55,7 @@ st.markdown("""
 
         /* 입력 필드 간격 감소 */
         .stTextInput {
-            margin-bottom: 10px !important; /* 입력 필드 사이 간격 감소 */
+            margin-bottom: 0px !important; /* 입력 필드 사이 간격 감소 */
         }
         
         /* 버튼 스타일 */
