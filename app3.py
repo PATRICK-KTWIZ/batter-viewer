@@ -39,11 +39,7 @@ st.markdown("""
             border-radius: 0;
         }
         
-        /* 로고 컨테이너 */
-        .logo-container {
-            margin-bottom: 5px;
-            padding-left: 20px;
-        }
+
         
         /* 로그인 폼 스타일 */
         .stTextInput > div > div > input {
@@ -218,7 +214,11 @@ def show_login_page():
     with middle_col:
         # Logo area
         st.markdown("""
-        <div class="logo-container" style="padding-top: 100px;">
+        /* 로고 컨테이너 */
+        .logo-container {
+            margin-bottom: 5px;
+            padding-left: 20px;
+        }
         """, unsafe_allow_html=True)
         st.image("ktwiz_emblem.png", width=300)
         st.markdown('</div>', unsafe_allow_html=True)
