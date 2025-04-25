@@ -48,14 +48,14 @@ st.markdown("""
         #     padding-bottom: 0 !important;
         # }
 
-        # /* 텍스트 입력 필드 내부 여백 설정 */
-        # .stTextInput > div > div > input {
-        #     padding: 5px 15px !important;
-        #     width: 100%;
-        #     margin: -5;
-        #     height: 35px !important;
-        #     min-height: 35px !important;
-        # }
+        /* 텍스트 입력 필드 내부 여백 설정 */
+        .stTextInput > div > div > input {
+            padding: 5px 15px !important;
+            width: 100%;
+            margin: -5;
+            height: 35px !important;
+            min-height: 35px !important;
+        }
 
         /* 아이디 필드 특별 여백 */
         .username-field {
