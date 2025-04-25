@@ -280,23 +280,36 @@ def show_login_page():
         # Horizontal line
         st.markdown('<hr style="margin: 0px 0;">', unsafe_allow_html=True)
 
-
+        # 로그인 폼을 div로 감싸서 스타일 적용
+        st.markdown('<div class="login-form-container">', unsafe_allow_html=True)
+        
+        # 컨테이너 간격 최소화를 위해 columns 사용
+        form_col = st.container()
+        with form_col:
+            userName = st.text_input("", placeholder="아이디", label_visibility="collapsed")
+            password = st.text_input("", placeholder="비밀번호", type="password", label_visibility="collapsed")
+            login_button = st.button("로그인", on_click=LoggedIn_Clicked, args=(userName, password))
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
 
 
 
         
-        # Login fields
-        st.markdown('<div class="username-field"></div>', unsafe_allow_html=True)
-        userName = st.text_input("", placeholder="아이디")
-        st.markdown('<div class="password-field"></div>', unsafe_allow_html=True)
-        password = st.text_input("", placeholder="비밀번호", type="password")
+        # # Login fields
+        # st.markdown('<div class="username-field"></div>', unsafe_allow_html=True)
+        # userName = st.text_input("", placeholder="아이디")
+        # st.markdown('<div class="password-field"></div>', unsafe_allow_html=True)
+        # password = st.text_input("", placeholder="비밀번호", type="password")
         
-        # Store password in session state for later use
-        st.session_state['password'] = password
+        # # Store password in session state for later use
+        # st.session_state['password'] = password
         
-        # Login button
-        login_button = st.button("로그인", on_click=LoggedIn_Clicked, args=(userName, password))
+        # # Login button
+        # login_button = st.button("로그인", on_click=LoggedIn_Clicked, args=(userName, password))
+
+
+        
         
         # Remember ID checkbox and text
         col1, col2 = st.columns([1, 3])
