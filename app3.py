@@ -215,6 +215,43 @@ def show_login_page():
         h1 span {
             margin-right: 10px;     /* 각 span 요소 사이의 간격 */
         }
+
+        /* 강력한 CSS 선택자로 Streamlit 기본 여백 제거 */
+        div[data-testid="stVerticalBlock"] > div {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
+        
+        /* 입력 필드 컨테이너 여백 제거 */
+        .stTextInput > div {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* 입력 필드 자체 스타일링 */
+        .stTextInput > div > div > input {
+            padding: 5px 15px !important;
+            height: 35px !important;
+            min-height: 0 !important;
+            margin: 3px 0 !important;
+        }
+        
+        /* 로그인 폼 컨테이너에 특별 스타일 적용 */
+        .login-form-container {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        /* 버튼 여백 조정 */
+        .stButton > button {
+            margin-top: 5px !important;
+        }
+
+       
     </style>
     """, unsafe_allow_html=True)
 
@@ -242,6 +279,12 @@ def show_login_page():
         
         # Horizontal line
         st.markdown('<hr style="margin: 0px 0;">', unsafe_allow_html=True)
+
+
+
+
+
+
         
         # Login fields
         st.markdown('<div class="username-field"></div>', unsafe_allow_html=True)
