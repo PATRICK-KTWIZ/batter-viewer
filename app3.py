@@ -41,7 +41,7 @@ st.markdown("""
         
         /* 로고 컨테이너 */
         .logo-container {
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             padding-left: 20px;
         }
         
