@@ -34,8 +34,8 @@ st.markdown("""
         /* 로그인 컨테이너 스타일 */
         .login-container {
             max-width: 400px;
-            margin: 50px 0 0 auto;
-            padding: 30px;
+            margin: 0px 0 0 auto;
+            padding: 0px;
             background-color: #f0f0f0;
             border-radius: 0;
         }
