@@ -370,16 +370,7 @@ def show_main_page():
                             background-color: #f5f5f5;
                         }
 
-                        /* 메인 페이지 배경색 변경 */
-                        .main .block-container {
-                            background: linear-gradient(135deg, #333333 25%, #e6e6e6 25%, #e6e6e6 50%, #ff1a1a 50%);
-                            background-size: cover;
-                            padding-top: 0;
-                            max-width: 100%;
-                            padding-left: 0;
-                            padding-right: 0;
-                        }
-                                        
+                   
                         /* 로그인 컨테이너 스타일 */
                         .login-container {
                             max-width: 450px;
@@ -500,6 +491,7 @@ def show_main_page():
                     """, unsafe_allow_html=True)
 
         st.markdown("""<style>[data-testid=stSidebar] [data-testid=stImage]{text-align: center;display: block;margin-left: auto; margin-right: auto; width: 85%;}</style>""", unsafe_allow_html=True)
+       
         with st.sidebar:
             st.image("ktwiz_emblem.png")
 
