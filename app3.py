@@ -46,6 +46,17 @@ st.markdown("""
             margin-top: 5px;      /* 각 입력 필드 위쪽 여백 */
         }
 
+        /* 아이디 필드 특별 여백 */
+        .username-field {
+            margin-top: 0px;
+        }
+        
+        /* 비밀번호 필드 특별 여백 */
+        .password-field {
+            margin-bottom: 0px;
+        }
+        
+
         /* 텍스트 입력 필드 내부 여백 설정 */
         .stTextInput > div > div > input {
             border: 1px solid #ddd;
@@ -55,17 +66,7 @@ st.markdown("""
             margin: 0;            /* 기본 마진 제거 */
         }
         
-        /* 첫 번째 입력 필드(아이디)에 추가 여백 설정 */
-        .stTextInput:first-of-type {
-            margin-top: 20px;     /* 첫 번째 입력 필드 위에 더 많은 여백 */
-        }
-        
-        /* 마지막 입력 필드(비밀번호)에 추가 여백 설정 */
-        .stTextInput:last-of-type {
-            margin-bottom: 20px;  /* 마지막 입력 필드 아래에 더 많은 여백 */
-        }
-
-        
+      
         /* 로고 컨테이너 */
         .logo-container {
             margin-bottom: 20px;
