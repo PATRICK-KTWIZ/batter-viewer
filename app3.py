@@ -71,7 +71,7 @@ st.markdown("""
 
         /* 텍스트 입력 필드 내부 여백 설정 */
         .stTextInput > div > div > input {
-            border: 1px solid #ddd;
+            border:  none;
             padding: 5px 15px !important;
             border-radius: 0;
             width: 100%;
@@ -90,7 +90,7 @@ st.markdown("""
         
         /* 로그인 폼 스타일 */
         .stTextInput > div > div > input {
-            border: 1px solid #ddd;
+            border:  none;
             padding: 0px;
             border-radius: 0;
             width: 100%;
