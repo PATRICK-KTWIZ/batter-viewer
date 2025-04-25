@@ -92,6 +92,7 @@ st.markdown("""
             font-size: 38px;
             font-weight: bold;
             color: #c0c0c0;
+            margin-top: 5px;
             margin-bottom: 0.5px;
         }
         
