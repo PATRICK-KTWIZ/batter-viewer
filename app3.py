@@ -366,6 +366,15 @@ def show_main_page():
 
         st.markdown("""
                     <style>
+                        .stApp {
+                        background: #ffffff; /* 단색 배경으로 변경 */
+                        background-attachment: fixed;
+                        height: 95vh;
+                        max-height: 1000px;
+                        overflow: auto;
+            }
+
+                        
                         /* 전체 페이지 스타일 */
                         .main {
                             background-color: #ffffff;
@@ -452,6 +461,7 @@ def show_main_page():
         
         st.markdown("""
                     <style>
+                    
                         /* 사이드바 배경색 변경 */
                         [data-testid="stSidebar"] {
                             background-color: #2d2d2d;
