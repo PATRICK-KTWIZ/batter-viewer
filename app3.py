@@ -106,14 +106,14 @@ st.markdown("""
         .info-text {
             font-size: 15px;
             color: #666;
-            margin-bottom: 8px;
+            margin-bottom: 1px;
         }
             
         /* 경고 텍스트 스타일 */
         .warning-text {
             color: red;
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 3px;
             font-size: 16px;
             text-align: right;
         }
@@ -142,7 +142,7 @@ st.markdown("""
 
         /* 전체 요소 위로 이동을 위한 추가 설정 */
         .element-container {
-            margin-bottom: 10px !important; /* 기본 여백 감소 */
+            margin-bottom: 5px !important; /* 기본 여백 감소 */
         }
 
         /* 입력 필드 컨테이너 간격 감소 */
