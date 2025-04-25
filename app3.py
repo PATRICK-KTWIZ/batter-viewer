@@ -216,7 +216,7 @@ def show_login_page():
         st.markdown("""
                 /* 로고 컨테이너 */
                 .logo-container {
-                    margin-top: 100px;
+                    margin-top: 500px;
                     margin-bottom: 5px;
                     padding-left: 20px;
                 }
