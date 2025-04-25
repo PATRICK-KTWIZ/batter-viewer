@@ -25,7 +25,7 @@ st.markdown("""
         .stApp {
             background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
             background-attachment: fixed;
-            height: 95vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
+            height: 95vh; /* 뷰포트 높이의 95%로 설정 */
             max-height: 1000px; /* 최대 높이 설정 */
             overflow: auto;
         }
@@ -33,24 +33,29 @@ st.markdown("""
         /* 로그인 컨테이너 스타일 */
         .login-container {
             max-width: 400px;
-            margin: 50px 0 0 auto;
-            padding: 30px;
+            margin: 30px 0 0 auto;
+            padding: 20px;
             background-color: #f0f0f0;
             border-radius: 0;
         }
         
         /* 로고 컨테이너 */
         .logo-container {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             padding-left: 20px;
         }
         
         /* 로그인 폼 스타일 */
         .stTextInput > div > div > input {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 8px;
             border-radius: 0;
             width: 100%;
+        }
+
+        /* 입력 필드 간격 감소 */
+        .stTextInput {
+            margin-bottom: 10px !important; /* 입력 필드 사이 간격 감소 */
         }
         
         /* 버튼 스타일 */
@@ -58,23 +63,25 @@ st.markdown("""
             background-color: #333333;
             color: white;
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: none;
             border-radius: 0;
             cursor: pointer;
+            margin-top:5px;
         }
         
         /* 체크박스 스타일 */
         .stCheckbox > div {
             display: flex;
             align-items: center;
+            margin-bottom: 8px !important;
         }
         
         /* 푸터 스타일 */
         .footer {
             text-align: center;
             position: fixed;
-            bottom: 70px;
+            bottom: 65px;
             width: 100%;
             color: #333;
             font-size: 15px;
@@ -85,27 +92,28 @@ st.markdown("""
             font-size: 38px;
             font-weight: bold;
             color: #c0c0c0;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
         
         /* 서브헤더 텍스트 스타일 */
         .subheader-text {
             color: #c0c0c0;
             font-size: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         
         /* 안내 텍스트 스타일 */
         .info-text {
             font-size: 15px;
             color: #666;
+            margin-bottom: 8px;
         }
             
         /* 경고 텍스트 스타일 */
         .warning-text {
             color: red;
             font-weight: bold;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             font-size: 16px;
             text-align: right;
         }
@@ -125,12 +133,23 @@ st.markdown("""
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         
-        /* Fix column padding */
+        /* Fix column padding - 상단 패딩 감소 */
         .block-container {
-            padding-top: 1rem;
+            padding-top: 0.5rem;
             padding-bottom: 0;
             max-width: 100%;
         }
+
+        /* 전체 요소 위로 이동을 위한 추가 설정 */
+        .element-container {
+            margin-bottom: 10px !important; /* 기본 여백 감소 */
+        }
+
+        /* 입력 필드 컨테이너 간격 감소 */
+        .stTextInput > div {
+            padding-bottom: 5px !important;
+        }        
+        
 </style>
 
 """, unsafe_allow_html=True)
