@@ -369,7 +369,17 @@ def show_main_page():
                         .main {
                             background-color: #f5f5f5;
                         }
-                        
+
+                        /* 메인 페이지 배경색 변경 */
+                        .main .block-container {
+                            background: linear-gradient(135deg, #333333 25%, #e6e6e6 25%, #e6e6e6 50%, #ff1a1a 50%);
+                            background-size: cover;
+                            padding-top: 0;
+                            max-width: 100%;
+                            padding-left: 0;
+                            padding-right: 0;
+                        }
+                                        
                         /* 로그인 컨테이너 스타일 */
                         .login-container {
                             max-width: 450px;
