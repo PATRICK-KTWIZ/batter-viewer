@@ -452,20 +452,20 @@ def LoggedIn_Clicked(userName, password):
 
 def show_login_page():
 
-    # st.markdown("""
-    # <style>
-    #     /* 제목 상단 여백 조정 */
-    #     h1 {
-    #         margin-top: 20px;       /* 상단 여백 */
-    #         margin-bottom: 30px;    /* 하단 여백 */
-    #         padding-left: 10px;     /* 왼쪽 패딩 */
-    #         line-height: 1.3;       /* 줄 간격 */
-    #     }
+    st.markdown("""
+    <style>
+        /* 제목 상단 여백 조정 */
+        h1 {
+            margin-top: 20px;       /* 상단 여백 */
+            margin-bottom: 30px;    /* 하단 여백 */
+            padding-left: 10px;     /* 왼쪽 패딩 */
+            line-height: 1.3;       /* 줄 간격 */
+        }
         
-    #     /* 제목 내 텍스트 간격 조정 */
-    #     h1 span {
-    #         margin-right: 10px;     /* 각 span 요소 사이의 간격 */
-    #     }
+        /* 제목 내 텍스트 간격 조정 */
+        h1 span {
+            margin-right: 10px;     /* 각 span 요소 사이의 간격 */
+        }
 
     #     /* 강력한 CSS 선택자로 Streamlit 기본 여백 제거 */
     #     div[data-testid="stVerticalBlock"] > div {
@@ -532,8 +532,8 @@ def show_login_page():
     #         padding-top: 0 !important;
     #     }
        
-    # </style>
-    # """, unsafe_allow_html=True)
+    </style>
+    """, unsafe_allow_html=True)
 
     st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>", unsafe_allow_html=True)
 
