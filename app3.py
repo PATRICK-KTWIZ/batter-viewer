@@ -218,7 +218,7 @@ def show_login_page():
         st.markdown('<div class="subheader-text">타자 분석페이지에 오신것을 환영합니다.</div>', unsafe_allow_html=True)
         
         # Horizontal line
-        st.markdown('<hr style="margin: 20px 0;">', unsafe_allow_html=True)
+        st.markdown('<hr style="margin: 5px 0;">', unsafe_allow_html=True)
         
         # Login fields
         userName = st.text_input("", placeholder="아이디")
