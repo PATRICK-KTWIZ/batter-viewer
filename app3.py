@@ -92,14 +92,14 @@ st.markdown("""
             font-size: 38px;
             font-weight: bold;
             color: #c0c0c0;
-            margin-bottom: 3px;
+            margin-bottom: 1px;
         }
         
         /* 서브헤더 텍스트 스타일 */
         .subheader-text {
             color: #c0c0c0;
             font-size: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         
         /* 안내 텍스트 스타일 */
