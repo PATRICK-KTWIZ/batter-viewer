@@ -42,8 +42,8 @@ st.markdown("""
 
         /* 로그인 필드 여백 설정 */
         .stTextInput {
-            margin-bottom: 5px;  /* 각 입력 필드 사이의 아래쪽 여백 */
-            margin-top: 5px;      /* 각 입력 필드 위쪽 여백 */
+            margin-bottom: 0px;  /* 각 입력 필드 사이의 아래쪽 여백 */
+            margin-top: 0px;      /* 각 입력 필드 위쪽 여백 */
         }
 
         /* 아이디 필드 특별 여백 */
@@ -60,7 +60,7 @@ st.markdown("""
         /* 텍스트 입력 필드 내부 여백 설정 */
         .stTextInput > div > div > input {
             border: 1px solid #ddd;
-            padding: 10px 15px;   /* 상하 10px, 좌우 15px의 내부 여백 */
+            padding: 0px 15px;   /* 상하 10px, 좌우 15px의 내부 여백 */
             border-radius: 0;
             width: 100%;
             margin: 0;            /* 기본 마진 제거 */
@@ -76,7 +76,7 @@ st.markdown("""
         /* 로그인 폼 스타일 */
         .stTextInput > div > div > input {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 0px;
             border-radius: 0;
             width: 100%;
         }
