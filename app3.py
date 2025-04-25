@@ -204,7 +204,7 @@ def show_login_page():
                     
                     /* 제목 내 텍스트 간격 조정 */
                     h1 span {
-                        margin-right: 10px;     /* 각 span 요소 사이의 간격 */
+                        margin-right: 0px;     /* 각 span 요소 사이의 간격 */
                     }
                 </style>
                 """, unsafe_allow_html=True)
