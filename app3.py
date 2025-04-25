@@ -292,34 +292,31 @@ def show_login_page():
         
         st.markdown('</div>', unsafe_allow_html=True)
 
-
-
-
-        
-        # # Login fields
-        # st.markdown('<div class="username-field"></div>', unsafe_allow_html=True)
-        # userName = st.text_input("", placeholder="아이디")
-        # st.markdown('<div class="password-field"></div>', unsafe_allow_html=True)
-        # password = st.text_input("", placeholder="비밀번호", type="password")
-        
-        # # Store password in session state for later use
-        # st.session_state['password'] = password
-        
-        # # Login button
-        # login_button = st.button("로그인", on_click=LoggedIn_Clicked, args=(userName, password))
-
-
-        
+        # 체크박스와 텍스트를 위한 컨테이너 추가
+        st.markdown('<div class="checkbox-info-container" style="margin-top: 5px; display: flex; align-items: center;">', unsafe_allow_html=True)
         
         # Remember ID checkbox and text
         col1, col2 = st.columns([1, 3])
         with col1:
-            remember_id = st.checkbox("아이디 저장")
+            remember_id = st.checkbox("아이디 저장", key="remember_id")
         with col2:
             st.markdown('<div class="info-text">아이디와 비밀번호를 입력하여 로그인 후 사용해 주세요.</div>', unsafe_allow_html=True)
         
+        st.markdown('</div>', unsafe_allow_html=True)
+        
         # Close the login container div
         st.markdown('</div>', unsafe_allow_html=True)
+
+        
+        # # Remember ID checkbox and text
+        # col1, col2 = st.columns([1, 3])
+        # with col1:
+        #     remember_id = st.checkbox("아이디 저장")
+        # with col2:
+        #     st.markdown('<div class="info-text">아이디와 비밀번호를 입력하여 로그인 후 사용해 주세요.</div>', unsafe_allow_html=True)
+        
+        # # Close the login container div
+        # st.markdown('</div>', unsafe_allow_html=True)
     
     # Footer
     st.markdown("""
