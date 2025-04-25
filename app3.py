@@ -40,30 +40,45 @@ st.markdown("""
             border-radius: 0;
         }
 
-        /* 로그인 필드 여백 설정 */
-        .stTextInput {
-            margin-bottom: 0px;  /* 각 입력 필드 사이의 아래쪽 여백 */
-            margin-top: 0px;      /* 각 입력 필드 위쪽 여백 */
+        /* 로그인 필드 여백 설정 - 더 강력한 선택자 사용 */
+        div[data-testid="stVerticalBlock"] > div > div > div[data-testid="stVerticalBlock"] > div {
+            margin-top: -15px !important;
+            margin-bottom: -15px !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        /* 텍스트 입력 필드 내부 여백 설정 */
+        .stTextInput > div {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
         }
 
         /* 아이디 필드 특별 여백 */
         .username-field {
             margin-top: 0px;
+            margin-bottom: -10px !important;
         }
         
         /* 비밀번호 필드 특별 여백 */
         .password-field {
             margin-bottom: 0px;
+            margin-top: -10px !important;
         }
         
 
         /* 텍스트 입력 필드 내부 여백 설정 */
         .stTextInput > div > div > input {
             border: 1px solid #ddd;
-            padding: 0px 15px;   /* 상하 10px, 좌우 15px의 내부 여백 */
+            padding: 5px 15px !important;
             border-radius: 0;
             width: 100%;
-            margin: 0;            /* 기본 마진 제거 */
+            margin: 0;
+            height: 35px !important;
+            min-height: 35px !important;
+            line-height: 1 !important;
         }
         
       
