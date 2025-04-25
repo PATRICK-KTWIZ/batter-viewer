@@ -63,11 +63,11 @@ st.markdown("""
             background-color: #333333;
             color: white;
             width: 100%;
-            padding: 8px;
+            padding: 1px;
             border: none;
             border-radius: 0;
             cursor: pointer;
-            margin-top:5px;
+            margin-top:1px;
         }
         
         /* 체크박스 스타일 */
