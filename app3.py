@@ -43,7 +43,7 @@ st.markdown("""
         /* 로고 컨테이너 */
         .logo-container {
             margin-bottom: 20px;
-            padding-left: 30px;
+            padding-left: 50px;
         }
         
         /* 로그인 폼 스타일 */
@@ -205,7 +205,7 @@ def show_login_page():
         st.markdown("""
         <div class="logo-container" style="padding-top: 100px;">
         """, unsafe_allow_html=True)
-        st.image("ktwiz_emblem.png", width=300)
+        st.image("ktwiz_emblem.png", width=400)
         st.markdown('</div>', unsafe_allow_html=True)
     
     with right_col:
