@@ -39,6 +39,32 @@ st.markdown("""
             background-color: #f0f0f0;
             border-radius: 0;
         }
+
+        /* 로그인 필드 여백 설정 */
+        .stTextInput {
+            margin-bottom: 5px;  /* 각 입력 필드 사이의 아래쪽 여백 */
+            margin-top: 5px;      /* 각 입력 필드 위쪽 여백 */
+        }
+
+        /* 텍스트 입력 필드 내부 여백 설정 */
+        .stTextInput > div > div > input {
+            border: 1px solid #ddd;
+            padding: 10px 15px;   /* 상하 10px, 좌우 15px의 내부 여백 */
+            border-radius: 0;
+            width: 100%;
+            margin: 0;            /* 기본 마진 제거 */
+        }
+        
+        /* 첫 번째 입력 필드(아이디)에 추가 여백 설정 */
+        .stTextInput:first-of-type {
+            margin-top: 20px;     /* 첫 번째 입력 필드 위에 더 많은 여백 */
+        }
+        
+        /* 마지막 입력 필드(비밀번호)에 추가 여백 설정 */
+        .stTextInput:last-of-type {
+            margin-bottom: 20px;  /* 마지막 입력 필드 아래에 더 많은 여백 */
+        }
+
         
         /* 로고 컨테이너 */
         .logo-container {
@@ -222,7 +248,9 @@ def show_login_page():
         st.markdown('<hr style="margin: 0px 0;">', unsafe_allow_html=True)
         
         # Login fields
+        st.markdown('<div class="login-field username-field"></div>', unsafe_allow_html=True)
         userName = st.text_input("", placeholder="아이디")
+        st.markdown('<div class="login-field password-field"></div>', unsafe_allow_html=True)
         password = st.text_input("", placeholder="비밀번호", type="password")
         
         # Store password in session state for later use
