@@ -20,12 +20,13 @@ def select_league(option):
         league == "'KoreaBaseballOrganization'"
         return league
 
+
 def stats(player_df):
 
     merged_base_df = base_df(player_df)
     stats_output_df = stats_df(merged_base_df)
     
-    season_stats_df = stats_output_df.reindex([2024, 2023, 2022])
+    season_stats_df = stats_output_df.reindex([2025, 2024, 2023])
 
     return season_stats_df
 
@@ -59,7 +60,7 @@ def period_stats(player_df):
 
 def seoson_inplay_events(player_df):
 
-    year = player_df['game_year'] >= 2022
+    year = player_df['game_year'] >= 2023
     inplay_df = player_df[year]
 
     pitched = inplay_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index='events', values='pitch_name', aggfunc='count', margins=True))
@@ -75,11 +76,14 @@ def seoson_inplay_events(player_df):
     season_events = season_events[['pitch_name', 'exit_velocity','launch_angleX','hit_spin_rate','hit_distance']]
     season_events = season_events.round({'rel_speed(km)':1, 'exit_velocity':1, 'launch_angleX':1, 'hit_spin_rate':0, 'hit_distance':1 })
 
-    season_events = season_events.reindex([2024, 2023, 2022, 2021, 2020, 2018], level='game_year')
+    season_events = season_events.reindex([2025, 2024, 2023, 2022, 2021, 2020, 2018], level='game_year')
     season_events = season_events.reindex(['single','double','triple','home_run','field_out'], level='events')
 
     season_events = season_events.reset_index()
     season_events = season_events.astype({'game_year':'str'})
+    season_events = season_events.rename(columns={'game_year': '연도'})
+
+    # season_events = season_events.rename(columns={'game_year':'연도', 'events':'구분','pitch_name':'인플레이수','exit_velocity':'타구속도','launch_angleX':'발사각도','hit_spin_rate':'타구스핀량','hit_distance':'비거리'})
 
     return season_events
 
@@ -107,7 +111,7 @@ def period_inplay_events(player_df):
         period_events = period_events.round({'rel_speed(km)':1, 'exit_velocity':1, 'launch_angleX':1, 'hit_spin_rate':0, 'hit_distance':1 })
         period_events = period_events.reindex(['single','double','triple','home_run','field_out'], level='events')
 
-        period_events=period_events.rename(index={2024:'2 Weeks'})
+        period_events=period_events.rename(index={2025:'2 Weeks'})
         period_events = period_events.reset_index()
 
         return period_events
@@ -122,7 +126,7 @@ def period_inplay_events(player_df):
 
 def season_pthrows(player_df):
 
-    season = player_df['game_year'] >= 2022
+    season = player_df['game_year'] >= 2023
     sdf = player_df[season]
 
     pivot_index = 'p_throws'
@@ -130,7 +134,7 @@ def season_pthrows(player_df):
     merged_base_df = pivot_base_df(sdf,pivot_index)
     season_pthrows_df = stats_df(merged_base_df)
 
-    season_pthrows_df = season_pthrows_df.reindex([2024, 2023, 2022], level='game_year')
+    season_pthrows_df = season_pthrows_df.reindex([2025, 2024, 2023], level='game_year')
     season_pthrows_df = season_pthrows_df.reindex(['R','L','S'], level='p_throws')
 
     season_pthrows_df = season_pthrows_df.reset_index()
@@ -154,7 +158,7 @@ def period_pthrows(player_df):
 
         period_pthrows_df = period_pthrows_df.reindex(['R','L','S'], level='p_throws')
 
-        period_pthrows_df=period_pthrows_df.rename(index={2024:'2 Weeks'})
+        period_pthrows_df=period_pthrows_df.rename(index={2025:'2 Weeks'})
         period_pthrows_df = period_pthrows_df.reset_index()
 
         return period_pthrows_df
@@ -172,7 +176,7 @@ def period_pthrows(player_df):
 
 def season_pkind(player_df):
 
-    season = player_df['game_year'] >= 2022
+    season = player_df['game_year'] >= 2023
     sdf = player_df[season]
 
     pivot_index = 'p_kind'
@@ -180,7 +184,7 @@ def season_pkind(player_df):
     merged_base_df = pivot_base_df(sdf,pivot_index)
     season_pkind_df = stats_df(merged_base_df)
 
-    season_pkind_df = season_pkind_df.reindex([2024, 2023, 2022], level='game_year')
+    season_pkind_df = season_pkind_df.reindex([2025, 2024, 2023], level='game_year')
     season_pkind_df = season_pkind_df.reindex(['Fastball','Breaking','Off_Speed'], level='p_kind')
 
     season_pkind_df = season_pkind_df.reset_index()
@@ -205,7 +209,7 @@ def period_pkind(player_df):
 
         period_pkind_df = period_pkind_df.reindex(['Fastball','Breaking','Off_Speed'], level='p_kind')
 
-        period_pkind_df=period_pkind_df.rename(index={2024:'2 Weeks'})
+        period_pkind_df=period_pkind_df.rename(index={2025:'2 Weeks'})
         period_pkind_df = period_pkind_df.reset_index()
 
         return period_pkind_df
@@ -224,7 +228,7 @@ def period_pkind(player_df):
 
 def season_pitchname(player_df):
 
-    season = player_df['game_year'] >= 2022
+    season = player_df['game_year'] >= 2023
     sdf = player_df[season]
 
     pivot_index = 'pitch_name'
@@ -232,8 +236,8 @@ def season_pitchname(player_df):
     merged_base_df = pivot_base_df(sdf,pivot_index)
     season_pitchname_df = stats_df(merged_base_df)
 
-    season_pitchname_df = season_pitchname_df.reindex([2024, 2023, 2022], level='game_year')
-    season_pitchname_df = season_pitchname_df.reindex(['4-Seam Fastball','2-Seam Fastball','Cutter','Slider','Curveball','Sweeper','Changeup','Split-Finger'], level='pitch_name')
+    season_pitchname_df = season_pitchname_df.reindex([2025, 2024, 2023], level='game_year')
+    season_pitchname_df = season_pitchname_df.reindex(['4-Seam Fastball','2-Seam Fastball','Cutter','Slider','Curveball','Changeup','Split-Finger'], level='pitch_name')
 
     season_pitchname_df = season_pitchname_df.reset_index()
     season_pitchname_df = season_pitchname_df.astype({'game_year':'str'})
@@ -254,9 +258,9 @@ def period_pitchname(player_df):
         merged_base_df = pivot_base_df(sdf,pivot_index)
         period_pitchname_df = stats_df(merged_base_df)
 
-        period_pitchname_df = period_pitchname_df.reindex(['4-Seam Fastball','2-Seam Fastball','Cutter','Slider','Curveball','Sweeper','Changeup','Split-Finger'], level='pitch_name')
+        period_pitchname_df = period_pitchname_df.reindex(['4-Seam Fastball','2-Seam Fastball','Cutter','Slider','Curveball','Changeup','Split-Finger'], level='pitch_name')
         
-        period_pitchname_df=period_pitchname_df.rename(index={2024:'2 Weeks'})
+        period_pitchname_df=period_pitchname_df.rename(index={2025:'2 Weeks'})
         period_pitchname_df = period_pitchname_df.reset_index()
 
         return period_pitchname_df
@@ -376,26 +380,28 @@ def swing_viewer_pitchname(dataframe):
 
 def swingmap_df(dataframe):
 
-    called_strike_df = dataframe[(dataframe['game_year'] >= 2022)  & (dataframe['description'] == "called_strike")]
+    called_strike_df = dataframe[(dataframe['game_year'] >= 2023)  & (dataframe['description'] == "called_strike")]
     called_strike_df['swingmap'] = 'Called_Strike'
-    whiff_df = dataframe[(dataframe['game_year'] >= 2022)  & (dataframe['whiff'] == 1)]
+    whiff_df = dataframe[(dataframe['game_year'] >= 2023)  & (dataframe['whiff'] == 1)]
     whiff_df['swingmap'] = 'Whiff'
-    ball_df = dataframe[(dataframe['game_year'] >= 2022)  & (dataframe['type'] == "B")]
+    ball_df = dataframe[(dataframe['game_year'] >= 2023)  & (dataframe['type'] == "B")]
     ball_df['swingmap'] = 'Ball'
-    foul_df = dataframe[(dataframe['game_year'] >= 2022)  & (dataframe['foul'] == 1)]
+    foul_df = dataframe[(dataframe['game_year'] >= 2023)  & (dataframe['foul'] == 1)]
     foul_df['swingmap'] = 'Foul'
-    hit_df = dataframe[(dataframe['game_year'] >= 2022)  & (dataframe['hit'] == 1)]
+    hit_df = dataframe[(dataframe['game_year'] >= 2023)  & (dataframe['hit'] == 1)]
     hit_df['swingmap'] = 'HIT'
-    out_df = dataframe[(dataframe['game_year'] >= 2022)  & (dataframe['field_out'] == 1)]
+    out_df = dataframe[(dataframe['game_year'] >= 2023)  & (dataframe['field_out'] == 1)]
     out_df['swingmap'] = 'Out'
 
     swingmap_dataframe = pd.concat([called_strike_df, whiff_df, ball_df, foul_df, hit_df, out_df])
 
     return swingmap_dataframe
 
+
+
 def spraychart_df(dataframe):
 
-    year = dataframe['game_year'] >= 2022
+    year = dataframe['game_year'] >= 2023
     xtype = dataframe['type'] == 'X'
 
     spraychart_dataframe = dataframe[year & xtype]
@@ -413,3 +419,4 @@ def spraychart_df(dataframe):
     spraychart_dataframe = spraychart_dataframe[spraychart_dataframe['groundY'].notnull()]
 
     return spraychart_dataframe
+
