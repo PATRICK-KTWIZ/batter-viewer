@@ -446,6 +446,7 @@ def LoggedIn_Clicked(userName, password):
     if login(userName, password):
         set_user_id(userName)  # Set the user ID in the session cookie
         st.session_state['loggedIn'] = True
+        st.session_state['password'] = password  # 비밀번호를 세션 상태에 저장
     else:
         st.session_state['loggedIn'] = False
         st.error("유효하지 않은 ID 또는 패스워드 입니다.")
