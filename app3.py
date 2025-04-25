@@ -34,7 +34,7 @@ st.markdown("""
         .login-container {
             max-width: 400px;
             margin: 10px 0 0 auto;
-            padding: 20px;
+            padding: 8px;
             background-color: #f0f0f0;
             border-radius: 0;
         }
