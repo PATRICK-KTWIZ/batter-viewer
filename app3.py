@@ -168,7 +168,7 @@ else:
         <style>
             /* 메인 페이지 배경 스타일 */
             .stApp {
-                background: #2d2d2d; /* 단색 배경으로 변경 */
+                background: #333333 25%; /* 단색 배경으로 변경 */
                 background-attachment: fixed;
                 height: 95vh;
                 max-height: 1000px;
