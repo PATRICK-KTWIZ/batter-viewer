@@ -19,27 +19,28 @@ def factor_year_count_map(dataframe, y_factor):
                                     xaxis = {'showgrid': False, 'zeroline': False}, yaxis = {'showgrid': False, 'zeroline': False}, showlegend = False)
 
     factor_year_count_map_fig.update_layout({'plot_bgcolor': 'rgba(13,8,135,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
+    factor_year_count_map_fig.update_layout(showlegend=False)
 
     factor_year_count_map_fig.update_yaxes(gridcolor='rgba(13,8,135,1)')
     factor_year_count_map_fig.update_xaxes(gridcolor='rgba(13,8,135,1)')
 
     factor_year_count_map_fig.update_traces(contours_coloring="fill", contours_showlabels = True, colorscale="Viridis")
 
-    homex = [-0.23, 0.23, 0.23, -0.23, -0.23]
-    homey = [0.45, 0.45, 1.05, 1.05, 0.45]
+    homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
+    homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
 
     factor_year_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='white', width=4) ), row = 'all' , col = 'all')
     factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',), row = 'all' , col = 'all')
 
-    homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
-    homey = [0.59, 0.59, 0.91, 0.91, 0.59]
+    homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
+    homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
 
     factor_year_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=3) ), row = 'all' , col = 'all')
     factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.56], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
 
     factor_year_count_map_fig.add_shape(type="rect", x0=-0.34, y0=0.915, x1=-0.125, y1=1.15, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
-    factor_year_count_map_fig.add_shape(type="rect", x0=-0.115, y0=0.915, x1=0.115, y1=1.15, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
-    factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.915, x1=0.34, y1=1.15, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=-0.115, y0=0.915, x1=0.115, y1=1.15, line=dict(color="white", width=1,  dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.915, x1=0.34, y1=1.15, line=dict(color="white", width=1,  dash='dash'), row = 'all' , col = 'all')
 
     factor_year_count_map_fig.add_shape(type="rect", x0=-0.34, y0=0.595, x1=-0.125, y1=0.905, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
     factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.595, x1=0.34, y1=0.905, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
@@ -48,7 +49,128 @@ def factor_year_count_map(dataframe, y_factor):
     factor_year_count_map_fig.add_shape(type="rect", x0=-0.115, y0=0.35, x1=0.115, y1=0.585, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
     factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.35, x1=0.34, y1=0.585, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
 
+    factor_year_count_map_fig.update_coloraxes(showscale=False)
+
     return factor_year_count_map_fig
+
+def factor_year_count_map_scatter(dataframe):
+
+    colors = {'Fastball':'rgba(223,56,71,0.5)', 'Breaking': 'rgba(67,119,152,0.8)', 'Off_Speed': 'rgba(40,46,52,0.4)'}
+    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
+
+    col_index = len(dataframe['game_year'].unique())
+
+    factor_year_count_map_fig = px.scatter(dataframe, x='plate_x', y='plate_z', color='p_kind', symbol="pitch_name", color_discrete_map=colors, facet_col='game_year',
+                         hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate','hangtime'],
+                        #  category_orders={"game_year": [2021,2022, 2023]},
+                         template='simple_white',height = 460, width = col_index*400)
+    
+    for i, d in enumerate(factor_year_count_map_fig.data):
+        factor_year_count_map_fig.data[i].marker.symbol = symbols[factor_year_count_map_fig.data[i].name.split(', ')[1]]
+
+    factor_year_count_map_fig.update_yaxes(domain=[0.1, 0.97])
+
+    factor_year_count_map_fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    
+    factor_year_count_map_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-0.45,0.45], yaxis_range=[0.27,1.25], bargap = 0,
+                                    xaxis = {'showgrid': False, 'zeroline': False}, yaxis = {'showgrid': False, 'zeroline': False}, showlegend = False)
+
+    factor_year_count_map_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,0.1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
+
+    factor_year_count_map_fig.update_traces(marker=dict(size=20))
+    factor_year_count_map_fig.update_traces(textfont_size=24)
+    factor_year_count_map_fig.update_layout(showlegend=False)
+
+    homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
+    homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
+
+    factor_year_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.9)', width=4) ), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',), row = 'all' , col = 'all')
+
+    homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
+    homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
+
+    factor_year_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=3) ), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.56], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
+
+    factor_year_count_map_fig.add_shape(type="rect", x0=-0.34, y0=0.915, x1=-0.125, y1=1.15, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=-0.115, y0=0.915, x1=0.115, y1=1.15, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.915, x1=0.34, y1=1.15, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+
+    factor_year_count_map_fig.add_shape(type="rect", x0=-0.34, y0=0.595, x1=-0.125, y1=0.905, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.595, x1=0.34, y1=0.905, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+
+    factor_year_count_map_fig.add_shape(type="rect", x0=-0.34, y0=0.35, x1=-0.125, y1=0.585, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=-0.115, y0=0.35, x1=0.115, y1=0.585, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.35, x1=0.34, y1=0.585, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+
+    factor_year_count_map_fig.update_coloraxes(showscale=False)
+
+    factor_year_count_map_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    factor_year_count_map_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+
+    return factor_year_count_map_fig
+
+def factor_year_count_map_scatter_swing(dataframe):
+
+    colors = {'hit_into_play':'rgba(21,190,207,0.9)', 'ball':'rgba(165,164,139,0.5)', 'hit_by_pitch':'rgba(165,164,139,0.5)', 
+              'pitchout':'rgba(165,164,139,0.5)', 'called_strike':'rgba(165,164,139,0.5)', 'swinging_strike':'rgba(165,164,139,0.5)',
+          'hit_into_play_no_out':'rgba(21,190,207,0.9)', 'hit_into_play_score':'rgba(21,190,207,0.9)', 'foul':'rgba(165,164,139,0.5)' }
+    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
+
+    col_index = len(dataframe['game_year'].unique())
+
+    factor_year_count_map_fig = px.scatter(dataframe, x='plate_x', y='plate_z', color='description', symbol="pitch_name", color_discrete_map=colors, facet_col='game_year',
+                         hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate','hangtime'],
+                        #  category_orders={"game_year": [2021,2022, 2023]},
+                         template='simple_white',height = 460, width = col_index*400)
+    
+    for i, d in enumerate(factor_year_count_map_fig.data):
+        factor_year_count_map_fig.data[i].marker.symbol = symbols[factor_year_count_map_fig.data[i].name.split(', ')[1]]
+
+    factor_year_count_map_fig.update_yaxes(domain=[0.1, 0.97])
+
+    factor_year_count_map_fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    
+    factor_year_count_map_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-0.45,0.45], yaxis_range=[0.27,1.25], bargap = 0,
+                                    xaxis = {'showgrid': False, 'zeroline': False}, yaxis = {'showgrid': False, 'zeroline': False}, showlegend = False)
+
+    factor_year_count_map_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,0.1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
+
+    factor_year_count_map_fig.update_traces(marker=dict(size=20))
+    factor_year_count_map_fig.update_traces(textfont_size=24)
+    factor_year_count_map_fig.update_layout(showlegend=False)
+
+    homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
+    homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
+
+    factor_year_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.9)', width=4) ), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',), row = 'all' , col = 'all')
+
+    homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
+    homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
+
+    factor_year_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=3) ), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.56], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
+
+    factor_year_count_map_fig.add_shape(type="rect", x0=-0.34, y0=0.915, x1=-0.125, y1=1.15, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=-0.115, y0=0.915, x1=0.115, y1=1.15, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.915, x1=0.34, y1=1.15, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+
+    factor_year_count_map_fig.add_shape(type="rect", x0=-0.34, y0=0.595, x1=-0.125, y1=0.905, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.595, x1=0.34, y1=0.905, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+
+    factor_year_count_map_fig.add_shape(type="rect", x0=-0.34, y0=0.35, x1=-0.125, y1=0.585, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=-0.115, y0=0.35, x1=0.115, y1=0.585, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.35, x1=0.34, y1=0.585, fillcolor='rgba(0,0,0,0)', line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+
+    factor_year_count_map_fig.update_coloraxes(showscale=False)
+
+    factor_year_count_map_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    factor_year_count_map_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+
+    return factor_year_count_map_fig
+
 
 def factor_period_coount_map(dataframe, y_factor):
 
@@ -79,14 +201,14 @@ def factor_period_coount_map(dataframe, y_factor):
 
         factor_period_coount_map_fig.update_traces(contours_coloring="fill", contours_showlabels = True, colorscale="Viridis")
 
-        homex = [-0.23, 0.23, 0.23, -0.23, -0.23]
-        homey = [0.45, 0.45, 1.05, 1.05, 0.45]
+        homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
+        homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
 
         factor_period_coount_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='white', width=4) ), row = 'all' , col = 'all')
         factor_period_coount_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',), row = 'all' , col = 'all')
 
-        homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
-        homey = [0.59, 0.59, 0.91, 0.91, 0.59]
+        homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
+        homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
 
         factor_period_coount_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=3) ), row = 'all' , col = 'all')
         factor_period_coount_map_fig.add_trace(go.Scatter(x=[0], y=[0.56], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
@@ -134,14 +256,14 @@ def swingmap_count_map(dataframe, y_factor):
 
     swingmap_count_map_fig.update_traces(contours_coloring="fill", contours_showlabels = False, colorscale="Viridis")
 
-    homex = [-0.23, 0.23, 0.23, -0.23, -0.23]
-    homey = [0.45, 0.45, 1.05, 1.05, 0.45]
+    homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
+    homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
 
     swingmap_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='white', width=4) ), row = 'all' , col = 'all')
     swingmap_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',), row = 'all' , col = 'all')
 
-    homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
-    homey = [0.59, 0.59, 0.91, 0.91, 0.59]
+    homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
+    homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
 
     swingmap_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=3) ), row = 'all' , col = 'all')
     swingmap_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.56], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
@@ -158,6 +280,63 @@ def swingmap_count_map(dataframe, y_factor):
     swingmap_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.35, x1=0.34, y1=0.585, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
 
     return swingmap_count_map_fig
+
+def swingmap_count_map_scatter(dataframe):
+
+    # dataframe = dataframe[dataframe['player_name'] == y_factor]
+    col_index = len(dataframe['swingmap'].unique())
+        
+    colors = {'Called_Strike':'rgba(24,85,144,0.6)', 'Whiff':'rgba(244,247,143,0.9)', 'Ball': 'rgba(108,122,137,0.7)', 'Foul': 'rgba(241,106,227,0.5)', 'hit': 'rgba(255,105,97,1)', 'Out': 'rgba(140,86,75,0.6)'}
+    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
+
+    swingmap_period_symbol_map_fig = px.scatter(dataframe, x='plate_x', y='plate_z', color='swingmap', symbol='pitch_name', facet_col = 'swingmap',
+                                                color_discrete_map=colors,
+                                                hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle"],
+                                                template="simple_white",
+                                                category_orders={"swingmap": ["Called_Strike", "Ball", 'Foul','Whiff','HIT','Out']},
+                                                height = 385, width = col_index*290)
+
+    swingmap_period_symbol_map_fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+
+    swingmap_period_symbol_map_fig.update_yaxes(domain=[0.1, 0.97])
+    
+    swingmap_period_symbol_map_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-0.45,0.45], yaxis_range=[0.27,1.25], bargap = 0,
+                                    xaxis = {'showgrid': False, 'zeroline': False}, yaxis = {'showgrid': False, 'zeroline': False}, showlegend = False)
+
+    for i, d in enumerate(swingmap_period_symbol_map_fig.data):
+        swingmap_period_symbol_map_fig.data[i].marker.symbol = symbols[swingmap_period_symbol_map_fig.data[i].name.split(', ')[1]]
+
+    swingmap_period_symbol_map_fig.update_layout(showlegend=False)
+
+    swingmap_period_symbol_map_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,0.1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
+
+    swingmap_period_symbol_map_fig.update_traces(marker=dict(size=25))
+    swingmap_period_symbol_map_fig.update_traces(textfont_size=24)
+
+    swingmap_period_symbol_map_fig.add_hline(y=0.59, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+    swingmap_period_symbol_map_fig.add_hline(y=0.91, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+
+    swingmap_period_symbol_map_fig.add_vline(x=-0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+    swingmap_period_symbol_map_fig.add_vline(x=0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+
+
+    homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
+    homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
+
+    swingmap_period_symbol_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=4) ), row = 'all' , col = 'all')
+    swingmap_period_symbol_map_fig.add_trace(go.Scatter(x=[0], y=[0.57], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
+
+    homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
+    homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
+
+    # period_swingmap_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.8)', width=4) ), row = 1 , col = 1)
+    swingmap_period_symbol_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.9)', width=4) ), row = 'all' , col = 'all')
+    swingmap_period_symbol_map_fig.add_trace(go.Scatter(x=[0], y=[0.43], text=["<b>Strike Zone<b>"], mode="text", textfont_size=20, textfont_color='rgba(108,122,137,0.9)',), row = 'all' , col = 'all')
+
+    swingmap_period_symbol_map_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    swingmap_period_symbol_map_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+
+    return swingmap_period_symbol_map_fig
 
 def swingmap_period_count_map(dataframe, y_factor):
 
@@ -187,14 +366,14 @@ def swingmap_period_count_map(dataframe, y_factor):
 
         swingmap_period_count_map_fig.update_traces(contours_coloring="fill", contours_showlabels = False, colorscale="Viridis")
 
-        homex = [-0.23, 0.23, 0.23, -0.23, -0.23]
-        homey = [0.45, 0.45, 1.05, 1.05, 0.45]
+        homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
+        homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
 
         swingmap_period_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='white', width=4) ), row = 'all' , col = 'all')
         swingmap_period_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',), row = 'all' , col = 'all')
 
-        homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
-        homey = [0.59, 0.59, 0.91, 0.91, 0.59]
+        homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
+        homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
 
         swingmap_period_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=3) ), row = 'all' , col = 'all')
         swingmap_period_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.56], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
@@ -232,13 +411,13 @@ def swingmap_period_symbol_map(dataframe):
     if len(dataframe) > 0:
 
         colors = {'called_strike':'rgba(24,85,144,0.6)', 'whiff':'rgba(244,247,143,0.9)', 'ball': 'rgba(108,122,137,0.7)', 'foul': 'rgba(241,106,227,0.5)', 'hit': 'rgba(255,105,97,1)', 'out': 'rgba(140,86,75,0.6)'}
-        symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Sweeper':'cross', 'Changeup': 'diamond', 'Split-Finger':'square'}
+        symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
 
         swingmap_period_symbol_map_fig = px.scatter(dataframe, x='plate_x', y='plate_z', color='swingmap', symbol='pitch_name', facet_col = 'swingmap',
                                                     color_discrete_map=colors,
                                                     hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle"],
                                                     template="simple_white",
-                                                    category_orders={"swingmap": ["Called_Strike", "Ball", 'Foul','Whiff','HIT','Out']},
+                                                    category_orders={"swingmap": ["called_strike", "ball", 'foul','whiff','hit','out']},
                                                     height = 385, width = col_index*290)
 
         swingmap_period_symbol_map_fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
@@ -265,14 +444,14 @@ def swingmap_period_symbol_map(dataframe):
         swingmap_period_symbol_map_fig.add_vline(x=0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
 
 
-        homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
-        homey = [0.59, 0.59, 0.91, 0.91, 0.59]
+        homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
+        homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
 
         swingmap_period_symbol_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=4) ), row = 'all' , col = 'all')
         swingmap_period_symbol_map_fig.add_trace(go.Scatter(x=[0], y=[0.57], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
 
-        homex = [-0.26, 0.26, 0.26, -0.26, -0.26]
-        homey = [0.45, 0.45, 1.05, 1.05, 0.45]
+        homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
+        homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
 
         # period_swingmap_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.8)', width=4) ), row = 1 , col = 1)
         swingmap_period_symbol_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.9)', width=4) ), row = 'all' , col = 'all')
@@ -295,7 +474,7 @@ def swingmap_period_symbol_map(dataframe):
 
 def factor_year_sum_map(dataframe, y_factor):
 
-    year = dataframe['game_year'] >= 2021
+    year = dataframe['game_year'] >= 2022
     dataframe = dataframe[year]
 
     col_index = len(dataframe['game_year'].unique())
@@ -316,14 +495,14 @@ def factor_year_sum_map(dataframe, y_factor):
 
     factor_year_sum_map_fig.update_traces(contours_coloring="fill", contours_showlabels = True, colorscale="Viridis")
 
-    homex = [-0.23, 0.23, 0.23, -0.23, -0.23]
-    homey = [0.45, 0.45, 1.05, 1.05, 0.45]
+    homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
+    homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
 
     factor_year_sum_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='white', width=4) ), row = 'all' , col = 'all')
     factor_year_sum_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',), row = 'all' , col = 'all')
 
-    homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
-    homey = [0.59, 0.59, 0.91, 0.91, 0.59]
+    homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
+    homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
 
     factor_year_sum_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=3) ), row = 'all' , col = 'all')
     factor_year_sum_map_fig.add_trace(go.Scatter(x=[0], y=[0.56], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
@@ -340,6 +519,70 @@ def factor_year_sum_map(dataframe, y_factor):
     factor_year_sum_map_fig.add_shape(type="rect", x0=0.125, y0=0.35, x1=0.34, y1=0.585, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
 
     return factor_year_sum_map_fig
+
+
+def factor_year_sum_map_scatter(dataframe):
+
+    colors = {'field_out':'rgba(140,86,75,0.3)','fielders_choice_out':'rgba(140,86,75,0.3)', 'field_error':'rgba(140,86,75,0.3)', 'sac_fly':'rgba(140,86,75,0.3)', 
+          'force_out':'rgba(140,86,75,0.3)', 'double_play':'rgba(140,86,75,0.3)', 'grounded_into_double_play':'rgba(140,86,75,0.3)',
+          'home_run':'rgba(255,72,120,1)', 'triple':'rgba(255,72,120,1)', 'double':'rgba(255,72,120,1)', 'single':'rgba(67,89,119,0.7)' }
+    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
+
+    col_index = len(dataframe['game_year'].unique())
+
+    factor_year_sum_map_fig = px.scatter(dataframe, x='plate_x', y='plate_z', color='events', symbol="pitch_name", color_discrete_map=colors, facet_col='game_year',
+                         hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate','hangtime'],
+                        #  category_orders={"game_year": [2021,2022, 2023]},
+                         height = 460, width = col_index*400)
+
+    for i, d in enumerate(factor_year_sum_map_fig.data):
+        factor_year_sum_map_fig.data[i].marker.symbol = symbols[factor_year_sum_map_fig.data[i].name.split(', ')[1]]
+
+    factor_year_sum_map_fig.update_yaxes(domain=[0.1, 0.97])
+
+    factor_year_sum_map_fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    
+    factor_year_sum_map_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-0.45,0.45], yaxis_range=[0.27,1.25], bargap = 0,
+                                    xaxis = {'showgrid': False, 'zeroline': False}, yaxis = {'showgrid': False, 'zeroline': False}, showlegend = False)
+
+    factor_year_sum_map_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,0.1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
+
+    factor_year_sum_map_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
+    factor_year_sum_map_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
+
+    factor_year_sum_map_fig.update_traces(marker=dict(size=20))
+    factor_year_sum_map_fig.update_traces(textfont_size=24)
+
+    factor_year_sum_map_fig.update_layout(showlegend=False)
+
+    homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
+    homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
+
+    factor_year_sum_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.9)', width=4) ), row = 'all' , col = 'all')
+    factor_year_sum_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',), row = 'all' , col = 'all')
+
+    homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
+    homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
+
+    factor_year_sum_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=3) ), row = 'all' , col = 'all')
+    factor_year_sum_map_fig.add_trace(go.Scatter(x=[0], y=[0.56], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
+
+    factor_year_sum_map_fig.add_shape(type="rect", x0=-0.34, y0=0.915, x1=-0.125, y1=1.15, line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_sum_map_fig.add_shape(type="rect", x0=-0.115, y0=0.915, x1=0.115, y1=1.15, line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_sum_map_fig.add_shape(type="rect", x0=0.125, y0=0.915, x1=0.34, y1=1.15, line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+
+    factor_year_sum_map_fig.add_shape(type="rect", x0=-0.34, y0=0.595, x1=-0.125, y1=0.905, line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_sum_map_fig.add_shape(type="rect", x0=0.125, y0=0.595, x1=0.34, y1=0.905, line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+
+    factor_year_sum_map_fig.add_shape(type="rect", x0=-0.34, y0=0.35, x1=-0.125, y1=0.585, line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_sum_map_fig.add_shape(type="rect", x0=-0.115, y0=0.35, x1=0.115, y1=0.585, line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+    factor_year_sum_map_fig.add_shape(type="rect", x0=0.125, y0=0.35, x1=0.34, y1=0.585, line=dict(color='rgba(108,122,137,0.9)', width=1, dash='dash'), row = 'all' , col = 'all')
+
+    factor_year_sum_map_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    factor_year_sum_map_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+
+    return factor_year_sum_map_fig
+
 
 def factor_period_sum_map(dataframe, y_factor):
     
@@ -369,14 +612,14 @@ def factor_period_sum_map(dataframe, y_factor):
 
         factor_period_sum_map_fig.update_traces(contours_coloring="fill", contours_showlabels = False, colorscale="Viridis")
 
-        homex = [-0.23, 0.23, 0.23, -0.23, -0.23]
-        homey = [0.45, 0.45, 1.05, 1.05, 0.45]
+        homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
+        homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
 
         factor_period_sum_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='white', width=4) ), row = 'all' , col = 'all')
         factor_period_sum_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',), row = 'all' , col = 'all')
 
-        homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
-        homey = [0.59, 0.59, 0.91, 0.91, 0.59]
+        homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
+        homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
 
         factor_period_sum_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=3) ), row = 'all' , col = 'all')
         factor_period_sum_map_fig.add_trace(go.Scatter(x=[0], y=[0.56], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
@@ -406,7 +649,7 @@ def factor_period_sum_map(dataframe, y_factor):
 
 def factor_year_sum_plate_map(dataframe, y_factor):
 
-    year = dataframe['game_year'] >= 2021
+    year = dataframe['game_year'] >= 2022
     dataframe = dataframe[year]
 
     col_index = len(dataframe['game_year'].unique())
@@ -443,6 +686,61 @@ def factor_year_sum_plate_map(dataframe, y_factor):
 
 
     return factor_year_sum_plate_map_fig
+
+def factor_year_sum_plate_map_scatter(dataframe):
+
+    col_index = len(dataframe['game_year'].unique())
+
+    colors = {'field_out':'rgba(140,86,75,0.3)','fielders_choice_out':'rgba(140,86,75,0.3)', 'field_error':'rgba(140,86,75,0.3)', 'sac_fly':'rgba(140,86,75,0.3)', 
+          'force_out':'rgba(140,86,75,0.3)', 'double_play':'rgba(140,86,75,0.3)', 'grounded_into_double_play':'rgba(140,86,75,0.3)',
+          'home_run':'rgba(255,72,120,1)', 'triple':'rgba(255,72,120,1)', 'double':'rgba(255,72,120,1)', 'single':'rgba(67,89,119,0.7)' }
+    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
+
+    col_index = len(dataframe['game_year'].unique())
+
+    factor_year_sum_map_scatter_fig = px.scatter(dataframe, x='contactZ', y='contactX', color='events', symbol="pitch_name", color_discrete_map=colors, facet_col='game_year',
+                         hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate','hangtime'],
+                        #  category_orders={"game_year": [2021,2022, 2023]},
+                         height = 460, width = col_index*400)
+
+    for i, d in enumerate(factor_year_sum_map_scatter_fig.data):
+        factor_year_sum_map_scatter_fig.data[i].marker.symbol = symbols[factor_year_sum_map_scatter_fig.data[i].name.split(', ')[1]]
+
+    factor_year_sum_map_scatter_fig.update_yaxes(domain=[0.1, 0.97])
+
+
+    factor_year_sum_map_scatter_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
+
+    factor_year_sum_map_scatter_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
+    factor_year_sum_map_scatter_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
+
+    factor_year_sum_map_scatter_fig.update_traces(marker=dict(size=20))
+    factor_year_sum_map_scatter_fig.update_traces(textfont_size=24)
+
+    factor_year_sum_map_scatter_fig.update_layout(showlegend=False)
+
+    factor_year_sum_map_scatter_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-0.45,0.45], yaxis_range=[-0.1,1.05],
+                                                bargap = 0, xaxis = {'showgrid': False, 'zeroline': False}, yaxis = {'showgrid': False, 'zeroline': False})
+
+    homex = [-0.271, 0, 0.271, 0.271, -0.271, -0.271]
+    homey = [0.215, 0, 0.215, 0.43, 0.43, 0.215]
+
+    factor_year_sum_map_scatter_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.9)', width=4) ), row = 'all' , col = 'all')
+
+    factor_year_sum_map_scatter_fig.add_hline(y=1, line_dash='dash' ,line_width=1, line_color='rgba(108,122,137,0.9)')
+    factor_year_sum_map_scatter_fig.add_hline(y=0.43,  line_dash='dash' ,line_width=1, line_color='rgba(108,122,137,0.9)')
+    factor_year_sum_map_scatter_fig.add_hline(y=0,  line_dash='dash' ,line_width=1, line_color='rgba(108,122,137,0.9)')
+    factor_year_sum_map_scatter_fig.add_vline(x=-0.37,line_width=1, line_color='rgba(108,122,137,0.9)')
+    factor_year_sum_map_scatter_fig.add_vline(x=0.37, line_width=1, line_color='rgba(108,122,137,0.9)')
+    factor_year_sum_map_scatter_fig.add_vline(x=-0.26, line_dash='dash' ,line_width=1, line_color='rgba(108,122,137,0.9)')
+    factor_year_sum_map_scatter_fig.add_vline(x=0.26, line_dash='dash', line_width=1, line_color='rgba(108,122,137,0.9)')
+
+    factor_year_sum_map_scatter_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    factor_year_sum_map_scatter_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+
+
+    return factor_year_sum_map_scatter_fig
+
 
 def factor_period_sum_plate_map(dataframe, y_factor):
     
@@ -498,7 +796,7 @@ def season_spraychart(dataframe):
     colors = {'field_out':'rgba(140,86,75,0.3)','fielders_choice_out':'rgba(140,86,75,0.3)', 'field_error':'rgba(140,86,75,0.3)', 'sac_fly':'rgba(140,86,75,0.3)', 
           'force_out':'rgba(140,86,75,0.3)', 'double_play':'rgba(140,86,75,0.3)', 'grounded_into_double_play':'rgba(140,86,75,0.3)',
           'home_run':'rgba(255,72,120,1)', 'triple':'rgba(255,72,120,1)', 'double':'rgba(255,72,120,1)', 'single':'rgba(67,89,119,0.7)' }
-    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Sweeper':'cross', 'Changeup': 'diamond', 'Split-Finger':'square'}
+    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
 
     col_index = len(dataframe['game_year'].unique())
 
@@ -535,45 +833,50 @@ def season_spraychart(dataframe):
 
     return  st.plotly_chart(season_spraychart_fig, layout="wide")
 
-def season_hangtime_spraychart(dataframe):
+def season_zone_spraychart(dataframe, zone):
 
-    colors = {'shrot':'rgba(67,89,119,0.7)','long':'rgba(140,86,75,0.3)', 'challenge':'rgba(255,72,120,1)' }
-    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Sweeper': 'cross', 'Changeup': 'diamond', 'Split-Finger':'square'}
+    game_year = dataframe['game_year'].max()
+    dataframe = dataframe[(dataframe['game_year'] == game_year) & (dataframe['new_zone'] == zone)]
+    
+    colors = {'field_out':'rgba(140,86,75,0.3)','fielders_choice_out':'rgba(140,86,75,0.3)', 'field_error':'rgba(140,86,75,0.3)', 'sac_fly':'rgba(140,86,75,0.3)', 
+          'force_out':'rgba(140,86,75,0.3)', 'double_play':'rgba(140,86,75,0.3)', 'grounded_into_double_play':'rgba(140,86,75,0.3)',
+          'home_run':'rgba(255,72,120,1)', 'triple':'rgba(255,72,120,1)', 'double':'rgba(255,72,120,1)', 'single':'rgba(67,89,119,0.7)' }
+    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
 
-    col_index = len(dataframe['game_year'].unique())
-
-    season_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='hangtime_type', color_discrete_map=colors, facet_col='game_year', symbol="pitch_name",
-                         hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate','hangtime'],
+    season_zone_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='events',  facet_col='new_zone', facet_row='new_zone', symbol="pitch_name",
+                         color_discrete_map=colors,
+                         hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate'],
                         #  category_orders={"game_year": [2021,2022, 2023]},
-                         height = 580, width = col_index*500)
+                         height = 300, width = 300)
     
-    for i, d in enumerate(season_spraychart_fig.data):
-        season_spraychart_fig.data[i].marker.symbol = symbols[season_spraychart_fig.data[i].name.split(', ')[1]]
+    for i, d in enumerate(season_zone_spraychart_fig.data):
+        season_zone_spraychart_fig.data[i].marker.symbol = symbols[season_zone_spraychart_fig.data[i].name.split(', ')[1]]
 
-    season_spraychart_fig.update_yaxes(domain=[0.1, 0.97])
+    season_zone_spraychart_fig.update_yaxes(domain=[0.1, 0.97])
 
-    season_spraychart_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-10,130], yaxis_range=[-10,130])
+    season_zone_spraychart_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-10,130], yaxis_range=[-10,130])
 
-    season_spraychart_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
+    season_zone_spraychart_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
 
-    season_spraychart_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
-    season_spraychart_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
+    season_zone_spraychart_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
+    season_zone_spraychart_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
 
-    season_spraychart_fig.update_traces(marker=dict(size=20))
+    season_zone_spraychart_fig.update_traces(marker=dict(size=20))
 
-    season_spraychart_fig.update_layout(showlegend=False)
+    season_zone_spraychart_fig.update_layout(showlegend=False)
 
-    season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
+    season_zone_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
 
-    season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
+    season_zone_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
 
-    season_spraychart_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width = 5, row="all", col="all")
+    season_zone_spraychart_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width = 5, row="all", col="all")
 
-    season_spraychart_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
-    season_spraychart_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    season_zone_spraychart_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    season_zone_spraychart_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
 
-    return  season_spraychart_fig
-    
+    return  season_zone_spraychart_fig
+
+
 def season_period_spraychart(dataframe):
 
     date2 = pd.to_datetime('today')
@@ -586,7 +889,7 @@ def season_period_spraychart(dataframe):
         colors = {'field_out':'rgba(140,86,75,0.3)','fielders_choice_out':'rgba(140,86,75,0.3)', 'field_error':'rgba(140,86,75,0.3)', 'sac_fly':'rgba(140,86,75,0.3)', 
             'force_out':'rgba(140,86,75,0.3)', 'double_play':'rgba(140,86,75,0.3)', 'grounded_into_double_play':'rgba(140,86,75,0.3)',
             'home_run':'rgba(255,72,120,1)', 'triple':'rgba(255,72,120,1)', 'double':'rgba(255,72,120,1)', 'single':'rgba(67,89,119,0.7)' }
-        symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up','Sweeper': 'cross', 'Changeup': 'diamond', 'Split-Finger':'square'}
+        symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
 
         season_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='events',  facet_col='game_year', symbol="pitch_name",
                             color_discrete_map=colors,
@@ -629,49 +932,6 @@ def season_period_spraychart(dataframe):
         season_spraychart_fig.update_yaxes(visible=False, range=[0, 1])
 
         return season_spraychart_fig
-
-def season_zone_spraychart(dataframe, zone):
-
-    game_year = dataframe['game_year'].max()
-    dataframe = dataframe[(dataframe['game_year'] == game_year) & (dataframe['new_zone'] == zone)]
-    
-    colors = {'field_out':'rgba(140,86,75,0.3)','fielders_choice_out':'rgba(140,86,75,0.3)', 'field_error':'rgba(140,86,75,0.3)', 'sac_fly':'rgba(140,86,75,0.3)', 
-          'force_out':'rgba(140,86,75,0.3)', 'double_play':'rgba(140,86,75,0.3)', 'grounded_into_double_play':'rgba(140,86,75,0.3)',
-          'home_run':'rgba(255,72,120,1)', 'triple':'rgba(255,72,120,1)', 'double':'rgba(255,72,120,1)', 'single':'rgba(67,89,119,0.7)' }
-    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Sweeper': 'cross','Changeup': 'diamond', 'Split-Finger':'square'}
-
-    season_zone_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='events',  facet_col='new_zone', facet_row='new_zone', symbol="pitch_name",
-                         color_discrete_map=colors,
-                         hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate'],
-                        #  category_orders={"game_year": [2021,2022, 2023]},
-                         height = 300, width = 300)
-    
-    for i, d in enumerate(season_zone_spraychart_fig.data):
-        season_zone_spraychart_fig.data[i].marker.symbol = symbols[season_zone_spraychart_fig.data[i].name.split(', ')[1]]
-
-    season_zone_spraychart_fig.update_yaxes(domain=[0.1, 0.97])
-
-    season_zone_spraychart_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-10,130], yaxis_range=[-10,130])
-
-    season_zone_spraychart_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
-
-    season_zone_spraychart_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
-    season_zone_spraychart_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
-
-    season_zone_spraychart_fig.update_traces(marker=dict(size=20))
-
-    season_zone_spraychart_fig.update_layout(showlegend=False)
-
-    season_zone_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
-
-    season_zone_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
-
-    season_zone_spraychart_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width = 5, row="all", col="all")
-
-    season_zone_spraychart_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
-    season_zone_spraychart_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
-
-    return  season_zone_spraychart_fig
 
 
 def zone_spraychart_fig(spraychart_dataframe):
@@ -747,6 +1007,44 @@ def zone_spraychart_fig(spraychart_dataframe):
         st.plotly_chart(season_zone_spraychart_fig, layout="wide")
 
 
+def season_hangtime_spraychart(dataframe):
+
+    colors = {'shrot':'rgba(67,89,119,0.7)','long':'rgba(140,86,75,0.3)', 'challenge':'rgba(255,72,120,1)' }
+    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
+
+    col_index = len(dataframe['game_year'].unique())
+
+    season_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='hangtime_type', color_discrete_map=colors, facet_col='game_year', symbol="pitch_name",
+                         hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate','hangtime'],
+                        #  category_orders={"game_year": [2021,2022, 2023]},
+                         height = 580, width = col_index*500)
+    
+    for i, d in enumerate(season_spraychart_fig.data):
+        season_spraychart_fig.data[i].marker.symbol = symbols[season_spraychart_fig.data[i].name.split(', ')[1]]
+
+    season_spraychart_fig.update_yaxes(domain=[0.1, 0.97])
+
+    season_spraychart_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-10,130], yaxis_range=[-10,130])
+
+    season_spraychart_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
+
+    season_spraychart_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
+    season_spraychart_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
+
+    season_spraychart_fig.update_traces(marker=dict(size=20))
+
+    season_spraychart_fig.update_layout(showlegend=False)
+
+    season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
+
+    season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
+
+    season_spraychart_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width = 5, row="all", col="all")
+
+    season_spraychart_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    season_spraychart_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+
+    return  season_spraychart_fig
 
 
 
