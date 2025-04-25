@@ -19,147 +19,398 @@ st.set_page_config(page_title="Batting Analytics Page", layout="wide")
 if 'loggedIn' not in st.session_state:
     st.session_state.loggedIn = False
 
-# 로그인 페이지 CSS 스타일 추가
-st.markdown("""
-    <style>
-        /* 배경 스타일 */
-        .stApp {
-            background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
-            background-attachment: fixed;
-            height: 95vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
-            max-height: 1000px; /* 최대 높이 설정 */
-            overflow: auto;
-        }
-        
-        /* 로그인 컨테이너 스타일 */
-        .login-container {
-            max-width: 400px;
-            margin: 50px 0 0 auto;
-            padding: 30px;
-            background-color: #f0f0f0;
-            border-radius: 0;
-        }
+# 로그인 상태에 따라 다른 스타일 적용
+if not st.session_state.get('loggedIn', False):
+    # 로그인 페이지 CSS 스타일
+    st.markdown("""
+        <style>
+            /* 로그인 페이지 배경 스타일 */
+            .stApp {
+                background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
+                background-attachment: fixed;
+                height: 95vh;
+                max-height: 1000px;
+                overflow: auto;
+            }
 
-        /* 텍스트 입력 필드 내부 여백 설정 */
-        .stTextInput > div > div > input {
-            padding: 5px 15px !important;
-            width: 100%;
-            margin: -5;
-            height: 35px !important;
-            min-height: 35px !important;
-        }
-
-        /* 아이디 필드 특별 여백 */
-        .username-field {
-            margin-top: -100px;
-            margin-bottom: -100px !important;
-        }
+            /* 로그인 컨테이너 스타일 */
+            .login-container {
+                max-width: 400px;
+                margin: 50px 0 0 auto;
+                padding: 30px;
+                background-color: #f0f0f0;
+                border-radius: 0;
+            }
+    
+            /* 텍스트 입력 필드 내부 여백 설정 */
+            .stTextInput > div > div > input {
+                padding: 5px 15px !important;
+                width: 100%;
+                margin: -5;
+                height: 35px !important;
+                min-height: 35px !important;
+            }
+    
+            /* 아이디 필드 특별 여백 */
+            .username-field {
+                margin-top: -100px;
+                margin-bottom: -100px !important;
+            }
+            
+            /* 비밀번호 필드 특별 여백 */
+            .password-field {
+                margin-bottom: -10px;
+                margin-top: -10px !important;
+            }
+            
+          
+            /* 로고 컨테이너 */
+            .logo-container {
+                margin-bottom: 20px;
+                padding-left: 100px;
+            }
+            
+            /* 로그인 폼 스타일 */
+            .stTextInput > div > div > input {
+                border:  none;
+                padding: 0px;
+                border-radius: 0;
+                width: 100%;
+            }
+            
+            /* 버튼 스타일 */
+            .stButton > button {
+                background-color: #333333;
+                color: white;
+                width: 100%;
+                padding: 10px;
+                border: none;
+                border-radius: 0;
+                cursor: pointer;
+            }
+            
+            /* 체크박스 스타일 */
+            .stCheckbox > div {
+                display: flex;
+                align-items: center;
+                # margin-bottom: 0px;
+            }
+            
+            /* 푸터 스타일 */
+            .footer {
+                text-align: center;
+                position: fixed;
+                bottom: 60px;
+                width: 100%;
+                color: #333;
+                font-size: 15px;
+            }
+            
+            /* 헤더 텍스트 스타일 */
+            .header-text {
+                font-size: 38px;
+                font-weight: bold;
+                color: #c0c0c0;
+                margin-bottom: 5px;
+            }
+            
+            /* 서브헤더 텍스트 스타일 */
+            .subheader-text {
+                color: #c0c0c0;
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+            
+            /* 안내 텍스트 스타일 */
+            .info-text {
+                font-size: 15px;
+                color: #666;
+            }
+                
+            /* 경고 텍스트 스타일 */
+            .warning-text {
+                color: red;
+                font-weight: bold;
+                margin-bottom: 12px;
+                font-size: 16px;
+                text-align: right;
+            }
         
-        /* 비밀번호 필드 특별 여백 */
-        .password-field {
-            margin-bottom: -10px;
-            margin-top: -10px !important;
-        }
+            
+            /* 컬럼 간격 조정 */
+            [data-testid="stHorizontalBlock"] {
+                gap: 0 !important;
+            }
+            
+            /* 체크박스 라벨 조정 */
+            .stCheckbox label {
+                font-size: 12px;
+            }
+            
+            /* Hide streamlit branding */
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            
+            /* Fix column padding */
+            .block-container {
+                padding-top: 1rem;
+                padding-bottom: 0;
+                max-width: 100%;
+            }
+    </style>
+    
+    """, unsafe_allow_html=True)            
+
+
+else:
+    # 메인 페이지 CSS 스타일 - 단색 배경으로 변경
+    st.markdown("""
+        <style>
+            /* 메인 페이지 배경 스타일 */
+            .stApp {
+                background: #2d2d2d; /* 단색 배경으로 변경 */
+                background-attachment: fixed;
+                height: 95vh;
+                max-height: 1000px;
+                overflow: auto;
+            }
+
+            /* 로그인 컨테이너 스타일 */
+            .login-container {
+                max-width: 450px;
+                margin: 50px auto;
+                padding: 30px;
+                background-color: white;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            /* 로고 컨테이너 */
+            .logo-container {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            
+            /* 로그인 폼 스타일 */
+            .stTextInput > div > div > input {
+                border: 1px solid #ddd;
+                padding: 10px;
+                border-radius: 3px;
+            }
+            
+            /* 버튼 스타일 */
+            .stButton > button {
+                background-color: #333333;
+                color:  #c0c0c0;
+                width: 100%;
+                padding: 10px;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            
+            /* 체크박스 스타일 */
+            .stCheckbox > div {
+                display: flex;
+                align-items: center;
+            }
+            
+            /* 푸터 스타일 */
+            .footer {
+                text-align: center;
+                margin-top: 20px;
+                color: #666;
+                font-size: 12px;
+            }
+            
+            /* 로그인 페이지 배경 */
+            .login-background {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, #333333 25%, #e6e6e6 25%, #e6e6e6 50%, #ff1a1a 50%);
+                background-size: cover;
+                z-index: -1;
+            }
+            
+            /* 헤더 텍스트 스타일 */
+            .header-text {
+                text-align: center;
+                color: #333;
+                margin-bottom: 5px;
+            }
+            
+            /* 서브헤더 텍스트 스타일 */
+            .subheader-text {
+                text-align: center;
+                color: #666;
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+        </style>
+
+        """, unsafe_allow_html=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# # 로그인 페이지 CSS 스타일 추가
+# st.markdown("""
+#     <style>
+#         /* 배경 스타일 */
+#         .stApp {
+#             background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
+#             background-attachment: fixed;
+#             height: 95vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
+#             max-height: 1000px; /* 최대 높이 설정 */
+#             overflow: auto;
+#         }
+        
+#         /* 로그인 컨테이너 스타일 */
+#         .login-container {
+#             max-width: 400px;
+#             margin: 50px 0 0 auto;
+#             padding: 30px;
+#             background-color: #f0f0f0;
+#             border-radius: 0;
+#         }
+
+#         /* 텍스트 입력 필드 내부 여백 설정 */
+#         .stTextInput > div > div > input {
+#             padding: 5px 15px !important;
+#             width: 100%;
+#             margin: -5;
+#             height: 35px !important;
+#             min-height: 35px !important;
+#         }
+
+#         /* 아이디 필드 특별 여백 */
+#         .username-field {
+#             margin-top: -100px;
+#             margin-bottom: -100px !important;
+#         }
+        
+#         /* 비밀번호 필드 특별 여백 */
+#         .password-field {
+#             margin-bottom: -10px;
+#             margin-top: -10px !important;
+#         }
         
       
-        /* 로고 컨테이너 */
-        .logo-container {
-            margin-bottom: 20px;
-            padding-left: 100px;
-        }
+#         /* 로고 컨테이너 */
+#         .logo-container {
+#             margin-bottom: 20px;
+#             padding-left: 100px;
+#         }
         
-        /* 로그인 폼 스타일 */
-        .stTextInput > div > div > input {
-            border:  none;
-            padding: 0px;
-            border-radius: 0;
-            width: 100%;
-        }
+#         /* 로그인 폼 스타일 */
+#         .stTextInput > div > div > input {
+#             border:  none;
+#             padding: 0px;
+#             border-radius: 0;
+#             width: 100%;
+#         }
         
-        /* 버튼 스타일 */
-        .stButton > button {
-            background-color: #333333;
-            color: white;
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 0;
-            cursor: pointer;
-        }
+#         /* 버튼 스타일 */
+#         .stButton > button {
+#             background-color: #333333;
+#             color: white;
+#             width: 100%;
+#             padding: 10px;
+#             border: none;
+#             border-radius: 0;
+#             cursor: pointer;
+#         }
         
-        /* 체크박스 스타일 */
-        .stCheckbox > div {
-            display: flex;
-            align-items: center;
-            # margin-bottom: 0px;
-        }
+#         /* 체크박스 스타일 */
+#         .stCheckbox > div {
+#             display: flex;
+#             align-items: center;
+#             # margin-bottom: 0px;
+#         }
         
-        /* 푸터 스타일 */
-        .footer {
-            text-align: center;
-            position: fixed;
-            bottom: 60px;
-            width: 100%;
-            color: #333;
-            font-size: 15px;
-        }
+#         /* 푸터 스타일 */
+#         .footer {
+#             text-align: center;
+#             position: fixed;
+#             bottom: 60px;
+#             width: 100%;
+#             color: #333;
+#             font-size: 15px;
+#         }
         
-        /* 헤더 텍스트 스타일 */
-        .header-text {
-            font-size: 38px;
-            font-weight: bold;
-            color: #c0c0c0;
-            margin-bottom: 5px;
-        }
+#         /* 헤더 텍스트 스타일 */
+#         .header-text {
+#             font-size: 38px;
+#             font-weight: bold;
+#             color: #c0c0c0;
+#             margin-bottom: 5px;
+#         }
         
-        /* 서브헤더 텍스트 스타일 */
-        .subheader-text {
-            color: #c0c0c0;
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
+#         /* 서브헤더 텍스트 스타일 */
+#         .subheader-text {
+#             color: #c0c0c0;
+#             font-size: 20px;
+#             margin-bottom: 20px;
+#         }
         
-        /* 안내 텍스트 스타일 */
-        .info-text {
-            font-size: 15px;
-            color: #666;
-        }
+#         /* 안내 텍스트 스타일 */
+#         .info-text {
+#             font-size: 15px;
+#             color: #666;
+#         }
             
-        /* 경고 텍스트 스타일 */
-        .warning-text {
-            color: red;
-            font-weight: bold;
-            margin-bottom: 12px;
-            font-size: 16px;
-            text-align: right;
-        }
+#         /* 경고 텍스트 스타일 */
+#         .warning-text {
+#             color: red;
+#             font-weight: bold;
+#             margin-bottom: 12px;
+#             font-size: 16px;
+#             text-align: right;
+#         }
     
         
-        /* 컬럼 간격 조정 */
-        [data-testid="stHorizontalBlock"] {
-            gap: 0 !important;
-        }
+#         /* 컬럼 간격 조정 */
+#         [data-testid="stHorizontalBlock"] {
+#             gap: 0 !important;
+#         }
         
-        /* 체크박스 라벨 조정 */
-        .stCheckbox label {
-            font-size: 12px;
-        }
+#         /* 체크박스 라벨 조정 */
+#         .stCheckbox label {
+#             font-size: 12px;
+#         }
         
-        /* Hide streamlit branding */
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
+#         /* Hide streamlit branding */
+#         #MainMenu {visibility: hidden;}
+#         footer {visibility: hidden;}
         
-        /* Fix column padding */
-        .block-container {
-            padding-top: 1rem;
-            padding-bottom: 0;
-            max-width: 100%;
-        }
-</style>
+#         /* Fix column padding */
+#         .block-container {
+#             padding-top: 1rem;
+#             padding-bottom: 0;
+#             max-width: 100%;
+#         }
+# </style>
 
-""", unsafe_allow_html=True)
+# """, unsafe_allow_html=True)
 
-# st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
+# # st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
 
 headerSection = st.container()
 mainSection = st.container()
@@ -201,88 +452,88 @@ def LoggedIn_Clicked(userName, password):
 
 def show_login_page():
 
-    st.markdown("""
-    <style>
-        /* 제목 상단 여백 조정 */
-        h1 {
-            margin-top: 20px;       /* 상단 여백 */
-            margin-bottom: 30px;    /* 하단 여백 */
-            padding-left: 10px;     /* 왼쪽 패딩 */
-            line-height: 1.3;       /* 줄 간격 */
-        }
+    # st.markdown("""
+    # <style>
+    #     /* 제목 상단 여백 조정 */
+    #     h1 {
+    #         margin-top: 20px;       /* 상단 여백 */
+    #         margin-bottom: 30px;    /* 하단 여백 */
+    #         padding-left: 10px;     /* 왼쪽 패딩 */
+    #         line-height: 1.3;       /* 줄 간격 */
+    #     }
         
-        /* 제목 내 텍스트 간격 조정 */
-        h1 span {
-            margin-right: 10px;     /* 각 span 요소 사이의 간격 */
-        }
+    #     /* 제목 내 텍스트 간격 조정 */
+    #     h1 span {
+    #         margin-right: 10px;     /* 각 span 요소 사이의 간격 */
+    #     }
 
-        /* 강력한 CSS 선택자로 Streamlit 기본 여백 제거 */
-        div[data-testid="stVerticalBlock"] > div {
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-        }
+    #     /* 강력한 CSS 선택자로 Streamlit 기본 여백 제거 */
+    #     div[data-testid="stVerticalBlock"] > div {
+    #         padding-top: 0 !important;
+    #         padding-bottom: 0 !important;
+    #         margin-top: 0 !important;
+    #         margin-bottom: 0 !important;
+    #     }
         
-        /* 입력 필드 컨테이너 여백 제거 */
-        .stTextInput > div {
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-        }
+    #     /* 입력 필드 컨테이너 여백 제거 */
+    #     .stTextInput > div {
+    #         margin-top: 0 !important;
+    #         margin-bottom: 0 !important;
+    #         padding-top: 0 !important;
+    #         padding-bottom: 0 !important;
+    #     }
         
-        /* 입력 필드 자체 스타일링 */
-        .stTextInput > div > div > input {
-            padding: 5px 15px !important;
-            height: 35px !important;
-            min-height: 0 !important;
-            margin: 3px 0 !important;
-        }
+    #     /* 입력 필드 자체 스타일링 */
+    #     .stTextInput > div > div > input {
+    #         padding: 5px 15px !important;
+    #         height: 35px !important;
+    #         min-height: 0 !important;
+    #         margin: 3px 0 !important;
+    #     }
         
-        /* 로그인 폼 컨테이너에 특별 스타일 적용 */
-        .login-form-container {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
+    #     /* 로그인 폼 컨테이너에 특별 스타일 적용 */
+    #     .login-form-container {
+    #         margin: 0 !important;
+    #         padding: 0 !important;
+    #     }
         
-        /* 버튼 여백 조정 */
-        .stButton > button {
-            margin-top: 5px !important;
-        }
+    #     /* 버튼 여백 조정 */
+    #     .stButton > button {
+    #         margin-top: 5px !important;
+    #     }
 
-        /* 체크박스 컨테이너 스타일 */
-        .stCheckbox {
-            margin-top: 0 !important;
-            padding-top: 0 !important;
-        }
+    #     /* 체크박스 컨테이너 스타일 */
+    #     .stCheckbox {
+    #         margin-top: 0 !important;
+    #         padding-top: 0 !important;
+    #     }
         
-        /* 체크박스 라벨 스타일 */
-        .stCheckbox > label {
-            font-size: 14px !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
+    #     /* 체크박스 라벨 스타일 */
+    #     .stCheckbox > label {
+    #         font-size: 14px !important;
+    #         margin: 0 !important;
+    #         padding: 0 !important;
+    #     }
         
-        /* 안내 텍스트 스타일 */
-        .info-text-custom {
-            font-size: 14px;
-            color: #666;
-            margin: 0;
-            padding: 0;
-        }
+    #     /* 안내 텍스트 스타일 */
+    #     .info-text-custom {
+    #         font-size: 14px;
+    #         color: #666;
+    #         margin: 0;
+    #         padding: 0;
+    #     }
         
-        /* 체크박스 행 컨테이너 */
-        .checkbox-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 0 !important;
-            padding-top: 0 !important;
-        }
+    #     /* 체크박스 행 컨테이너 */
+    #     .checkbox-row {
+    #         display: flex;
+    #         align-items: center;
+    #         justify-content: space-between;
+    #         margin-top: 0 !important;
+    #         padding-top: 0 !important;
+    #     }
        
-    </style>
-    """, unsafe_allow_html=True)
+    # </style>
+    # """, unsafe_allow_html=True)
 
     st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>", unsafe_allow_html=True)
 
@@ -363,91 +614,91 @@ def show_main_page():
 
         st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
 
-        st.markdown("""
-                    <style>
-                        /* 전체 페이지 스타일 */
-                        .main {
-                            background-color: #f5f5f5;
-                        }
+        # st.markdown("""
+        #             <style>
+        #                 /* 전체 페이지 스타일 */
+        #                 .main {
+        #                     background-color: #f5f5f5;
+        #                 }
 
                    
-                        /* 로그인 컨테이너 스타일 */
-                        .login-container {
-                            max-width: 450px;
-                            margin: 50px auto;
-                            padding: 30px;
-                            background-color: white;
-                            border-radius: 5px;
-                            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                        }
+        #                 /* 로그인 컨테이너 스타일 */
+        #                 .login-container {
+        #                     max-width: 450px;
+        #                     margin: 50px auto;
+        #                     padding: 30px;
+        #                     background-color: white;
+        #                     border-radius: 5px;
+        #                     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        #                 }
                         
-                        /* 로고 컨테이너 */
-                        .logo-container {
-                            text-align: center;
-                            margin-bottom: 20px;
-                        }
+        #                 /* 로고 컨테이너 */
+        #                 .logo-container {
+        #                     text-align: center;
+        #                     margin-bottom: 20px;
+        #                 }
                         
-                        /* 로그인 폼 스타일 */
-                        .stTextInput > div > div > input {
-                            border: 1px solid #ddd;
-                            padding: 10px;
-                            border-radius: 3px;
-                        }
+        #                 /* 로그인 폼 스타일 */
+        #                 .stTextInput > div > div > input {
+        #                     border: 1px solid #ddd;
+        #                     padding: 10px;
+        #                     border-radius: 3px;
+        #                 }
                         
-                        /* 버튼 스타일 */
-                        .stButton > button {
-                            background-color: #333333;
-                            color:  #c0c0c0;
-                            width: 100%;
-                            padding: 10px;
-                            border: none;
-                            border-radius: 3px;
-                            cursor: pointer;
-                        }
+        #                 /* 버튼 스타일 */
+        #                 .stButton > button {
+        #                     background-color: #333333;
+        #                     color:  #c0c0c0;
+        #                     width: 100%;
+        #                     padding: 10px;
+        #                     border: none;
+        #                     border-radius: 3px;
+        #                     cursor: pointer;
+        #                 }
                         
-                        /* 체크박스 스타일 */
-                        .stCheckbox > div {
-                            display: flex;
-                            align-items: center;
-                        }
+        #                 /* 체크박스 스타일 */
+        #                 .stCheckbox > div {
+        #                     display: flex;
+        #                     align-items: center;
+        #                 }
                         
-                        /* 푸터 스타일 */
-                        .footer {
-                            text-align: center;
-                            margin-top: 20px;
-                            color: #666;
-                            font-size: 12px;
-                        }
+        #                 /* 푸터 스타일 */
+        #                 .footer {
+        #                     text-align: center;
+        #                     margin-top: 20px;
+        #                     color: #666;
+        #                     font-size: 12px;
+        #                 }
                         
-                        /* 로그인 페이지 배경 */
-                        .login-background {
-                            position: fixed;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                            background: linear-gradient(135deg, #333333 25%, #e6e6e6 25%, #e6e6e6 50%, #ff1a1a 50%);
-                            background-size: cover;
-                            z-index: -1;
-                        }
+        #                 /* 로그인 페이지 배경 */
+        #                 .login-background {
+        #                     position: fixed;
+        #                     top: 0;
+        #                     left: 0;
+        #                     width: 100%;
+        #                     height: 100%;
+        #                     background: linear-gradient(135deg, #333333 25%, #e6e6e6 25%, #e6e6e6 50%, #ff1a1a 50%);
+        #                     background-size: cover;
+        #                     z-index: -1;
+        #                 }
                         
-                        /* 헤더 텍스트 스타일 */
-                        .header-text {
-                            text-align: center;
-                            color: #333;
-                            margin-bottom: 5px;
-                        }
+        #                 /* 헤더 텍스트 스타일 */
+        #                 .header-text {
+        #                     text-align: center;
+        #                     color: #333;
+        #                     margin-bottom: 5px;
+        #                 }
                         
-                        /* 서브헤더 텍스트 스타일 */
-                        .subheader-text {
-                            text-align: center;
-                            color: #666;
-                            font-size: 14px;
-                            margin-bottom: 20px;
-                        }
-                    </style>
+        #                 /* 서브헤더 텍스트 스타일 */
+        #                 .subheader-text {
+        #                     text-align: center;
+        #                     color: #666;
+        #                     font-size: 14px;
+        #                     margin-bottom: 20px;
+        #                 }
+        #             </style>
 
-                    """, unsafe_allow_html=True)
+        #             """, unsafe_allow_html=True)
         
         st.markdown("""
                     <style>
