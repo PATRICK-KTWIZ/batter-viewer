@@ -49,16 +49,6 @@ st.markdown("""
         }
 
         /* 텍스트 입력 필드 내부 여백 설정 */
-        .stTextInput > div {
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-        }
-
-       
-
-        /* 텍스트 입력 필드 내부 여백 설정 */
         .stTextInput > div > div > input {
             padding: 5px 15px !important;
             width: 100%;
