@@ -67,14 +67,14 @@ st.markdown("""
             border: none;
             border-radius: 0;
             cursor: pointer;
-            margin-top:1px;
+            margin-top: 0px;
         }
         
         /* 체크박스 스타일 */
         .stCheckbox > div {
             display: flex;
             align-items: center;
-            margin-bottom: 1px !important;
+            margin-bottom: 0px !important;
         }
         
         /* 푸터 스타일 */
@@ -92,14 +92,14 @@ st.markdown("""
             font-size: 38px;
             font-weight: bold;
             color: #c0c0c0;
-            margin-bottom: 1px;
+            margin-bottom: 0.5px;
         }
         
         /* 서브헤더 텍스트 스타일 */
         .subheader-text {
             color: #c0c0c0;
             font-size: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         
         /* 안내 텍스트 스타일 */
@@ -113,7 +113,7 @@ st.markdown("""
         .warning-text {
             color: red;
             font-weight: bold;
-            margin-bottom: 3px;
+            margin-bottom: 1px;
             font-size: 16px;
             text-align: right;
         }
