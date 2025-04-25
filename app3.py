@@ -16,243 +16,231 @@ COOKIE_TOKEN = "my_unique_cookie_token"
 # 페이지 설정
 st.set_page_config(page_title="Batting Analytics Page", layout="wide")
 
-# 세션 상태 초기화
 if 'loggedIn' not in st.session_state:
     st.session_state.loggedIn = False
 
-# 전체 CSS 스타일 정의
-css = """
-<style>
-    /* 배경 스타일 */
-    .stApp {
-        background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
-        background-attachment: fixed;
-        height: 95vh; /* 뷰포트 높이의 95%로 설정 */
-        max-height: 1000px; /* 최대 높이 설정 */
-        overflow: auto;
-    }
-    
-    /* 로그인 컨테이너 스타일 */
-    .login-container {
-        max-width: 400px;
-        margin: 10px 0 0 auto;
-        padding: 20px;
-        background-color: #f0f0f0;
-        border-radius: 0;
-    }
-    
-    /* 로고 컨테이너 스타일 */
-    .logo-container {
-        margin-top: 500px !important;
-        margin-bottom: 5px !important;
-        padding-left: 20px !important;
-        display: block !important;
-    }
-    
-    /* 로그인 폼 스타일 */
-    .stTextInput > div > div > input {
-        border: 1px solid #ddd;
-        padding: 8px;
-        border-radius: 0;
-        width: 100%;
-    }
-
-    /* 입력 필드 간격 감소 */
-    .stTextInput {
-        margin-bottom: 0px !important; /* 입력 필드 사이 간격 감소 */
-    }
-    
-    /* 버튼 스타일 */
-    .stButton > button {
-        background-color: #333333;
-        color: white;
-        width: 100%;
-        padding: 1px;
-        border: none;
-        border-radius: 0;
-        cursor: pointer;
-        margin-top: 0px;
-    }
-    
-    /* 체크박스 스타일 */
-    .stCheckbox > div {
-        display: flex;
-        align-items: center;
-        margin-bottom: 0px !important;
-    }
-    
-    /* 푸터 스타일 */
-    .footer {
-        text-align: center;
-        position: fixed;
-        bottom: 65px;
-        width: 100%;
-        color: #333;
-        font-size: 15px;
-    }
-    
-    /* 헤더 텍스트 스타일 */
-    .header-text {
-        font-size: 38px;
-        font-weight: bold;
-        color: #c0c0c0;
-        margin-top: 5px;
-        margin-bottom: 0.5px;
-    }
-    
-    /* 서브헤더 텍스트 스타일 */
-    .subheader-text {
-        color: #c0c0c0;
-        font-size: 20px;
-        margin-bottom: 5px;
-    }
-    
-    /* 안내 텍스트 스타일 */
-    .info-text {
-        font-size: 15px;
-        color: #666;
-        margin-bottom: 1px;
-    }
+# 로그인 페이지 CSS 스타일 추가
+st.markdown("""
+    <style>
+        /* 배경 스타일 */
+        .stApp {
+            background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
+            background-attachment: fixed;
+            height: 95vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
+            max-height: 1000px; /* 최대 높이 설정 */
+            overflow: auto;
+        }
         
-    /* 경고 텍스트 스타일 */
-    .warning-text {
-        color: red;
-        font-weight: bold;
-        margin-bottom: 1px;
-        font-size: 16px;
-        text-align: right;
-    }
-
-    /* 컬럼 간격 조정 */
-    [data-testid="stHorizontalBlock"] {
-        gap: 0 !important;
-    }
+        /* 로그인 컨테이너 스타일 */
+        .login-container {
+            max-width: 400px;
+            margin: 50px 0 0 auto;
+            padding: 30px;
+            background-color: #f0f0f0;
+            border-radius: 0;
+        }
+        
+        /* 로고 컨테이너 */
+        .logo-container {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        /* 로그인 폼 스타일 */
+        .stTextInput > div > div > input {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 0;
+            width: 100%;
+        }
+        
+        /* 버튼 스타일 */
+        .stButton > button {
+            background-color: #333333;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+        }
+        
+        /* 체크박스 스타일 */
+        .stCheckbox > div {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* 푸터 스타일 */
+        .footer {
+            text-align: center;
+            position: fixed;
+            bottom: 80px;
+            width: 100%;
+            color: #333;
+            font-size: 15px;
+        }
+        
+        /* 헤더 텍스트 스타일 */
+        .header-text {
+            font-size: 38px;
+            font-weight: bold;
+            color: #c0c0c0;
+            margin-bottom: 5px;
+        }
+        
+        /* 서브헤더 텍스트 스타일 */
+        .subheader-text {
+            color: #c0c0c0;
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+        
+        /* 안내 텍스트 스타일 */
+        .info-text {
+            font-size: 15px;
+            color: #666;
+        }
+            
+        /* 경고 텍스트 스타일 */
+        .warning-text {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-size: 16px;
+            text-align: right;
+        }
     
-    /* 체크박스 라벨 조정 */
-    .stCheckbox label {
-        font-size: 14px;
-    }
-    
-    /* Hide streamlit branding */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    
-    /* Fix column padding - 상단 패딩 감소 */
-    .block-container {
-        padding-top: 0.5rem;
-        padding-bottom: 0;
-        max-width: 100%;
-    }
-
-    /* 전체 요소 위로 이동을 위한 추가 설정 */
-    .element-container {
-        margin-bottom: 0px !important; /* 기본 여백 감소 */
-    }
-    
-    /* 제목 스타일 */
-    h1 {
-        margin-top: 35px !important;
-        margin-bottom: 30px !important;
-        padding-left: 10px !important;
-        line-height: 1.3 !important;
-    }
-    
-    /* 제목 내 텍스트 간격 조정 */
-    h1 span {
-        margin-right: 10px !important;
-    }
+        
+        /* 컬럼 간격 조정 */
+        [data-testid="stHorizontalBlock"] {
+            gap: 0 !important;
+        }
+        
+        /* 체크박스 라벨 조정 */
+        .stCheckbox label {
+            font-size: 14px;
+        }
+        
+        /* Hide streamlit branding */
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        
+        /* Fix column padding */
+        .block-container {
+            padding-top: 1rem;
+            padding-bottom: 0;
+            max-width: 100%;
+        }
 </style>
-"""
 
-# CSS 스타일 적용
-st.markdown(css, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
-# 함수 정의
-def LoggedOut_Clicked():
-    st.session_state['loggedIn'] = False
+# st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
 
-def LoggedIn_Clicked(userName, password):
-    if login(userName, password):
-        st.session_state['loggedIn'] = True
-    else:
-        st.session_state['loggedIn'] = False
-        st.error("유효하지 않은 ID 또는 패스워드 입니다.")
+headerSection = st.container()
+mainSection = st.container()
+loginSection = st.container()
+logOutSection = st.container()
 
-def login(username, password):
-    # 실제 로그인 로직 구현
-    # 예시: 하드코딩된 사용자 정보
-    return username == "admin" and password == "password"
+# Define a function to get the user's ID from the session cookie
+def get_user_id():
+    return st.session_state.get(COOKIE_TOKEN)
+
+# Define a function to set the user's ID in the session cookie
+def set_user_id(user_id):
+    st.session_state[COOKIE_TOKEN] = user_id
+
+# Define a function to check if the user is logged in
+def is_user_logged_in():
+    return st.session_state.get('loggedIn', False)
 
 def find_id(player_dataset, select_player):
     find_player = player_dataset[player_dataset['NAME'] == select_player]
     id = find_player.iloc[0]['TM_ID']
     return id
 
-# 컨테이너 정의
-headerSection = st.container()
-mainSection = st.container()
-loginSection = st.container()
-logOutSection = st.container()
-
-# 로그인 상태에 따른 페이지 표시
-if st.session_state['loggedIn']:
-    # 로그아웃 페이지 표시
+def LoggedOut_Clicked():
+    st.session_state['loggedIn'] = False
+  
+def show_logout_page():
     loginSection.empty()
     with logOutSection:
         st.sidebar.button("Log Out", key="logout", on_click=LoggedOut_Clicked)
-    
-    # 로그인 후 메인 페이지 내용 구현
-    st.write("로그인 성공! 메인 페이지 내용이 여기에 표시됩니다.")
-    
-else:
-    # 로그인 페이지 표시
-    logOutSection.empty()
-    
-    # 제목 표시
+
+def LoggedIn_Clicked(userName, password):
+    if login(userName, password):
+        set_user_id(userName)  # Set the user ID in the session cookie
+        st.session_state['loggedIn'] = True
+    else:
+        st.session_state['loggedIn'] = False
+        st.error("유효하지 않은 ID 또는 패스워드 입니다.")
+
+def show_login_page():
+
+    st.markdown("""
+    <style>
+        /* 제목 상단 여백 조정 */
+        h1 {
+            margin-top: 20px;       /* 상단 여백 */
+            margin-bottom: 30px;    /* 하단 여백 */
+            padding-left: 10px;     /* 왼쪽 패딩 */
+            line-height: 1.3;       /* 줄 간격 */
+        }
+        
+        /* 제목 내 텍스트 간격 조정 */
+        h1 span {
+            margin-right: 10px;     /* 각 span 요소 사이의 간격 */
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>", unsafe_allow_html=True)
-   
-    # 메인 레이아웃 (3개 컬럼)
+
+    # Main layout with two columns
     left_col, middle_col, right_col = st.columns([0.5, 3, 4])
 
     with middle_col:
-        # 로고 컨테이너 및 이미지
-        st.markdown('<div class="logo-container">', unsafe_allow_html=True)
-        st.image("ktwiz_emblem.png", width=250)
+        # Logo area
+        st.markdown("""
+        <div class="logo-container" style="padding-top: 100px;">
+        """, unsafe_allow_html=True)
+        st.image("ktwiz_emblem.png", width=300)
         st.markdown('</div>', unsafe_allow_html=True)
     
     with right_col:
-        # 로그인 폼 컨테이너
+        # Login form container
         st.markdown('<div class="login-container">', unsafe_allow_html=True)
         st.markdown('<div class="warning-text">※허가된 사용자 외 사용을 금함</div>', unsafe_allow_html=True)
 
-        # 헤더 텍스트
+        # Header text
         st.markdown('<div class="header-text">케이티 위즈</div>', unsafe_allow_html=True)
         st.markdown('<div class="subheader-text">타자 분석페이지에 오신것을 환영합니다.</div>', unsafe_allow_html=True)
         
-        # 구분선
+        # Horizontal line
         st.markdown('<hr style="margin: 20px 0;">', unsafe_allow_html=True)
         
-        # 로그인 필드
+        # Login fields
         userName = st.text_input("", placeholder="아이디")
         password = st.text_input("", placeholder="비밀번호", type="password")
         
-        # 비밀번호 세션 상태 저장
+        # Store password in session state for later use
         st.session_state['password'] = password
         
-        # 로그인 버튼
+        # Login button
         login_button = st.button("로그인", on_click=LoggedIn_Clicked, args=(userName, password))
         
-        # 아이디 저장 체크박스 및 안내 텍스트
+        # Remember ID checkbox and text
         col1, col2 = st.columns([1, 3])
         with col1:
             remember_id = st.checkbox("아이디 저장")
         with col2:
             st.markdown('<div class="info-text">아이디와 비밀번호를 입력하여 로그인 후 사용해 주세요.</div>', unsafe_allow_html=True)
         
-        # 로그인 컨테이너 div 닫기
+        # Close the login container div
         st.markdown('</div>', unsafe_allow_html=True)
     
-    # 푸터
+    # Footer
     st.markdown("""
     <div class="footer">
         Copyright © 2025 kt wiz baseball club. All rights reserved.
