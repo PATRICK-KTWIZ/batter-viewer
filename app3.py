@@ -317,6 +317,7 @@ def show_login_page():
         with form_col:
             userName = st.text_input("", placeholder="아이디", label_visibility="collapsed")
             password = st.text_input("", placeholder="비밀번호", type="password", label_visibility="collapsed")
+            st.session_state['password'] = password
             login_button = st.button("로그인", on_click=LoggedIn_Clicked, args=(userName, password))
         
         st.markdown('</div>', unsafe_allow_html=True)
