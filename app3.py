@@ -342,13 +342,6 @@ def show_login_page():
         """, unsafe_allow_html=True)
 
         
-   # Footer
-    st.markdown("""
-    <div class="footer">
-        Copyright © 2025 kt wiz baseball club. All rights reserved.
-    </div>
-    """, unsafe_allow_html=True)
-
 def show_main_page():
     # Check if the user is logged in
     
