@@ -195,7 +195,6 @@ def LoggedIn_Clicked(userName, password):
     if login(userName, password):
         set_user_id(userName)  # Set the user ID in the session cookie
         st.session_state['loggedIn'] = True
-        st.session_state['password'] = password  # 비밀번호를 세션 상태에 저장
     else:
         st.session_state['loggedIn'] = False
         st.error("유효하지 않은 ID 또는 패스워드 입니다.")
@@ -366,21 +365,11 @@ def show_main_page():
 
         st.markdown("""
                     <style>
-                        .stApp {
-                        background: #ffffff; /* 단색 배경으로 변경 */
-                        background-attachment: fixed;
-                        height: 95vh;
-                        max-height: 1000px;
-                        overflow: auto;
-            }
-
-                        
                         /* 전체 페이지 스타일 */
                         .main {
-                            background-color: #ffffff;
+                            background-color: #f5f5f5;
                         }
-
-                   
+                        
                         /* 로그인 컨테이너 스타일 */
                         .login-container {
                             max-width: 450px;
@@ -461,7 +450,6 @@ def show_main_page():
         
         st.markdown("""
                     <style>
-                    
                         /* 사이드바 배경색 변경 */
                         [data-testid="stSidebar"] {
                             background-color: #2d2d2d;
@@ -502,7 +490,6 @@ def show_main_page():
                     """, unsafe_allow_html=True)
 
         st.markdown("""<style>[data-testid=stSidebar] [data-testid=stImage]{text-align: center;display: block;margin-left: auto; margin-right: auto; width: 85%;}</style>""", unsafe_allow_html=True)
-       
         with st.sidebar:
             st.image("ktwiz_emblem.png")
 
@@ -1447,4 +1434,3 @@ with headerSection:
     else:
         st.session_state['loggedIn'] = True
         show_main_page()
-
