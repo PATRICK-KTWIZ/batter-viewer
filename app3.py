@@ -195,6 +195,7 @@ def LoggedIn_Clicked(userName, password):
     if login(userName, password):
         set_user_id(userName)  # Set the user ID in the session cookie
         st.session_state['loggedIn'] = True
+        st.session_state['password'] = password  # 비밀번호를 세션 상태에 저장
     else:
         st.session_state['loggedIn'] = False
         st.error("유효하지 않은 ID 또는 패스워드 입니다.")
@@ -317,7 +318,6 @@ def show_login_page():
         with form_col:
             userName = st.text_input("", placeholder="아이디", label_visibility="collapsed")
             password = st.text_input("", placeholder="비밀번호", type="password", label_visibility="collapsed")
-            st.session_state['password'] = password
             login_button = st.button("로그인", on_click=LoggedIn_Clicked, args=(userName, password))
         
         st.markdown('</div>', unsafe_allow_html=True)
@@ -368,9 +368,10 @@ def show_main_page():
                     <style>
                         /* 전체 페이지 스타일 */
                         .main {
-                            background-color: #f5f5f5;
+                            background-color: #ffffff;
                         }
-                        
+
+                   
                         /* 로그인 컨테이너 스타일 */
                         .login-container {
                             max-width: 450px;
@@ -491,6 +492,7 @@ def show_main_page():
                     """, unsafe_allow_html=True)
 
         st.markdown("""<style>[data-testid=stSidebar] [data-testid=stImage]{text-align: center;display: block;margin-left: auto; margin-right: auto; width: 85%;}</style>""", unsafe_allow_html=True)
+       
         with st.sidebar:
             st.image("ktwiz_emblem.png")
 
