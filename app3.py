@@ -22,45 +22,10 @@ if 'loggedIn' not in st.session_state:
 # 로그인 페이지와 메인 페이지를 위한 CSS 스타일 분리
 st.markdown("""
 <style>
-    /* 공통 스타일 */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    
-    .block-container {
-        padding-top: 1rem;
-        padding-bottom: 0;
-        max-width: 100%;
+   /* 전체 페이지 스타일 */
+    .main {
+        background-color: #f5f5f5;
     }
-    
-    /* 로그인 페이지 스타일 */
-    .login-page .stApp {
-        background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
-        background-attachment: fixed;
-        height: 95vh;
-        max-height: 1000px;
-        overflow: auto;
-    }
-    
-    /* 기존 로그인 스타일 유지 */
-    
-    /* 메인 페이지 스타일 */
-
-    /* 사이드바 배경색 변경 */
-    [data-testid="stSidebar"] {
-        background-color: #2d2d2d;
-        transition: none !important;
-    }
-    .main-page [data-testid=stSidebar] [data-testid=stImage] {
-        text-align: center;
-        display: block;
-        margin-left: auto; 
-        margin-right: auto; 
-        width: 75%;
-    }
-
-    .main-page .block-container {
-    margin-left: 300px;  /* 사이드바 너비와 동일하게 설정 */
-    }    
 
 </style>
 """, unsafe_allow_html=True)
