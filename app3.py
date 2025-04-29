@@ -160,7 +160,7 @@ def show_login_page():
 
   
     # Main layout with two columns
-    left_col, middle1_col, middle2_col, right_col = st.columns([0.7, 3, 4, 0.7])
+    left_col, middle1_col, middle2_col, right_col = st.columns([0.7, 4, 5, 0.7])
 
     with middle1_col:
         # Logo area
