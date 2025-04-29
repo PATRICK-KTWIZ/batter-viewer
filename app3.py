@@ -23,7 +23,7 @@ if 'loggedIn' not in st.session_state:
 st.markdown("""
     <style>
         /* 배경 스타일 */
-        .main {
+        .stApp {
             background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
             background-attachment: fixed;
             height: 95vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
