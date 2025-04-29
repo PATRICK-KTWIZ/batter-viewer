@@ -30,15 +30,15 @@ st.markdown("""
         max-height: 1000px; /* 최대 높이 설정 */
         overflow: auto;
     }
-    /* 로그인 컨테이너 스타일 */
-    .login-container {
-        max-width: 400px;
-        margin: 50px auto;
-        padding: 30px;
-        background-color: #f0f0f0;
-        border-radius: 0px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+    # /* 로그인 컨테이너 스타일 */
+    # .login-container {
+    #     max-width: 400px;
+    #     margin: 50px auto;
+    #     padding: 30px;
+    #     background-color: #f0f0f0;
+    #     border-radius: 0px;
+    #     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    # }
     /* 로고 컨테이너 */
     .logo-container {
         text-align: center;
