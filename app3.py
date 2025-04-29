@@ -835,7 +835,7 @@ def show_main_page():
                             year_swing_heatmap = factor_year_sum_map(year_df, swing_factor)
                             year_swing_heatmap.update_layout(height=450, width=450)
                             year_swing_heatmap.update_coloraxes(showscale=False)
-                            st.plotly_chart(year_swing_heatmap, layout="wide")
+                            st.plotly_chart(year_swing_heatmap, layout="wide", key="year_swing_heatmap")
                         
                         with col3:
                             original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
@@ -843,7 +843,7 @@ def show_main_page():
                             year_lsa_fig = factor_year_sum_map_scatter(year_lsa4_df)
                             year_lsa_fig.update_layout(height=450, width=450)
                             year_lsa_fig.update_coloraxes(showscale=False)
-                            st.plotly_chart(year_lsa_fig, layout="wide")
+                            st.plotly_chart(year_lsa_fig, layout="wide", key="year_lsa_fig")
                         
                         with col4:
                             original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
@@ -851,7 +851,7 @@ def show_main_page():
                             year_lsa_plate_fig = factor_year_sum_plate_map_scatter(year_lsa4_df)
                             year_lsa_plate_fig.update_layout(height=450, width=430)
                             year_lsa_plate_fig.update_coloraxes(showscale=False)
-                            st.plotly_chart(year_lsa_plate_fig, layout="wide")
+                            st.plotly_chart(year_lsa_plate_fig, layout="wide", key="year_lsa_plate_fig")
                         
   
                         # 연도별 구분선 추가
