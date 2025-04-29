@@ -360,6 +360,15 @@ def show_main_page():
 
         st.markdown("""
                     <style>
+                        /* 모든 기존 스타일 초기화 */
+                        .stApp, .main, .block-container, [data-testid="stAppViewContainer"] {
+                            all: initial !important;
+                        }
+                    </style>
+                    """, unsafe_allow_html=True)
+
+        st.markdown("""
+                    <style>
                         /* 전체 페이지 스타일 */
                         .main {
                             background-color: #f5f5f5;
