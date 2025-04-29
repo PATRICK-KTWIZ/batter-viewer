@@ -39,11 +39,11 @@ st.markdown("""
         border-radius: 0px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
-    # /* 로고 컨테이너 */
-    # .logo-container {
-    #     text-align: center;
-    #     margin-bottom: 20px;
-    # }
+    /* 로고 컨테이너 */
+    .logo-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
     /* 로그인 폼 스타일 */
     .stTextInput > div > div > input {
         border: 0px solid #ddd;
@@ -59,6 +59,27 @@ st.markdown("""
         border: none;
         border-radius: 3px;
         cursor: pointer;
+    }
+
+    /* 푸터 스타일 */
+    .footer {
+        text-align: center;
+        position: fixed;
+        bottom: 60px;
+        width: 100%;
+        color: #333;
+        font-size: 15px;
+    }
+    /* 로그인 페이지 배경 */
+    .login-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #333333 25%, #e6e6e6 25%, #e6e6e6 50%, #ff1a1a 50%);
+        background-size: cover;
+        z-index: -1;
     }
 
 </style>
