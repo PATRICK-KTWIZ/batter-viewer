@@ -44,6 +44,12 @@ st.markdown("""
     /* 기존 로그인 스타일 유지 */
     
     /* 메인 페이지 스타일 */
+
+    /* 사이드바 배경색 변경 */
+    [data-testid="stSidebar"] {
+        background-color: #2d2d2d;
+        transition: none !important;
+    }
     .main-page [data-testid=stSidebar] [data-testid=stImage] {
         text-align: center;
         display: block;
