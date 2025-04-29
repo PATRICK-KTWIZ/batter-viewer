@@ -156,7 +156,7 @@ def show_login_page():
     <style>
         /* 제목 상단 여백 조정 */
         h1 {
-            margin-top: 20px;       /* 상단 여백 */
+            margin-top: 10px;       /* 상단 여백 */
             margin-bottom: 30px;    /* 하단 여백 */
             padding-left: 10px;     /* 왼쪽 패딩 */
             line-height: 1.3;       /* 줄 간격 */
