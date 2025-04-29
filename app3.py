@@ -45,7 +45,7 @@ st.markdown("""
         position: relative;
         left: 50%;
         right: 50%;
-        margin-left: -20vw !important;
+        margin-left: -40vw !important;
         margin-right: -50vw !important;
         box-sizing: border-box;
     }
