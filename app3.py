@@ -827,7 +827,7 @@ def show_main_page():
                             year_pitched_heatmap = factor_year_count_map(year_df, pitched_factor)
                             year_pitched_heatmap.update_layout(height=450, width=450)
                             year_pitched_heatmap.update_coloraxes(showscale=False)
-                            st.plotly_chart(year_pitched_heatmap, layout="wide")
+                            st.plotly_chart(year_pitched_heatmap, layout="wide", key="year_pitched_heatmap")
                         
                         with col2:
                             original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점 (히트맵)</p>'
