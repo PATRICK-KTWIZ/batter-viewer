@@ -356,9 +356,7 @@ def show_main_page():
     with mainSection:
         
 
-        st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
-
-        st.markdown("""
+       st.markdown("""
                     <style>
                         /* 모든 기존 스타일 초기화 */
                         .stApp, .main, .block-container, [data-testid="stAppViewContainer"] {
@@ -367,6 +365,8 @@ def show_main_page():
                     </style>
                     """, unsafe_allow_html=True)
 
+        st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
+        
         st.markdown("""
                     <style>
                         /* 전체 페이지 스타일 */
@@ -469,12 +469,12 @@ def show_main_page():
                         
                         /* 사이드바 selectbox 내부 텍스트 색상 변경 */
                         [data-testid="stSidebar"] .stSelectbox > div > div > div {
-                            color: #cccccc !important;
+                            color: black !important;
                         }
                         
                         /* 드롭다운 메뉴 텍스트 색상 */
                         .stSelectbox option {
-                            color: #cccccc;
+                            color: black;
                         }
                         
                         /* 사이드바 버튼 배경색 및 텍스트 색상 변경 */
