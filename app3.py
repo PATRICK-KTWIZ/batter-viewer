@@ -37,7 +37,7 @@ st.markdown("""
         padding: 30px;
         background-color: #f0f0f0;
         border-radius: 0px;
-        # box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     /* 로고 컨테이너 */
     .logo-container {
@@ -46,9 +46,9 @@ st.markdown("""
     }
     /* 로그인 폼 스타일 */
     .stTextInput > div > div > input {
-        border: 1px solid #ddd;
+        border: 0px solid #ddd;
         padding: 10px;
-        border-radius: 3px;
+        border-radius: 0px;
     }
     /* 메인 버튼 스타일 */
     .stButton > button {
