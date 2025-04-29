@@ -81,6 +81,34 @@ st.markdown("""
         background-size: cover;
         z-index: -1;
     }
+    /* 헤더 텍스트 스타일 */
+    .header-text {
+        font-size: 38px;
+        font-weight: bold;
+        color: #c0c0c0;
+        margin-bottom: 5px;
+    }
+    /* 서브헤더 텍스트 스타일 */
+    .subheader-text {
+        color: #c0c0c0;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    /* 안내 텍스트 스타일 */
+    .info-text {
+        font-size: 15px;
+        color: #666;
+    }
+        
+    /* 경고 텍스트 스타일 */
+    .warning-text {
+        color: red;
+        font-weight: bold;
+        margin-bottom: 12px;
+        font-size: 16px;
+        text-align: right;
+    }
 
 </style>
 """, unsafe_allow_html=True)
