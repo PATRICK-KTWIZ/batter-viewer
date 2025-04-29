@@ -455,6 +455,24 @@ def show_main_page():
         
         st.markdown("""
                     <style>
+                        /* 사이드바 안정화 속성 추가 */
+                        [data-testid="stSidebar"] {
+                            background-color: #2d2d2d;
+                            width: 300px !important;  /* 고정 너비 설정 */
+                            position: fixed !important;  /* 위치 고정 */
+                            height: 100vh !important;  /* 전체 높이 사용 */
+                            transition: none !important;  /* 전환 효과 제거 */
+                            animation: none !important;  /* 애니메이션 제거 */
+                            overflow-y: auto !important;  /* 세로 스크롤만 허용 */
+                            z-index: 99 !important;  /* 레이어 순서 설정 */
+                        }
+                        
+                        /* 사이드바 내부 요소 안정화 */
+                        [data-testid="stSidebar"] > div:first-child {
+                            width: 100% !important;
+                            height: 100% !important;
+                        }
+                        
                         /* 사이드바 배경색 변경 */
                         [data-testid="stSidebar"] {
                             background-color: #2d2d2d;
@@ -475,7 +493,7 @@ def show_main_page():
                         
                         /* 드롭다운 메뉴 텍스트 색상 */
                         .stSelectbox option {
-                            color: #cccccc;
+                            color: black;
                         }
                         
                         /* 사이드바 버튼 배경색 및 텍스트 색상 변경 */
