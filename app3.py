@@ -509,6 +509,15 @@ def show_main_page():
                         [data-testid="stSidebar"] .stButton > button:hover {
                             background-color: #dddddd !important;
                         }
+
+                        /* 메인 컨텐츠 영역 조정 (사이드바 고정에 따른 조정) */
+                        .main .block-container {
+                            margin-left: 300px !important;  /* 사이드바 너비와 일치 */
+                            max-width: calc(100% - 300px) !important;
+                            padding-left: 2rem !important;
+                            box-sizing: border-box !important;
+                        }
+
                     </style>
                     """, unsafe_allow_html=True)
 
