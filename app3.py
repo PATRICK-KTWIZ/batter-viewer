@@ -160,9 +160,9 @@ def show_login_page():
 
   
     # Main layout with two columns
-    left_col, middle_col, right_col = st.columns([0.8, 3, 4.5])
+    left_col, middle1_col, middle2_col, right_col = st.columns([0.8, 3, 4, 0.8])
 
-    with middle_col:
+    with middle1_col:
         # Logo area
         st.markdown("""
         <div class="logo-container" style="padding-top: 100px;">
@@ -170,7 +170,7 @@ def show_login_page():
         st.image("ktwiz_emblem.png", width=280)
         st.markdown('</div>', unsafe_allow_html=True)
     
-    with right_col:
+    with middle2_col:
         # Login form container
         st.markdown('<div class="login-container">', unsafe_allow_html=True)
         st.markdown('<div class="warning-text">※허가된 사용자 외 사용을 금함</div>', unsafe_allow_html=True)
