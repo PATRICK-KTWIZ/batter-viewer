@@ -39,7 +39,7 @@ st.markdown("""
     
     /* 헤더 스타일 */
     .header-container {
-        background-color: #222222;
+        # background-color: #222222;
         width: 100%;
         padding: 10px 20px;
         margin: 0 !important;
