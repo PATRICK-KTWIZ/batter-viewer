@@ -30,6 +30,36 @@ st.markdown("""
         max-height: 1000px; /* 최대 높이 설정 */
         overflow: auto;
     }
+
+    /* 상단 여백 제거 */
+    .main .block-container {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    
+    /* 헤더 스타일 */
+    .header-container {
+        background-color: #222222;
+        width: 100%;
+        padding: 10px 20px;
+        margin: 0 !important;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw !important;
+        margin-right: -50vw !important;
+        box-sizing: border-box;
+    }
+    
+    /* 헤더 텍스트 스타일 */
+    .header-text {
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0;
+        padding: 0;
+        line-height: 1.2;
+    }
+    
     /* 로그인 컨테이너 스타일 */
     .login-container {
         max-width: 100px;
@@ -109,6 +139,19 @@ st.markdown("""
         text-align: right;
     }
 
+    /* 스트림릿 기본 패딩 제거 */
+    .stMarkdown {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* 첫 번째 요소 패딩 제거 */
+    .stMarkdown:first-child {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -153,36 +196,22 @@ def LoggedIn_Clicked(userName, password):
 
 def show_login_page():
 
+   
+    # st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>"
+    #             , unsafe_allow_html=True)
 
-    # 전체 페이지 스타일 조정
+
+    # 헤더를 컨테이너로 감싸서 배경색과 함께 표시
     st.markdown("""
-    <style>
-        /* 스트림릿 기본 여백 제거 */
-        .main .block-container {
-            padding-top: 0.1rem !important;
-            margin-top: 0 !important;
-        }
-        
-        /* 마크다운 요소의 여백 제거 */
-        .stMarkdown {
-            margin-top: 0 !important;
-            padding-top: 0 !important;
-        }
-        
-        /* h1 태그 스타일 직접 조정 */
-        h1 {
-            margin-top: -30 !important;
-            padding-top: 0 !important;
-            line-height: 1.2 !important;
-        }
-    </style>
+    <div class="header-container">
+        <h1 class="header-text">
+            <span style='color: #c0c0c0;'>KT WIZ</span> 
+            <span style='color: red;'>BATTING ANALYTICS</span> 
+            <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span>
+        </h1>
+    </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>"
-                , unsafe_allow_html=True)
-
-
-  
     # Main layout with two columns
     left_col, middle1_col, middle2_col, right_col = st.columns([0.7, 4, 5, 0.7])
 
