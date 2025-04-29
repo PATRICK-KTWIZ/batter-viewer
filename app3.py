@@ -14,7 +14,12 @@ import plotly.graph_objects as go
 COOKIE_TOKEN = "my_unique_cookie_token"
 
 # 페이지 설정
-st.set_page_config(page_title="Batting Analytics Page", layout="wide")
+# 페이지 설정 - 가능하다면 이 부분을 코드 최상단에 위치시키세요
+st.set_page_config(
+    layout="wide",
+    initial_sidebar_state="collapsed",
+    page_title="KT WIZ BATTING ANALYTICS"
+)
 
 if 'loggedIn' not in st.session_state:
     st.session_state.loggedIn = False
