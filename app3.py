@@ -26,7 +26,7 @@ st.markdown("""
     .stApp {
         background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
         background-attachment: fixed;
-        height: 95vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
+        height: 100vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
         max-height: 1000px; /* 최대 높이 설정 */
         overflow: auto;
     }
