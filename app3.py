@@ -488,7 +488,7 @@ def show_main_page():
                         
                         /* 사이드바 selectbox 내부 텍스트 색상 변경 */
                         [data-testid="stSidebar"] .stSelectbox > div > div > div {
-                            color: #cccccc !important;
+                            color: black !important;
                         }
                         
                         /* 드롭다운 메뉴 텍스트 색상 */
