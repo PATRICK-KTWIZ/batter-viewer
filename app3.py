@@ -741,123 +741,120 @@ def show_main_page():
 # -------------------------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------------
 
-            st.title('[시즌 :red[스윙지점]]')
+st.title('[시즌 :red[스윙지점]]')
 
-            for batter, batter_df in batter_dataframes.items():
-                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+for batter, batter_df in batter_dataframes.items():
+    batter_raw_df = globals()[f"df_{batter}"] = batter_df
 
-                game_year = batter_raw_df['game_year'].max()
-                batter_recent_df = batter_raw_df[batter_raw_df['game_year'] == game_year]
+    game_year = batter_raw_df['game_year'].max()
+    batter_recent_df = batter_raw_df[batter_raw_df['game_year'] == game_year]
 
-                batter_str = str(batter)
-                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-                batter_name = batter_finder.iloc[0]['NAME']
+    batter_str = str(batter)
+    batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+    batter_name = batter_finder.iloc[0]['NAME']
 
-                st.subheader(f"{batter_name}, {game_year}")
+    st.subheader(f"{batter_name}, {game_year}")
 
-                col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.columns(4)
 
-                pitched_factor = 'player_name'
-                swing_factor = 'swing'
-                lsa_factor = 'launch_speed_angle'
+    pitched_factor = 'player_name'
+    swing_factor = 'swing'
+    lsa_factor = 'launch_speed_angle'
 
-                with col1:
-                    original_title = '<p style="text-align: center; color:gray; font-size: 25px;">투구지점</p>'
-                    st.markdown(original_title, unsafe_allow_html=True)
-                    season_pitched_fig = factor_year_count_map(batter_recent_df, pitched_factor)
-                    season_pitched_fig.update_layout(height=450, width=450)
-                    season_pitched_fig.update_coloraxes(showscale=False)
-                    st.plotly_chart(season_pitched_fig, layout="wide")
+    with col1:
+        original_title = '<p style="text-align: center; color:gray; font-size: 25px;">투구지점</p>'
+        st.markdown(original_title, unsafe_allow_html=True)
+        season_pitched_fig = factor_year_count_map(batter_recent_df, pitched_factor)
+        season_pitched_fig.update_layout(height=450, width=450)
+        season_pitched_fig.update_coloraxes(showscale=False)
+        st.plotly_chart(season_pitched_fig, layout="wide", key=f"season_pitched_{batter}")
 
-                with col2:
-                    original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점</p>'
-                    st.markdown(original_title, unsafe_allow_html=True)
-                    season_swing_fig = factor_year_sum_map(batter_recent_df, swing_factor)
-                    season_swing_fig.update_layout(height=450, width=450)
-                    season_swing_fig.update_coloraxes(showscale=False)
-                    st.plotly_chart(season_swing_fig, layout="wide")
+    with col2:
+        original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점</p>'
+        st.markdown(original_title, unsafe_allow_html=True)
+        season_swing_fig = factor_year_sum_map(batter_recent_df, swing_factor)
+        season_swing_fig.update_layout(height=450, width=450)
+        season_swing_fig.update_coloraxes(showscale=False)
+        st.plotly_chart(season_swing_fig, layout="wide", key=f"season_swing_{batter}")
 
-                batter_recent_las4 = batter_recent_df[batter_recent_df['plus_lsa4'] == 1]
+    batter_recent_las4 = batter_recent_df[batter_recent_df['plus_lsa4'] == 1]
 
-                with col3:
-                    original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
-                    st.markdown(original_title, unsafe_allow_html=True)
-                    season_lsa_fig = factor_year_sum_map_scatter(batter_recent_las4)
-                    season_lsa_fig.update_layout(height=450, width=450)
-                    season_lsa_fig.update_coloraxes(showscale=False)
-                    st.plotly_chart(season_lsa_fig, layout="wide")
+    with col3:
+        original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
+        st.markdown(original_title, unsafe_allow_html=True)
+        season_lsa_fig = factor_year_sum_map_scatter(batter_recent_las4)
+        season_lsa_fig.update_layout(height=450, width=450)
+        season_lsa_fig.update_coloraxes(showscale=False)
+        st.plotly_chart(season_lsa_fig, layout="wide", key=f"season_lsa_{batter}")
 
-                with col4:
-                    original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
-                    st.markdown(original_title, unsafe_allow_html=True)
-                    season_lsa_fig = factor_year_sum_plate_map_scatter(batter_recent_las4)
-                    season_lsa_fig.update_layout(height=450, width=430)
-                    season_lsa_fig.update_coloraxes(showscale=False)
-                    st.plotly_chart(season_lsa_fig, layout="wide")
-                
-                st.markdown(""" <div style="text-align: right; font-size: 0.9em;">
-                                <span style="font-weight: bold;">색상 범례:</span> 
-                                붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
-                            </div>
-                            """, 
-                            unsafe_allow_html=True)
+    with col4:
+        original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
+        st.markdown(original_title, unsafe_allow_html=True)
+        season_lsa_fig = factor_year_sum_plate_map_scatter(batter_recent_las4)
+        season_lsa_fig.update_layout(height=450, width=430)
+        season_lsa_fig.update_coloraxes(showscale=False)
+        st.plotly_chart(season_lsa_fig, layout="wide", key=f"season_lsa_plate_{batter}")
+    
+    st.markdown(""" <div style="text-align: right; font-size: 0.9em;">
+                    <span style="font-weight: bold;">색상 범례:</span> 
+                    붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
+                </div>
+                """, 
+                unsafe_allow_html=True)
 
-                col1, col2, col3, col4 = st.columns(4)
+    # 선수별 연도별 그림을 볼 수 있는 expander 추가
+    with st.expander(f"연도별: {batter_name}"):
+        # 해당 선수의 모든 연도 데이터 가져오기
+        years = sorted(batter_raw_df['game_year'].unique(), reverse=True)
+        
+        # 각 연도별로 그래프 표시
+        for year_idx, year in enumerate(years):
+            st.subheader(f"{year}년")
+            
+            # 해당 연도의 데이터 필터링
+            year_df = batter_raw_df[batter_raw_df['game_year'] == year]
+            year_swing_df = year_df[year_df['swing'] == 1]
+            year_lsa4_df = year_df[year_df['plus_lsa4'] == 1]
+            
+            # 연도별 그래프 표시
+            col1, col2, col3, col4 = st.columns(4)
+            
+            with col1:
+                original_title = '<p style="text-align: center; color:gray; font-size: 25px;">투구지점 (히트맵)</p>'
+                st.markdown(original_title, unsafe_allow_html=True)
+                year_pitched_heatmap = factor_year_count_map(year_df, pitched_factor)
+                year_pitched_heatmap.update_layout(height=450, width=450)
+                year_pitched_heatmap.update_coloraxes(showscale=False)
+                st.plotly_chart(year_pitched_heatmap, layout="wide", key=f"year_pitched_heatmap_{batter}_{year}")
+            
+            with col2:
+                original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점 (히트맵)</p>'
+                st.markdown(original_title, unsafe_allow_html=True)
+                year_swing_heatmap = factor_year_sum_map(year_df, swing_factor)
+                year_swing_heatmap.update_layout(height=450, width=450)
+                year_swing_heatmap.update_coloraxes(showscale=False)
+                st.plotly_chart(year_swing_heatmap, layout="wide", key=f"year_swing_heatmap_{batter}_{year}")
+            
+            with col3:
+                original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
+                st.markdown(original_title, unsafe_allow_html=True)
+                year_lsa_fig = factor_year_sum_map_scatter(year_lsa4_df)
+                year_lsa_fig.update_layout(height=450, width=450)
+                year_lsa_fig.update_coloraxes(showscale=False)
+                st.plotly_chart(year_lsa_fig, layout="wide", key=f"year_lsa_fig_{batter}_{year}")
+            
+            with col4:
+                original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
+                st.markdown(original_title, unsafe_allow_html=True)
+                year_lsa_plate_fig = factor_year_sum_plate_map_scatter(year_lsa4_df)
+                year_lsa_plate_fig.update_layout(height=450, width=430)
+                year_lsa_plate_fig.update_coloraxes(showscale=False)
+                st.plotly_chart(year_lsa_plate_fig, layout="wide", key=f"year_lsa_plate_fig_{batter}_{year}")
+            
+            # 연도별 구분선 추가
+            st.markdown("---")
 
-                    # 선수별 연도별 그림을 볼 수 있는 expander 추가
-                with st.expander(f"연도별: {batter_name}"):
-                    # 해당 선수의 모든 연도 데이터 가져오기
-                    years = sorted(batter_raw_df['game_year'].unique(), reverse=True)
-                    
-                    # 각 연도별로 그래프 표시
-                    for year in years:
-                        st.subheader(f"{year}년")
-                        
-                        # 해당 연도의 데이터 필터링
-                        year_df = batter_raw_df[batter_raw_df['game_year'] == year]
-                        year_swing_df = year_df[year_df['swing'] == 1]
-                        year_lsa4_df = year_df[year_df['plus_lsa4'] == 1]
-                        
-                        # 연도별 그래프 표시
-                        col1, col2, col3, col4 = st.columns(4)
-                        
-                        with col1:
-                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">투구지점 (히트맵)</p>'
-                            st.markdown(original_title, unsafe_allow_html=True)
-                            year_pitched_heatmap = factor_year_count_map(year_df, pitched_factor)
-                            year_pitched_heatmap.update_layout(height=450, width=450)
-                            year_pitched_heatmap.update_coloraxes(showscale=False)
-                            st.plotly_chart(year_pitched_heatmap, layout="wide", key="year_pitched_heatmap")
-                        
-                        with col2:
-                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점 (히트맵)</p>'
-                            st.markdown(original_title, unsafe_allow_html=True)
-                            year_swing_heatmap = factor_year_sum_map(year_df, swing_factor)
-                            year_swing_heatmap.update_layout(height=450, width=450)
-                            year_swing_heatmap.update_coloraxes(showscale=False)
-                            st.plotly_chart(year_swing_heatmap, layout="wide", key="year_swing_heatmap")
-                        
-                        with col3:
-                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
-                            st.markdown(original_title, unsafe_allow_html=True)
-                            year_lsa_fig = factor_year_sum_map_scatter(year_lsa4_df)
-                            year_lsa_fig.update_layout(height=450, width=450)
-                            year_lsa_fig.update_coloraxes(showscale=False)
-                            st.plotly_chart(year_lsa_fig, layout="wide", key="year_lsa_fig")
-                        
-                        with col4:
-                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
-                            st.markdown(original_title, unsafe_allow_html=True)
-                            year_lsa_plate_fig = factor_year_sum_plate_map_scatter(year_lsa4_df)
-                            year_lsa_plate_fig.update_layout(height=450, width=430)
-                            year_lsa_plate_fig.update_coloraxes(showscale=False)
-                            st.plotly_chart(year_lsa_plate_fig, layout="wide", key="year_lsa_plate_fig")
-                        
-  
-                        # 연도별 구분선 추가
-                        st.markdown("---")
-
-            st.divider()
+    st.divider()
 
 # -------------------------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------------
