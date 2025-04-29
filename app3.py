@@ -47,7 +47,7 @@ st.markdown("""
         border: 0px solid #ddd;
         padding: 10px;
         border-radius: 0px;
-        margin-bottom: -10px;
+        margin-bottom: 0px;
     }
     /* 메인 버튼 스타일 */
     .stButton > button {
@@ -180,10 +180,6 @@ def show_login_page():
         # Horizontal line
         st.markdown('<hr style="margin: 0px 0;">', unsafe_allow_html=True)
 
-        # 로그인 폼을 div로 감싸서 스타일 적용
-        st.markdown('<div class="login-form-container">', unsafe_allow_html=True)
-        
-        # 컨테이너 간격 최소화를 위해 columns 사용
         form_col = st.container()
         with form_col:
             userName = st.text_input("", placeholder="아이디", label_visibility="collapsed")
