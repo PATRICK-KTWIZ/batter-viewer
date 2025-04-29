@@ -39,7 +39,27 @@ st.markdown("""
         border-radius: 0px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
-    
+    /* 로고 컨테이너 */
+    .logo-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    /* 로그인 폼 스타일 */
+    .stTextInput > div > div > input {
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 3px;
+    }
+    /* 메인 버튼 스타일 */
+    .stButton > button {
+        background-color: #333333;
+        color: #c0c0c0;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
 
 </style>
 """, unsafe_allow_html=True)
