@@ -26,6 +26,12 @@ if 'loggedIn' not in st.session_state:
 # 로그인 페이지와 메인 페이지를 위한 CSS 스타일 분리
 st.markdown("""
 <style>
+
+    /* 모든 기본 여백 제거 */
+    #root > div:nth-child(1) > div.withScreencast > div > div {
+        padding-top: 0 !important;
+    }
+    
     /* 전체 페이지 스타일 */
     .stApp {
         background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
