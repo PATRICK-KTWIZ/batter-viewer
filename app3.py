@@ -49,20 +49,10 @@ st.markdown("""
         display: block;
         margin-left: auto; 
         margin-right: auto; 
-        width: 85%;
+        width: 75%;
     }
     
-    /* 사이드바 너비 조절 - 여기서 원하는 너비로 변경 */
-    [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-        width: 400px !important;  /* 원하는 너비로 변경 (예: 400px) */
-    }
-    
-    /* 축소된 사이드바 너비도 조절 가능 */
-    [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
-        width: 75px !important;
-        margin-left: -75px !important;
-    }
-    
+
     .main-page .sidebar-title {
         text-align: center; 
         font-family: Times New Roman; 
