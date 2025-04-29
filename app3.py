@@ -156,6 +156,18 @@ def show_login_page():
     # 로그인 페이지 클래스 추가
     st.markdown('<div class="login-page">', unsafe_allow_html=True)
 
+    st.markdown("""
+    <style>
+        .main {
+        background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
+        background-attachment: fixed;
+        height: 95vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
+        max-height: 1000px; /* 최대 높이 설정 */
+        overflow: auto;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>"
                 , unsafe_allow_html=True)
     # Main layout with two columns
