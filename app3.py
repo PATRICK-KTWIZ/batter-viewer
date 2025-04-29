@@ -39,14 +39,13 @@ st.markdown("""
     
     /* 헤더 스타일 */
     .header-container {
-        # background-color: #222222;
         width: 100%;
         padding: 10px 20px;
         margin: 0 !important;
         position: relative;
         left: 50%;
         right: 50%;
-        margin-left: -50vw !important;
+        margin-left: 10vw !important;
         margin-right: -50vw !important;
         box-sizing: border-box;
     }
