@@ -356,15 +356,6 @@ def show_main_page():
     with mainSection:
         
 
-        st.markdown("""
-                    <style>
-                        /* 모든 기존 스타일 초기화 */
-                        .stApp, .main, .block-container, [data-testid="stAppViewContainer"] {
-                            all: initial !important;
-                        }
-                    </style>
-                    """, unsafe_allow_html=True)
-
         st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
         
         st.markdown("""
