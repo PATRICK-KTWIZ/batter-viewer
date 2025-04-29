@@ -141,7 +141,7 @@ st.markdown("""
     
     /* 사이드바 너비 조절 및 안정화 */
     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-        width: 320px !important;  /* 안정적인 너비로 설정 */
+        width: 320px !important;
         min-width: 320px !important;
         transition: none !important;
         position: relative !important;
@@ -172,16 +172,19 @@ st.markdown("""
         color: black;
     }
     
-    /* 사이드바 버튼 배경색 및 텍스트 색상 변경 */
+    /* 사이드바 버튼 배경색 및 텍스트 색상 변경 - 넓게 표시 */
     [data-testid="stSidebar"] .stButton > button {
         background-color: #cccccc !important;
         color: black !important;
         border: none;
-        border-radius: 7px;  /* 모서리 둥글기 */
-        padding: 0.5rem 1rem;  /* 패딩 */
+        border-radius: 7px;
+        padding: 0.5rem 1rem;
+        width: 100% !important; /* 버튼 너비 100%로 설정 */
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
     
-    /* 사이드바 버튼 호버 효과 (선택사항) */
+    /* 사이드바 버튼 호버 효과 */
     [data-testid="stSidebar"] .stButton > button:hover {
         background-color: #dddddd !important;
     }
@@ -210,6 +213,17 @@ st.markdown("""
         font-family: sans-serif; 
         color: #c0c0c0; 
         font-size: 14px;
+    }
+    
+    /* 드롭다운 선택 박스 너비 조정 */
+    [data-testid="stSidebar"] .stSelectbox {
+        width: 100% !important;
+        margin-bottom: 15px !important;
+    }
+    
+    /* 드롭다운 선택 박스 내부 요소 너비 조정 */
+    [data-testid="stSidebar"] .stSelectbox > div {
+        width: 100% !important;
     }
 </style>
 """, unsafe_allow_html=True)
