@@ -153,6 +153,30 @@ def LoggedIn_Clicked(userName, password):
 
 def show_login_page():
 
+
+    # 전체 페이지 스타일 조정
+    st.markdown("""
+    <style>
+        /* 스트림릿 기본 여백 제거 */
+        .main .block-container {
+            padding-top: 1rem !important;
+            margin-top: 0 !important;
+        }
+        
+        /* 마크다운 요소의 여백 제거 */
+        .stMarkdown {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+        
+        /* h1 태그 스타일 직접 조정 */
+        h1 {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            line-height: 1.2 !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
     
     st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>"
                 , unsafe_allow_html=True)
