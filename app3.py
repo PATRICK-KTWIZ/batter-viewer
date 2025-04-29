@@ -360,6 +360,15 @@ def show_main_page():
 
         st.markdown("""
                     <style>
+
+                        /* 이전 스타일 초기화 및 새 스타일 적용 */
+                        .stApp {
+                            background: none !important;  /* 이전 배경 제거 */
+                            background-color: #ffffff !important;  /* 새 배경색 적용 */
+                            height: auto !important;  /* 이전 높이 설정 제거 */
+                            max-height: none !important;  /* 이전 최대 높이 설정 제거 */
+                            overflow: visible !important;  /* 이전 오버플로우 설정 제거 */
+                        }
                         /* 전체 페이지 스타일 */
                         .main {
                             background-color: #ffffff;
