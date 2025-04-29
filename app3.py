@@ -47,7 +47,7 @@ st.markdown("""
         border: 0px solid #ddd;
         padding: 10px;
         border-radius: 0px;
-        margin-bottom: 0px;
+        margin-bottom: -10px;
     }
     /* 메인 버튼 스타일 */
     .stButton > button {
