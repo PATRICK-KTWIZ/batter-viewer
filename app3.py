@@ -158,17 +158,7 @@ def show_login_page():
                 , unsafe_allow_html=True)
 
 
-    st.markdown("""
-    <style>
-        /* 제목 상단 여백 조정 */
-        h1 {
-            margin-top: -20px;       /* 상단 여백 */
-            padding-left: 10px;     /* 왼쪽 패딩 */
-            line-height: 1.3;       /* 줄 간격 */
-        }
-    </style>
-    """, unsafe_allow_html=True)
-    
+  
     # Main layout with two columns
     left_col, middle_col, right_col = st.columns([0.8, 3, 4.5])
 
