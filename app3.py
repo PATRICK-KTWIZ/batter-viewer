@@ -154,12 +154,20 @@ st.markdown("""
         transition: none !important;
     }
     
-    /* 사이드바 selectbox 라벨 색상 변경 (옅은 회색) */
+    /* 사이드바 내부 요소 간격 축소 */
+    [data-testid="stSidebar"] .block-container {
+        padding-top: 2rem !important;
+        padding-bottom: 1rem !important;
+    }
+    
+    /* 사이드바 selectbox 라벨 색상 변경 및 간격 조정 */
     [data-testid="stSidebar"] .css-81oif8,
     [data-testid="stSidebar"] .css-1inwz65,
     [data-testid="stSidebar"] label,
     [data-testid="stSidebar"] .stSelectbox > div > label {
         color: #cccccc !important;
+        margin-bottom: 0.2rem !important;
+        font-size: 0.9rem !important;
     }
     
     /* 사이드바 selectbox 내부 텍스트 색상 변경 */
@@ -178,15 +186,38 @@ st.markdown("""
         color: black !important;
         border: none;
         border-radius: 7px;
-        padding: 0.5rem 1rem;
-        width: 100% !important; /* 버튼 너비 100%로 설정 */
-        margin-top: 10px;
-        margin-bottom: 10px;
+        padding: 0.3rem 0.5rem; /* 패딩 축소 */
+        width: 100% !important;
+        margin-top: 5px; /* 마진 축소 */
+        margin-bottom: 5px; /* 마진 축소 */
+        font-size: 0.9rem !important; /* 폰트 크기 축소 */
     }
     
     /* 사이드바 버튼 호버 효과 */
     [data-testid="stSidebar"] .stButton > button:hover {
         background-color: #dddddd !important;
+    }
+    
+    /* 드롭다운 선택 박스 너비 조정 및 간격 축소 */
+    [data-testid="stSidebar"] .stSelectbox {
+        width: 100% !important;
+        margin-bottom: 8px !important; /* 마진 축소 */
+    }
+    
+    /* 드롭다운 선택 박스 내부 요소 너비 조정 */
+    [data-testid="stSidebar"] .stSelectbox > div {
+        width: 100% !important;
+        min-height: 0 !important; /* 높이 축소 */
+    }
+    
+    /* 드롭다운 선택 박스 내부 입력 필드 높이 축소 */
+    [data-testid="stSidebar"] .stSelectbox input {
+        padding: 0.3rem !important;
+    }
+    
+    /* 전체 폼 요소 간격 축소 */
+    [data-testid="stSidebar"] .element-container {
+        margin-bottom: 0.5rem !important;
     }
     
     /* 메인 페이지 사이드바 타이틀 스타일 */
@@ -214,17 +245,7 @@ st.markdown("""
         color: #c0c0c0; 
         font-size: 14px;
     }
-    
-    /* 드롭다운 선택 박스 너비 조정 */
-    [data-testid="stSidebar"] .stSelectbox {
-        width: 100% !important;
-        margin-bottom: 15px !important;
-    }
-    
-    /* 드롭다운 선택 박스 내부 요소 너비 조정 */
-    [data-testid="stSidebar"] .stSelectbox > div {
-        width: 100% !important;
-    }
+</style>
 </style>
 """, unsafe_allow_html=True)
 
@@ -280,7 +301,7 @@ def show_login_page():
         st.markdown("""
         <div class="logo-container" style="padding-top: 100px;">
         """, unsafe_allow_html=True)
-        st.image("ktwiz_emblem.png", width=300)
+        st.image("ktwiz_emblem.png", width=250)
         st.markdown('</div>', unsafe_allow_html=True)
     
     with right_col:
