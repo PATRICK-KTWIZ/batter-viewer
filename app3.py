@@ -22,145 +22,114 @@ if 'loggedIn' not in st.session_state:
 # 로그인 페이지와 메인 페이지를 위한 CSS 스타일 분리
 st.markdown("""
 <style>
-    /* 공통 스타일 */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    
-    .block-container {
-        padding-top: 1rem;
-        padding-bottom: 0;
-        max-width: 100%;
+    /* 전체 페이지 스타일 */
+    .main {
+        background-color: #f5f5f5;
     }
     
-    /* 로그인 페이지 스타일 */
-    .login-page .stApp {
-        background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
-        background-attachment: fixed;
-        height: 95vh;
-        max-height: 1000px;
-        overflow: auto;
-    }
-    
-    .login-page .login-container {
-        max-width: 400px;
-        margin: 50px 0 0 auto;
+    /* 로그인 컨테이너 스타일 */
+    .login-container {
+        max-width: 450px;
+        margin: 50px auto;
         padding: 30px;
-        background-color: #f0f0f0;
-        border-radius: 0;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     
-    .login-page .stTextInput > div > div > input {
-        padding: 5px 15px !important;
-        width: 100%;
-        margin: -5;
-        height: 35px !important;
-        min-height: 35px !important;
-        border: none;
-        border-radius: 0;
-    }
-    
-    .login-page .username-field {
-        margin-top: -100px;
-        margin-bottom: -100px !important;
-    }
-    
-    .login-page .password-field {
-        margin-bottom: -10px;
-        margin-top: -10px !important;
-    }
-    
-    .login-page .logo-container {
+    /* 로고 컨테이너 */
+    .logo-container {
+        text-align: center;
         margin-bottom: 20px;
-        padding-left: 100px;
     }
     
-    .login-page .stButton > button {
+    /* 로그인 폼 스타일 */
+    .stTextInput > div > div > input {
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 3px;
+    }
+    
+    /* 메인 버튼 스타일 */
+    .stButton > button {
         background-color: #333333;
-        color: white;
+        color: #c0c0c0;
         width: 100%;
         padding: 10px;
         border: none;
-        border-radius: 0;
+        border-radius: 3px;
         cursor: pointer;
     }
     
-    .login-page .stCheckbox > div {
+    /* 체크박스 스타일 */
+    .stCheckbox > div {
         display: flex;
         align-items: center;
     }
     
-    .login-page .footer {
+    /* 푸터 스타일 */
+    .footer {
         text-align: center;
-        position: fixed;
-        bottom: 60px;
-        width: 100%;
-        color: #333;
-        font-size: 15px;
-    }
-    
-    .login-page .header-text {
-        font-size: 38px;
-        font-weight: bold;
-        color: #c0c0c0;
-        margin-bottom: 5px;
-    }
-    
-    .login-page .subheader-text {
-        color: #c0c0c0;
-        font-size: 20px;
-        margin-bottom: 20px;
-    }
-    
-    .login-page .info-text {
-        font-size: 15px;
+        margin-top: 20px;
         color: #666;
-    }
-    
-    .login-page .warning-text {
-        color: red;
-        font-weight: bold;
-        margin-bottom: 12px;
-        font-size: 16px;
-        text-align: right;
-    }
-    
-    .login-page [data-testid="stHorizontalBlock"] {
-        gap: 0 !important;
-    }
-    
-    .login-page .stCheckbox label {
         font-size: 12px;
     }
     
-    /* 메인 페이지 스타일 */
+    /* 로그인 페이지 배경 */
+    .login-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #333333 25%, #e6e6e6 25%, #e6e6e6 50%, #ff1a1a 50%);
+        background-size: cover;
+        z-index: -1;
+    }
+    
+    /* 헤더 텍스트 스타일 */
+    .header-text {
+        text-align: center;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    /* 서브헤더 텍스트 스타일 */
+    .subheader-text {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    
     /* 사이드바 배경색 변경 */
     [data-testid="stSidebar"] {
         background-color: #2d2d2d;
-        transition: none !important;
     }
     
     /* 사이드바 너비 조절 및 안정화 */
     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
         width: 320px !important;
         min-width: 320px !important;
-        transition: none !important;
-        position: relative !important;
-        box-sizing: border-box !important;
     }
     
     [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
         width: 75px !important;
         margin-left: -75px !important;
-        transition: none !important;
     }
     
-    /* 사이드바 내부 요소 간격 축소 */
+    /* 사이드바 내부 컨테이너 패딩 축소 */
     [data-testid="stSidebar"] .block-container {
-        padding-top: 2rem !important;
-        padding-bottom: 1rem !important;
+        padding-top: 1rem !important;
+        padding-bottom: 0.5rem !important;
     }
     
-    /* 사이드바 selectbox 라벨 색상 변경 및 간격 조정 */
+    /* 사이드바 요소 간격 조정 */
+    [data-testid="stSidebar"] .element-container {
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* 사이드바 selectbox 라벨 색상 변경 (옅은 회색) */
     [data-testid="stSidebar"] .css-81oif8,
     [data-testid="stSidebar"] .css-1inwz65,
     [data-testid="stSidebar"] label,
@@ -186,11 +155,11 @@ st.markdown("""
         color: black !important;
         border: none;
         border-radius: 7px;
-        padding: 0.3rem 0.5rem; /* 패딩 축소 */
+        padding: 0.5rem 1rem;
         width: 100% !important;
-        margin-top: 5px; /* 마진 축소 */
-        margin-bottom: 5px; /* 마진 축소 */
-        font-size: 0.9rem !important; /* 폰트 크기 축소 */
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 0.9rem !important;
     }
     
     /* 사이드바 버튼 호버 효과 */
@@ -198,26 +167,15 @@ st.markdown("""
         background-color: #dddddd !important;
     }
     
-    /* 드롭다운 선택 박스 너비 조정 및 간격 축소 */
+    /* 드롭다운 선택 박스 너비 조정 */
     [data-testid="stSidebar"] .stSelectbox {
         width: 100% !important;
-        margin-bottom: 8px !important; /* 마진 축소 */
+        margin-bottom: 8px !important;
     }
     
     /* 드롭다운 선택 박스 내부 요소 너비 조정 */
     [data-testid="stSidebar"] .stSelectbox > div {
         width: 100% !important;
-        min-height: 0 !important; /* 높이 축소 */
-    }
-    
-    /* 드롭다운 선택 박스 내부 입력 필드 높이 축소 */
-    [data-testid="stSidebar"] .stSelectbox input {
-        padding: 0.3rem !important;
-    }
-    
-    /* 전체 폼 요소 간격 축소 */
-    [data-testid="stSidebar"] .element-container {
-        margin-bottom: 0.5rem !important;
     }
     
     /* 메인 페이지 사이드바 타이틀 스타일 */
