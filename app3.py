@@ -152,20 +152,8 @@ def LoggedIn_Clicked(userName, password):
         st.error("유효하지 않은 ID 또는 패스워드 입니다.")
 
 def show_login_page():
-    st.markdown("""
-    <style>
-        /* 제목 상단 여백 조정 */
-        h1 {
-            margin-top: 10px;       /* 상단 여백 */
-            margin-bottom: 30px;    /* 하단 여백 */
-            padding-left: 10px;     /* 왼쪽 패딩 */
-            line-height: 1.3;       /* 줄 간격 */
-        }
-    </style>
-        """, unsafe_allow_html=True)
 
-    st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>"
-                , unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: left; margin-top: 10px; margin-bottom: 30px; padding-left: 10px; line-height: 1.3;'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>", unsafe_allow_html=True)
     # Main layout with two columns
     left_col, middle_col, right_col = st.columns([0.7, 3, 4.7])
 
