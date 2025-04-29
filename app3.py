@@ -356,7 +356,7 @@ def show_main_page():
     with mainSection:
         
 
-       st.markdown("""
+        st.markdown("""
                     <style>
                         /* 모든 기존 스타일 초기화 */
                         .stApp, .main, .block-container, [data-testid="stAppViewContainer"] {
