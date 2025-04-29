@@ -22,10 +22,20 @@ if 'loggedIn' not in st.session_state:
 # 로그인 페이지와 메인 페이지를 위한 CSS 스타일 분리
 st.markdown("""
 <style>
-   /* 전체 페이지 스타일 */
+    /* 전체 페이지 스타일 */
     .main {
         background-color: #f5f5f5;
     }
+    /* 로그인 컨테이너 스타일 */
+    .login-container {
+        max-width: 450px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
 
 </style>
 """, unsafe_allow_html=True)
