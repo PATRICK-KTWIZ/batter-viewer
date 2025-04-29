@@ -159,7 +159,7 @@ def show_login_page():
     <style>
         /* 스트림릿 기본 여백 제거 */
         .main .block-container {
-            padding-top: 1rem !important;
+            padding-top: 0.5rem !important;
             margin-top: 0 !important;
         }
         
@@ -171,7 +171,7 @@ def show_login_page():
         
         /* h1 태그 스타일 직접 조정 */
         h1 {
-            margin-top: 0 !important;
+            margin-top: -10 !important;
             padding-top: 0 !important;
             line-height: 1.2 !important;
         }
