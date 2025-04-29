@@ -195,7 +195,6 @@ def LoggedIn_Clicked(userName, password):
     if login(userName, password):
         set_user_id(userName)  # Set the user ID in the session cookie
         st.session_state['loggedIn'] = True
-        st.session_state['password'] = password  # 비밀번호를 세션 상태에 저장
     else:
         st.session_state['loggedIn'] = False
         st.error("유효하지 않은 ID 또는 패스워드 입니다.")
@@ -318,6 +317,7 @@ def show_login_page():
         with form_col:
             userName = st.text_input("", placeholder="아이디", label_visibility="collapsed")
             password = st.text_input("", placeholder="비밀번호", type="password", label_visibility="collapsed")
+            st.session_state['password'] = password
             login_button = st.button("로그인", on_click=LoggedIn_Clicked, args=(userName, password))
         
         st.markdown('</div>', unsafe_allow_html=True)
@@ -334,15 +334,14 @@ def show_login_page():
         # Close the login container div
         st.markdown('</div>', unsafe_allow_html=True)
 
-
-       # Footer
+        
+   # Footer
     st.markdown("""
     <div class="footer">
         Copyright © 2025 kt wiz baseball club. All rights reserved.
     </div>
     """, unsafe_allow_html=True)
 
-        
 def show_main_page():
     # Check if the user is logged in
     
@@ -355,26 +354,17 @@ def show_main_page():
     #     return
 
     with mainSection:
+        
 
         st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
 
         st.markdown("""
                     <style>
-
-                        /* 이전 스타일 초기화 및 새 스타일 적용 */
-                        .stApp {
-                            background: none !important;  /* 이전 배경 제거 */
-                            background-color: #ffffff !important;  /* 새 배경색 적용 */
-                            height: auto !important;  /* 이전 높이 설정 제거 */
-                            max-height: none !important;  /* 이전 최대 높이 설정 제거 */
-                            overflow: visible !important;  /* 이전 오버플로우 설정 제거 */
-                        }
                         /* 전체 페이지 스타일 */
                         .main {
-                            background-color: #ffffff;
+                            background-color: #f5f5f5;
                         }
-
-                   
+                        
                         /* 로그인 컨테이너 스타일 */
                         .login-container {
                             max-width: 450px;
@@ -455,24 +445,6 @@ def show_main_page():
         
         st.markdown("""
                     <style>
-                        /* 사이드바 안정화 속성 추가 */
-                        [data-testid="stSidebar"] {
-                            background-color: #2d2d2d;
-                            width: 300px !important;  /* 고정 너비 설정 */
-                            position: fixed !important;  /* 위치 고정 */
-                            height: 100vh !important;  /* 전체 높이 사용 */
-                            transition: none !important;  /* 전환 효과 제거 */
-                            animation: none !important;  /* 애니메이션 제거 */
-                            overflow-y: auto !important;  /* 세로 스크롤만 허용 */
-                            z-index: 99 !important;  /* 레이어 순서 설정 */
-                        }
-                        
-                        /* 사이드바 내부 요소 안정화 */
-                        [data-testid="stSidebar"] > div:first-child {
-                            width: 100% !important;
-                            height: 100% !important;
-                        }
-                        
                         /* 사이드바 배경색 변경 */
                         [data-testid="stSidebar"] {
                             background-color: #2d2d2d;
@@ -488,12 +460,12 @@ def show_main_page():
                         
                         /* 사이드바 selectbox 내부 텍스트 색상 변경 */
                         [data-testid="stSidebar"] .stSelectbox > div > div > div {
-                            color: black !important;
+                            color: #cccccc !important;
                         }
                         
                         /* 드롭다운 메뉴 텍스트 색상 */
                         .stSelectbox option {
-                            color: black;
+                            color: #cccccc;
                         }
                         
                         /* 사이드바 버튼 배경색 및 텍스트 색상 변경 */
@@ -509,20 +481,10 @@ def show_main_page():
                         [data-testid="stSidebar"] .stButton > button:hover {
                             background-color: #dddddd !important;
                         }
-
-                        /* 메인 컨텐츠 영역 조정 (사이드바 고정에 따른 조정) */
-                        .main .block-container {
-                            margin-left: 300px !important;  /* 사이드바 너비와 일치 */
-                            max-width: calc(100% - 300px) !important;
-                            padding-left: 2rem !important;
-                            box-sizing: border-box !important;
-                        }
-
                     </style>
                     """, unsafe_allow_html=True)
 
         st.markdown("""<style>[data-testid=stSidebar] [data-testid=stImage]{text-align: center;display: block;margin-left: auto; margin-right: auto; width: 85%;}</style>""", unsafe_allow_html=True)
-       
         with st.sidebar:
             st.image("ktwiz_emblem.png")
 
