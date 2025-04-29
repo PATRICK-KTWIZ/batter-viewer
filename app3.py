@@ -133,24 +133,60 @@ st.markdown("""
     }
     
     /* 메인 페이지 스타일 */
-    .main-page [data-testid=stSidebar] [data-testid=stImage] {
-        text-align: center;
-        display: block;
-        margin-left: auto; 
-        margin-right: auto; 
-        width: 85%;
+    /* 사이드바 배경색 변경 */
+    [data-testid="stSidebar"] {
+        background-color: #2d2d2d;
+        transition: none !important;
     }
     
-    .main-page [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-        width: 340px;
-    }
-
-    /* 사이드바 너비 조절 - 여기서 원하는 너비로 변경 */
+    /* 사이드바 너비 조절 및 안정화 */
     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-        width: 300px !important;  /* 원하는 너비로 변경 (예: 400px) */
+        width: 320px !important;  /* 안정적인 너비로 설정 */
+        min-width: 320px !important;
+        transition: none !important;
+        position: relative !important;
+        box-sizing: border-box !important;
     }
-
     
+    [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
+        width: 75px !important;
+        margin-left: -75px !important;
+        transition: none !important;
+    }
+    
+    /* 사이드바 selectbox 라벨 색상 변경 (옅은 회색) */
+    [data-testid="stSidebar"] .css-81oif8,
+    [data-testid="stSidebar"] .css-1inwz65,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] .stSelectbox > div > label {
+        color: #cccccc !important;
+    }
+    
+    /* 사이드바 selectbox 내부 텍스트 색상 변경 */
+    [data-testid="stSidebar"] .stSelectbox > div > div > div {
+        color: black !important;
+    }
+    
+    /* 드롭다운 메뉴 텍스트 색상 */
+    .stSelectbox option {
+        color: black;
+    }
+    
+    /* 사이드바 버튼 배경색 및 텍스트 색상 변경 */
+    [data-testid="stSidebar"] .stButton > button {
+        background-color: #cccccc !important;
+        color: black !important;
+        border: none;
+        border-radius: 7px;  /* 모서리 둥글기 */
+        padding: 0.5rem 1rem;  /* 패딩 */
+    }
+    
+    /* 사이드바 버튼 호버 효과 (선택사항) */
+    [data-testid="stSidebar"] .stButton > button:hover {
+        background-color: #dddddd !important;
+    }
+    
+    /* 메인 페이지 사이드바 타이틀 스타일 */
     .main-page .sidebar-title {
         text-align: center; 
         font-family: Times New Roman; 
@@ -159,6 +195,7 @@ st.markdown("""
         font-weight: bold;
     }
     
+    /* 메인 페이지 사이드바 텍스트 스타일 */
     .main-page .sidebar-text {
         text-align: center; 
         font-family: sans-serif; 
@@ -167,6 +204,7 @@ st.markdown("""
         font-weight: bold;
     }
     
+    /* 메인 페이지 사이드바 서브텍스트 스타일 */
     .main-page .sidebar-subtext {
         text-align: center; 
         font-family: sans-serif; 
