@@ -19,6 +19,158 @@ st.set_page_config(page_title="Batting Analytics Page", layout="wide")
 if 'loggedIn' not in st.session_state:
     st.session_state.loggedIn = False
 
+# 로그인 페이지와 메인 페이지를 위한 CSS 스타일 분리
+st.markdown("""
+<style>
+    /* 공통 스타일 */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    
+    .block-container {
+        padding-top: 1rem;
+        padding-bottom: 0;
+        max-width: 100%;
+    }
+    
+    /* 로그인 페이지 스타일 */
+    .login-page .stApp {
+        background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
+        background-attachment: fixed;
+        height: 95vh;
+        max-height: 1000px;
+        overflow: auto;
+    }
+    
+    .login-page .login-container {
+        max-width: 400px;
+        margin: 50px 0 0 auto;
+        padding: 30px;
+        background-color: #f0f0f0;
+        border-radius: 0;
+    }
+    
+    .login-page .stTextInput > div > div > input {
+        padding: 5px 15px !important;
+        width: 100%;
+        margin: -5;
+        height: 35px !important;
+        min-height: 35px !important;
+        border: none;
+        border-radius: 0;
+    }
+    
+    .login-page .username-field {
+        margin-top: -100px;
+        margin-bottom: -100px !important;
+    }
+    
+    .login-page .password-field {
+        margin-bottom: -10px;
+        margin-top: -10px !important;
+    }
+    
+    .login-page .logo-container {
+        margin-bottom: 20px;
+        padding-left: 100px;
+    }
+    
+    .login-page .stButton > button {
+        background-color: #333333;
+        color: white;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 0;
+        cursor: pointer;
+    }
+    
+    .login-page .stCheckbox > div {
+        display: flex;
+        align-items: center;
+    }
+    
+    .login-page .footer {
+        text-align: center;
+        position: fixed;
+        bottom: 60px;
+        width: 100%;
+        color: #333;
+        font-size: 15px;
+    }
+    
+    .login-page .header-text {
+        font-size: 38px;
+        font-weight: bold;
+        color: #c0c0c0;
+        margin-bottom: 5px;
+    }
+    
+    .login-page .subheader-text {
+        color: #c0c0c0;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .login-page .info-text {
+        font-size: 15px;
+        color: #666;
+    }
+    
+    .login-page .warning-text {
+        color: red;
+        font-weight: bold;
+        margin-bottom: 12px;
+        font-size: 16px;
+        text-align: right;
+    }
+    
+    .login-page [data-testid="stHorizontalBlock"] {
+        gap: 0 !important;
+    }
+    
+    .login-page .stCheckbox label {
+        font-size: 12px;
+    }
+    
+    /* 메인 페이지 스타일 */
+    .main-page [data-testid=stSidebar] [data-testid=stImage] {
+        text-align: center;
+        display: block;
+        margin-left: auto; 
+        margin-right: auto; 
+        width: 85%;
+    }
+    
+    .main-page [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+        width: 340px;
+    }
+    
+    .main-page .sidebar-title {
+        text-align: center; 
+        font-family: Times New Roman; 
+        color: black; 
+        font-size: 70px;
+        font-weight: bold;
+    }
+    
+    .main-page .sidebar-text {
+        text-align: center; 
+        font-family: sans-serif; 
+        color: red; 
+        font-size: 22px;
+        font-weight: bold;
+    }
+    
+    .main-page .sidebar-subtext {
+        text-align: center; 
+        font-family: sans-serif; 
+        color: #c0c0c0; 
+        font-size: 14px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
 headerSection = st.container()
 mainSection = st.container()
 loginSection = st.container()
@@ -58,9 +210,10 @@ def LoggedIn_Clicked(userName, password):
         st.error("유효하지 않은 ID 또는 패스워드 입니다.")
 
 def show_login_page():
+    # 로그인 페이지 클래스 추가
+    st.markdown('<div class="login-page">', unsafe_allow_html=True)
 
     st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>", unsafe_allow_html=True)
-
     # Main layout with two columns
     left_col, middle_col, right_col = st.columns([0.5, 3, 4])
 
@@ -117,44 +270,44 @@ def show_login_page():
     </div>
     """, unsafe_allow_html=True)
 
+    # 로그인 페이지 클래스 닫기
+    st.markdown('</div>', unsafe_allow_html=True)
+
 def show_main_page():
     # Check if the user is logged in
     
     if not is_user_logged_in():
         show_login_page()
         return
-
-    # if not st.session_state.get('loggedIn'):
-    #     show_login_page()
-    #     return
+    
+    # 메인 페이지 클래스 추가
+    st.markdown('<div class="main-page">', unsafe_allow_html=True)
 
     with mainSection:
         
-
         st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
         
-
-        st.markdown("""<style>[data-testid=stSidebar] [data-testid=stImage]{text-align: center;display: block;margin-left: auto; margin-right: auto; width: 85%;}</style>""", unsafe_allow_html=True)
+        # st.markdown("""<style>[data-testid=stSidebar] [data-testid=stImage]{text-align: center;display: block;margin-left: auto; margin-right: auto; width: 85%;}</style>""", unsafe_allow_html=True)
+        
         with st.sidebar:
             st.image("ktwiz_emblem.png")
 
-        st.markdown("""<style>[data-testid="stSidebar"][aria-expanded="true"] > div:first-child{width: 340px; }""", unsafe_allow_html=True,)
+        # st.markdown("""<style>[data-testid="stSidebar"][aria-expanded="true"] > div:first-child{width: 340px; }""", unsafe_allow_html=True,)
 
         id_dataset = pd.read_csv('./player_id_info_2025.csv')
         id_dataset = id_dataset[['team','NAME','POS','TM_ID']]
-        # id_dataset = id_dataset[['team','NAME','POS','TM_ID','Height']]
         id_dataset = id_dataset[id_dataset['POS'] != 'P']
 
         #------------------------------------------------------------------------------
 
-        # sidebar_title = '<p style="text-align: center; font-family:Times New Roman; color:black; font-size: 70px;font-weight:bold"></p>'
-        # st.sidebar.markdown(sidebar_title, unsafe_allow_html=True)
+        # sidebar_text = '<p style="text-align: center; font-family:sans-serif; color:red; font-size: 22px;font-weight:bold">[타자분석 페이지]</p>'
+        # st.sidebar.markdown(sidebar_text, unsafe_allow_html=True)
 
-        sidebar_text = '<p style="text-align: center; font-family:sans-serif; color:red; font-size: 22px;font-weight:bold">[타자분석 페이지]</p>'
-        st.sidebar.markdown(sidebar_text, unsafe_allow_html=True)
+        # sidebar_text = '<p style="text-align: center; font-family:sans-serif; color: #c0c0c0; font-size: 14px;">본 웹페이지는 kt wiz 전략데이터팀이<br> 개발 및 발행하였으며 허용되는 사용자 외 <br>배포 및 사용을 엄금함</p>'
+        # st.sidebar.markdown(sidebar_text, unsafe_allow_html=True)
 
-        sidebar_text = '<p style="text-align: center; font-family:sans-serif; color: #c0c0c0; font-size: 14px;">본 웹페이지는 kt wiz 전략데이터팀이<br> 개발 및 발행하였으며 허용되는 사용자 외 <br>배포 및 사용을 엄금함</p>'
-        st.sidebar.markdown(sidebar_text, unsafe_allow_html=True)
+        st.sidebar.markdown('<div class="sidebar-text">[타자분석 페이지]</div>', unsafe_allow_html=True)
+        st.sidebar.markdown('<div class="sidebar-subtext">본 웹페이지는 kt wiz 전략데이터팀이<br> 개발 및 발행하였으며 허용되는 사용자 외 <br>배포 및 사용을 엄금함</div>', unsafe_allow_html=True)
 
         #-------------------------------------------------------------------------
 
@@ -167,14 +320,8 @@ def show_main_page():
         select_player = st.sidebar.selectbox('선수 선택', player_list)
 
         player_id = find_id(player_dataset, select_player)
-
-        # height = int(player_dataset.iloc[0]['Height'])
-        # top_line = height * 0.5635
-        # bottom_line = height * 0.2764
         
         option = st.sidebar.selectbox('리그 선택', ("-", "KBO(1군)", "KBO(2군)", "AAA","KBA(아마)"))
-
-
 
 
         # Create a session_state variable to store selected player information
