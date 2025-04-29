@@ -39,11 +39,11 @@ st.markdown("""
         border-radius: 0px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
-    /* 로고 컨테이너 */
-    .logo-container {
-        text-align: center;
-        margin-bottom: 20px;
-    }
+    # /* 로고 컨테이너 */
+    # .logo-container {
+    #     text-align: center;
+    #     margin-bottom: 20px;
+    # }
     /* 로그인 폼 스타일 */
     .stTextInput > div > div > input {
         border: 0px solid #ddd;
