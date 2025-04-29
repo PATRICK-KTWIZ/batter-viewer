@@ -81,16 +81,16 @@ st.markdown("""
     }
     /* 헤더 텍스트 스타일 */
     .header-text {
-        font-size: 38px;
+        font-size: 35px;
         font-weight: bold;
         color: red;
-        margin-bottom: 5px;
+        margin-bottom: 0px;
     }
     /* 서브헤더 텍스트 스타일 */
     .subheader-text {
         color: #c0c0c0;
-        font-size: 20px;
-        margin-bottom: 20px;
+        font-size: 18px;
+        margin-bottom: 10px;
     }
     
     /* 안내 텍스트 스타일 */
