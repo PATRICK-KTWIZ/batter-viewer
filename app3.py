@@ -156,7 +156,7 @@ def show_login_page():
     st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>"
                 , unsafe_allow_html=True)
     # Main layout with two columns
-    left_col, middle_col, right_col = st.columns([0.8, 2.2, 4.7])
+    left_col, middle_col, right_col = st.columns([0.8, 3, 4.5])
 
     with middle_col:
         # Logo area
