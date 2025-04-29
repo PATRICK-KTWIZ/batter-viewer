@@ -156,7 +156,7 @@ def show_login_page():
     # 로그인 페이지 클래스 추가
     st.markdown('<div class="login-page">', unsafe_allow_html=True)
 
-        st.markdown("""
+    st.markdown("""
     <style>
         /* 제목 상단 여백 조정 */
         h1 {
