@@ -147,7 +147,7 @@ st.markdown("""
 
     /* 사이드바 너비 조절 - 여기서 원하는 너비로 변경 */
     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-        width: 280px !important;  /* 원하는 너비로 변경 (예: 400px) */
+        width: 300px !important;  /* 원하는 너비로 변경 (예: 400px) */
     }
     
     /* 축소된 사이드바 너비도 조절 가능 */
