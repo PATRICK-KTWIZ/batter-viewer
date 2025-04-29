@@ -22,172 +22,55 @@ if 'loggedIn' not in st.session_state:
 # 로그인 페이지와 메인 페이지를 위한 CSS 스타일 분리
 st.markdown("""
 <style>
-    /* 전체 페이지 스타일 */
-    .main {
-        background-color: #f5f5f5;
+    /* 공통 스타일 */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    
+    .block-container {
+        padding-top: 1rem;
+        padding-bottom: 0;
+        max-width: 100%;
     }
     
-    /* 로그인 컨테이너 스타일 */
-    .login-container {
-        max-width: 450px;
-        margin: 50px auto;
-        padding: 30px;
-        background-color: white;
-        border-radius: 5px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* 로그인 페이지 스타일 */
+    .login-page .stApp {
+        background: linear-gradient(135deg, #2d2d2d 50%, #f0f0f0 50%);
+        background-attachment: fixed;
+        height: 95vh;
+        max-height: 1000px;
+        overflow: auto;
     }
     
-    /* 로고 컨테이너 */
-    .logo-container {
+    /* 기존 로그인 스타일 유지 */
+    
+    /* 메인 페이지 스타일 */
+    .main-page [data-testid=stSidebar] [data-testid=stImage] {
         text-align: center;
-        margin-bottom: 20px;
+        display: block;
+        margin-left: auto; 
+        margin-right: auto; 
+        width: 85%;
     }
     
-    /* 로그인 폼 스타일 */
-    .stTextInput > div > div > input {
-        border: 1px solid #ddd;
-        padding: 10px;
-        border-radius: 3px;
-    }
-    
-    /* 메인 버튼 스타일 */
-    .stButton > button {
-        background-color: #333333;
-        color: #c0c0c0;
-        width: 100%;
-        padding: 10px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-    
-    /* 체크박스 스타일 */
-    .stCheckbox > div {
-        display: flex;
-        align-items: center;
-    }
-    
-    /* 푸터 스타일 */
-    .footer {
-        text-align: center;
-        margin-top: 20px;
-        color: #666;
-        font-size: 12px;
-    }
-    
-    /* 로그인 페이지 배경 */
-    .login-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #333333 25%, #e6e6e6 25%, #e6e6e6 50%, #ff1a1a 50%);
-        background-size: cover;
-        z-index: -1;
-    }
-    
-    /* 헤더 텍스트 스타일 */
-    .header-text {
-        text-align: center;
-        color: #333;
-        margin-bottom: 5px;
-    }
-    
-    /* 서브헤더 텍스트 스타일 */
-    .subheader-text {
-        text-align: center;
-        color: #666;
-        font-size: 14px;
-        margin-bottom: 20px;
-    }
-    
-    /* 사이드바 배경색 변경 */
-    [data-testid="stSidebar"] {
-        background-color: #2d2d2d;
-    }
-    
-    /* 사이드바 너비 조절 및 안정화 */
+    /* 사이드바 너비 조절 - 여기서 원하는 너비로 변경 */
     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-        width: 320px !important;
-        min-width: 320px !important;
+        width: 400px !important;  /* 원하는 너비로 변경 (예: 400px) */
     }
     
+    /* 축소된 사이드바 너비도 조절 가능 */
     [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
         width: 75px !important;
         margin-left: -75px !important;
     }
     
-    /* 사이드바 내부 컨테이너 패딩 축소 */
-    [data-testid="stSidebar"] .block-container {
-        padding-top: 1rem !important;
-        padding-bottom: 0.5rem !important;
-    }
-    
-    /* 사이드바 요소 간격 조정 */
-    [data-testid="stSidebar"] .element-container {
-        margin-bottom: 0.5rem !important;
-    }
-    
-    /* 사이드바 selectbox 라벨 색상 변경 (옅은 회색) */
-    [data-testid="stSidebar"] .css-81oif8,
-    [data-testid="stSidebar"] .css-1inwz65,
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] .stSelectbox > div > label {
-        color: #cccccc !important;
-        margin-bottom: 0.2rem !important;
-        font-size: 0.9rem !important;
-    }
-    
-    /* 사이드바 selectbox 내부 텍스트 색상 변경 */
-    [data-testid="stSidebar"] .stSelectbox > div > div > div {
-        color: black !important;
-    }
-    
-    /* 드롭다운 메뉴 텍스트 색상 */
-    .stSelectbox option {
-        color: black;
-    }
-    
-    /* 사이드바 버튼 배경색 및 텍스트 색상 변경 - 넓게 표시 */
-    [data-testid="stSidebar"] .stButton > button {
-        background-color: #cccccc !important;
-        color: black !important;
-        border: none;
-        border-radius: 7px;
-        padding: 0.5rem 1rem;
-        width: 100% !important;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        font-size: 0.9rem !important;
-    }
-    
-    /* 사이드바 버튼 호버 효과 */
-    [data-testid="stSidebar"] .stButton > button:hover {
-        background-color: #dddddd !important;
-    }
-    
-    /* 드롭다운 선택 박스 너비 조정 */
-    [data-testid="stSidebar"] .stSelectbox {
-        width: 100% !important;
-        margin-bottom: 8px !important;
-    }
-    
-    /* 드롭다운 선택 박스 내부 요소 너비 조정 */
-    [data-testid="stSidebar"] .stSelectbox > div {
-        width: 100% !important;
-    }
-    
-    /* 메인 페이지 사이드바 타이틀 스타일 */
     .main-page .sidebar-title {
         text-align: center; 
         font-family: Times New Roman; 
-        color: red; 
-        font-size: 80px;
+        color: black; 
+        font-size: 70px;
         font-weight: bold;
     }
     
-    /* 메인 페이지 사이드바 텍스트 스타일 */
     .main-page .sidebar-text {
         text-align: center; 
         font-family: sans-serif; 
@@ -196,14 +79,12 @@ st.markdown("""
         font-weight: bold;
     }
     
-    /* 메인 페이지 사이드바 서브텍스트 스타일 */
     .main-page .sidebar-subtext {
         text-align: center; 
         font-family: sans-serif; 
         color: #c0c0c0; 
         font-size: 14px;
     }
-</style>
 </style>
 """, unsafe_allow_html=True)
 
