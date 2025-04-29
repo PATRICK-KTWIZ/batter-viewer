@@ -153,6 +153,18 @@ def LoggedIn_Clicked(userName, password):
 
 def show_login_page():
 
+    st.markdown("""
+    <style>
+        /* 제목 상단 여백 조정 */
+        h1 {
+            margin-top: 20px;       /* 상단 여백 */
+            margin-bottom: 30px;    /* 하단 여백 */
+            padding-left: 10px;     /* 왼쪽 패딩 */
+            line-height: 1.3;       /* 줄 간격 */
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    
     st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>"
                 , unsafe_allow_html=True)
     # Main layout with two columns
