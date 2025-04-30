@@ -36,6 +36,65 @@ st.markdown("""
         overflow: auto;
     }
 
+    /* 사이드바 스타일 */
+    [data-testid="stSidebar"] {
+        background-color: #222222 !important;
+        color: #ffffff !important;
+        width: 250px !important;
+        padding: 1rem !important;
+    }
+    
+    /* 사이드바 확장/축소 버튼 스타일 */
+    button[kind="header"] {
+        background-color: #333333 !important;
+        color: #c0c0c0 !important;
+    }
+    
+    /* 사이드바 내부 요소 스타일 */
+    [data-testid="stSidebar"] .stButton > button {
+        background-color: #444444 !important;
+        color: #ffffff !important;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    /* 사이드바 헤더 스타일 */
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+        color: #c0c0c0 !important;
+    }
+    
+    /* 사이드바 텍스트 스타일 */
+    [data-testid="stSidebar"] p, [data-testid="stSidebar"] div {
+        color: #e0e0e0 !important;
+    }
+    
+    /* 사이드바가 축소되었을 때 표시되는 아이콘 스타일 */
+    [data-testid="stSidebar"] [data-testid="baseButton-headerNoPadding"] {
+        background-color: #222222 !important;
+    }
+    
+    /* 사이드바 구분선 스타일 */
+    [data-testid="stSidebar"] hr {
+        border-color: #444444 !important;
+    }
+    
+    /* 사이드바 스크롤바 스타일 */
+    [data-testid="stSidebar"] ::-webkit-scrollbar {
+        width: 10px;
+    }
+    
+    [data-testid="stSidebar"] ::-webkit-scrollbar-track {
+        background: #333333;
+    }
+    
+    [data-testid="stSidebar"] ::-webkit-scrollbar-thumb {
+        background: #555555;
+    }
+    
+    [data-testid="stSidebar"] ::-webkit-scrollbar-thumb:hover {
+        background: #777777;
+    }
+
     /* 헤더 스타일 */
     .header-container {
         padding: 1rem;
