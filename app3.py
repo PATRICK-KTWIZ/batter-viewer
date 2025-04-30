@@ -1068,7 +1068,7 @@ def show_main_page():
                     facet_col='inning',  # 이닝별로 facet
                     category_orders={"inning": innings},  # 이닝 순서대로 정렬
                     height=400, 
-                    width=1800
+                    width=300
                 )
 
                 plate_discipline_fig.update_layout(showlegend=False)
