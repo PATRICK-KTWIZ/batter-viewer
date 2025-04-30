@@ -36,15 +36,18 @@ st.markdown("""
         overflow: auto;
     }
 
-    /* 헤더 컨테이너 스타일 - 절대 위치 사용 */
+    /* 헤더 스타일 */
     .header-container {
-        width: 100vw;
-        padding: 0px 20px;
+        background-color: #222222;
+        width: 100%;
+        padding: 10px 20px;
         margin: 0 !important;
-        box-sizing: border-box;
-        position: absolute;
+        position: relative;
+        left: 50%;
+        right: 50%;
         margin-left: -50vw !important;
         margin-right: -50vw !important;
+        box-sizing: border-box;
     }
     
     /* 로그인 컨테이너 스타일 */
