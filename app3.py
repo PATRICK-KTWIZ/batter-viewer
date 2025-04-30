@@ -951,7 +951,7 @@ def show_main_page():
                 st.subheader(f"{batter_name}")
                 
                 spraychart_dataframe = spraychart_df(batter_raw_df)
-                season_spraychart(spraychart_dataframe)
+                season_spraychart(spraychart_dataframe, key=f"season_spray_{batter}")
 
                 st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                             <span style="font-weight: bold;">색상 범례:</span> 
@@ -962,7 +962,7 @@ def show_main_page():
 
                 with st.expander(f" by 스트라이크 존:  {batter_name}(최근연도)"):
                     st.write("S존 기준차트")
-                    zone_spraychart_fig(spraychart_dataframe)
+                    zone_spraychart_fig(spraychart_dataframe, batter_name=batter_name)
                     st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                             <span style="font-weight: bold;">색상 범례:</span> 
                             붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
@@ -972,8 +972,8 @@ def show_main_page():
 
                 with st.expander( f" by 타구비행시간:  {batter_name}(최근연도)"):
                     st.write("타구 비행시간")
-                    spraychart_hangtime_fig = season_hangtime_spraychart(spraychart_dataframe)
-                    st.plotly_chart(spraychart_hangtime_fig)
+                    spraychart_hangtime_fig = season_hangtime_spraychart(spraychart_dataframe, batter_name=batter_name)
+                    st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_{batter}")
                     st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                             <span style="font-weight: bold;">색상 범례:</span> 
                             붉은색: 1~4초 비행 / 살구색: 1초 미만 / 옅은 갈색: 4초 이상
