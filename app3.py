@@ -1110,9 +1110,6 @@ def show_main_page():
                 
                 plate_discipline_fig.update_traces(marker=dict(size=30))  # 마커 크기 조정
                 plate_discipline_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
-
-                # 차트 표시 부분만 수정
-                st.plotly_chart(plate_discipline_fig)
                 
                 # 각 서브플롯에 스트라이크 존과 코어 존 추가
                 for i in range(len(innings)):
