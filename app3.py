@@ -164,6 +164,24 @@ st.markdown("""
         text-align: right;
     }
 
+    /* 사이드바가 자동으로 사라지지 않도록 설정 */
+    @media (max-width: 992px) {
+        [data-testid="stSidebar"] {
+            min-width: 250px !important;
+            max-width: 250px !important;
+            transform: none !important;
+            transition: none !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            z-index: 999 !important;
+            display: block !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+        }
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
