@@ -278,15 +278,9 @@ def show_login_page():
 
             st.markdown("""
             <style>
-                /* 메인 버튼 스타일 */
-                .stButton > button {
+                [data-testid="element-container"] [data-testid="stButton"][key="login_btn"] button {
                     background-color: #333333 !important;
                     color: #c0c0c0 !important;
-                    width: 100%;
-                    padding: 10px;
-                    border: none !important;
-                    border-radius: 3px;
-                    cursor: pointer;
                 }
             </style>
             """, unsafe_allow_html=True)
