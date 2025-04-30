@@ -795,7 +795,7 @@ def factor_period_sum_plate_map(dataframe, y_factor):
 
         return factor_period_sum_plate_map_fig
 
-def season_spraychart(dataframe):
+def season_spraychart(dataframe, key=None):
 
     colors = {'field_out':'rgba(140,86,75,0.3)','fielders_choice_out':'rgba(140,86,75,0.3)', 'field_error':'rgba(140,86,75,0.3)', 'sac_fly':'rgba(140,86,75,0.3)', 
           'force_out':'rgba(140,86,75,0.3)', 'double_play':'rgba(140,86,75,0.3)', 'grounded_into_double_play':'rgba(140,86,75,0.3)',
@@ -835,7 +835,7 @@ def season_spraychart(dataframe):
     season_spraychart_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
     season_spraychart_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
 
-    return  st.plotly_chart(season_spraychart_fig, layout="wide")
+    return  st.plotly_chart(season_spraychart_fig, layout="wide", key=key)
 
 def season_zone_spraychart(dataframe, zone):
 
@@ -938,7 +938,7 @@ def season_period_spraychart(dataframe):
         return season_spraychart_fig
 
 
-def zone_spraychart_fig(spraychart_dataframe):
+def zone_spraychart_fig(spraychart_dataframe, batter_name=None):
 
     col1, col2, col3 = st.columns(3)
 
@@ -947,21 +947,21 @@ def zone_spraychart_fig(spraychart_dataframe):
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key="zone1")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"zone1_{batter_name}")
 
     with col2:
         zone = 'nz2'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key="zone2")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"zone2_{batter_name}")
 
     with col3:
         zone = 'nz3'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key="zone3")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"zone3_{batter_name}")
 
 
     col4, col5, col6 = st.columns(3)
@@ -971,21 +971,21 @@ def zone_spraychart_fig(spraychart_dataframe):
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key="zone4")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"zone4_{batter_name}")
 
     with col5:
         zone = 'core'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key="zone5")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"zone5_{batter_name}")
 
     with col6:
         zone = 'nz6'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key="zone6")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide",key=f"zone6_{batter_name}")
 
     col7, col8, col9 = st.columns(3)
 
@@ -994,24 +994,24 @@ def zone_spraychart_fig(spraychart_dataframe):
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key="zone7")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"zone7_{batter_name}")
 
     with col8:
         zone = 'nz8'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key="zone8")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"zone8_{batter_name}")
 
     with col9:
         zone = 'nz9'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key="zone9")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"zone9_{batter_name}")
 
 
-def season_hangtime_spraychart(dataframe):
+def season_hangtime_spraychart(dataframe, batter_name=None):
 
     colors = {'shrot':'rgba(67,89,119,0.7)','long':'rgba(140,86,75,0.3)', 'challenge':'rgba(255,72,120,1)' }
     symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
