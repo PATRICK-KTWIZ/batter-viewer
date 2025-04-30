@@ -319,7 +319,7 @@ def show_main_page():
         st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
         
         with st.sidebar:
-            st.image("ktwiz_emblem.png")
+            st.image("ktwiz_emblem.png", width=100)
 
         id_dataset = pd.read_csv('./player_id_info_2025.csv')
         id_dataset = id_dataset[['team','NAME','POS','TM_ID']]
