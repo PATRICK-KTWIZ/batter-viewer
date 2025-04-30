@@ -1260,7 +1260,7 @@ def show_main_page():
                             ), row=1, col=i+1)
                         
                         # 차트 표시 부분만 수정
-                        st.plotly_chart(plate_discipline_fig)
+                        st.plotly_chart(inning_fig)
                         
                         # 날짜별 구분선 추가
                         st.markdown("---")
