@@ -308,12 +308,25 @@ def show_main_page():
     <style>
         .stApp {
         background: #ffffff;
-        # background-attachment: fixed;
         height: 100vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
-        # max-height: 1000px; /* 최대 높이 설정 */
         overflow: auto;
     }
-    
+
+        /* 사이드바를 항상 표시하기 위한 CSS */
+        [data-testid="stSidebar"] {
+            min-width: 300px;
+            max-width: 300px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            display: flex !important;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: auto;
+            transition: none !important;
+        }
+        
     </style>
     """, unsafe_allow_html=True)
 
@@ -325,7 +338,7 @@ def show_main_page():
 
             st.markdown("<br>", unsafe_allow_html=True)
             
-            col1, col2, col3 = st.columns([1, 5, 1])
+            col1, col2, col3 = st.columns([1, 6, 1])
             with col2:
                 st.image("ktwiz_emblem.png", width=300)
 
