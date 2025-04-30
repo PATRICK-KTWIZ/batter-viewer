@@ -321,15 +321,15 @@ def show_main_page():
         
         st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
 
-    with st.sidebar:
-        # 열을 사용하여 이미지 중앙 정렬
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.image("ktwiz_emblem.png", width=200)
-
-        id_dataset = pd.read_csv('./player_id_info_2025.csv')
-        id_dataset = id_dataset[['team','NAME','POS','TM_ID']]
-        id_dataset = id_dataset[id_dataset['POS'] != 'P']
+        with st.sidebar:
+            # 열을 사용하여 이미지 중앙 정렬
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                st.image("ktwiz_emblem.png", width=250)
+    
+            id_dataset = pd.read_csv('./player_id_info_2025.csv')
+            id_dataset = id_dataset[['team','NAME','POS','TM_ID']]
+            id_dataset = id_dataset[id_dataset['POS'] != 'P']
 
         #------------------------------------------------------------------------------
 
