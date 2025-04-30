@@ -42,7 +42,7 @@ st.markdown("""
         color: #ffffff !important;
     }
     
-    /* 사이드바 내부 요소 스타일 */
+    /* 사이드바 버튼 스타일 */
     [data-testid="stSidebar"] .stButton > button {
         background-color: #cccccc !important;
         color: black !important;
@@ -50,21 +50,23 @@ st.markdown("""
         border-radius: 7px;  /* 모서리 둥글기 */
         padding: 0.5rem 1rem;  /* 패딩 */
     }
-    
-    /* 사이드바 헤더 스타일 */
-    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
-        color: red !important;
-    }
-    
-    /* 사이드바 텍스트 스타일 */
-    [data-testid="stSidebar"] p, [data-testid="stSidebar"] div {
-        color: #e0e0e0 !important;
+
+    /* 사이드바 selectbox 라벨 색상 변경 (옅은 회색) */
+    [data-testid="stSidebar"] .css-81oif8,
+    [data-testid="stSidebar"] .css-1inwz65,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] .stSelectbox > div > label {
+        color: #cccccc !important;
     }
 
-    
-    /* 사이드바 버튼 호버 효과 (선택사항) */
-    [data-testid="stSidebar"] .stButton > button:hover {
-        background-color: #dddddd !important;
+    /* 사이드바 selectbox 내부 텍스트 색상 변경 */
+    [data-testid="stSidebar"] .stSelectbox > div > div > div {
+        color: black !important;
+    }
+
+    /* 드롭다운 메뉴 텍스트 색상 */
+    .stSelectbox option {
+        color: black;
     }
   
     /* 헤더 스타일 */
