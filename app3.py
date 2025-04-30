@@ -46,7 +46,7 @@ st.markdown("""
         right: 50%;
         margin-left: -47vw;
         margin-right: -50vw;
-        margin-top: -2vw;
+        margin-top: -3vw;
     }
     
     /* 로그인 컨테이너 스타일 */
