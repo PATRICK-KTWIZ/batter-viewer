@@ -16,7 +16,7 @@ def factor_year_count_map(dataframe, y_factor):
     factor_year_count_map_fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     
     factor_year_count_map_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-0.45,0.45], yaxis_range=[0.27,1.25], bargap = 0,
-                                    xaxis = {'showgrid': False, 'zeroline': False}, yaxis = {'showgrid': False, 'zeroline': False}, showlegend = False)
+                                    xaxis = {'showgrid': False, 'zeroline': False}, yaxis = {'showgrid': False, 'zeroline': False})
 
     factor_year_count_map_fig.update_layout({'plot_bgcolor': 'rgba(13,8,135,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
 
@@ -47,6 +47,8 @@ def factor_year_count_map(dataframe, y_factor):
     factor_year_count_map_fig.add_shape(type="rect", x0=-0.34, y0=0.35, x1=-0.125, y1=0.585, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
     factor_year_count_map_fig.add_shape(type="rect", x0=-0.115, y0=0.35, x1=0.115, y1=0.585, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
     factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.35, x1=0.34, y1=0.585, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
+
+    factor_year_count_map_fig.update_layout(showlegend=False)
 
     factor_year_count_map_fig.update_coloraxes(showscale=False)
 
