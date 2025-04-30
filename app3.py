@@ -1068,9 +1068,9 @@ def show_main_page():
                     facet_col='inning',  # 이닝별로 facet
                     category_orders={"inning": innings},  # 이닝 순서대로 정렬
                     height=400, 
-                    width=300
+                    width=300*len(innings)
                 )
-
+                
                 plate_discipline_fig.update_layout(showlegend=False)
                 plate_discipline_fig.update_layout(
                                                     autosize=False,
@@ -1078,6 +1078,12 @@ def show_main_page():
                                                     plot_bgcolor='rgba(255,255,255,0.1)', 
                                                     paper_bgcolor='rgba(255,255,255,1)',
                                                 )
+                # 차트 표시 부분만 수정
+                st.plotly_chart(plate_discipline_fig, use_container_width=False, config={
+                    'responsive': False,
+                    'displayModeBar': True,
+                    'staticPlot': False
+                })
                 
                 # facet 제목을 투수 이름으로 변경
                 for i, inning in enumerate(innings):
@@ -1101,7 +1107,7 @@ def show_main_page():
                     plot_bgcolor='rgba(255,255,255,0.1)', 
                     paper_bgcolor='rgba(255,255,255,1)',
                     height=400,  # 전체 높이 고정
-                    width=1800,  # 이닝 수에 따라 너비 조정
+                    width=300*len(innings),  # 이닝 수에 따라 너비 조정
                 )
                 
                 # 모든 서브플롯에 동일한 x, y 범위 설정
@@ -1110,6 +1116,13 @@ def show_main_page():
                 
                 plate_discipline_fig.update_traces(marker=dict(size=30))  # 마커 크기 조정
                 plate_discipline_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
+
+                # 차트 표시 부분만 수정
+                st.plotly_chart(plate_discipline_fig, use_container_width=False, config={
+                    'responsive': False,
+                    'displayModeBar': True,
+                    'staticPlot': False
+                })
                 
                 # 각 서브플롯에 스트라이크 존과 코어 존 추가
                 for i in range(len(innings)):
@@ -1141,7 +1154,12 @@ def show_main_page():
                         showlegend=False
                     ), row=1, col=i+1)
                 
-                st.plotly_chart(plate_discipline_fig)
+                # 차트 표시 부분만 수정
+                st.plotly_chart(plate_discipline_fig, use_container_width=False, config={
+                    'responsive': False,
+                    'displayModeBar': True,
+                    'staticPlot': False
+                })
                 
                 st.markdown("""
                 <div style="text-align: left; font-size: 0.9em;">
@@ -1183,7 +1201,7 @@ def show_main_page():
                             facet_col='inning',  # 이닝별로 facet
                             category_orders={"inning": innings},  # 이닝 순서대로 정렬
                             height=400, 
-                            width=1800
+                            width=300*len(innings)
                         )
 
                         inning_fig.update_layout(showlegend=False)
@@ -1255,7 +1273,12 @@ def show_main_page():
                                 showlegend=False
                             ), row=1, col=i+1)
                         
-                        st.plotly_chart(inning_fig)
+                        # 차트 표시 부분만 수정
+                        st.plotly_chart(plate_discipline_fig, use_container_width=False, config={
+                            'responsive': False,
+                            'displayModeBar': True,
+                            'staticPlot': False
+                        })
                         
                         # 날짜별 구분선 추가
                         st.markdown("---")
