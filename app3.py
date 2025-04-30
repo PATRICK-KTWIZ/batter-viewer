@@ -38,10 +38,10 @@ st.markdown("""
 
     /* 사이드바 스타일 */
     [data-testid="stSidebar"] {
-        background-color: #222222 !important;
+        background-color: #2d2d2d !important;
         color: #ffffff !important;
-        width: 250px !important;
-        padding: 1rem !important;
+        # width: 250px !important;
+        # padding: 1rem !important;
     }
     
     /* 사이드바 확장/축소 버튼 스타일 */
