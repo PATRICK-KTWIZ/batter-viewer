@@ -1078,12 +1078,6 @@ def show_main_page():
                                                     plot_bgcolor='rgba(255,255,255,0.1)', 
                                                     paper_bgcolor='rgba(255,255,255,1)',
                                                 )
-                # 차트 표시 부분만 수정
-                st.plotly_chart(plate_discipline_fig, use_container_width=False, config={
-                    'responsive': False,
-                    'displayModeBar': True,
-                    'staticPlot': False
-                })
                 
                 # facet 제목을 투수 이름으로 변경
                 for i, inning in enumerate(innings):
@@ -1118,11 +1112,7 @@ def show_main_page():
                 plate_discipline_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
 
                 # 차트 표시 부분만 수정
-                st.plotly_chart(plate_discipline_fig, use_container_width=False, config={
-                    'responsive': False,
-                    'displayModeBar': True,
-                    'staticPlot': False
-                })
+                st.plotly_chart(plate_discipline_fig)
                 
                 # 각 서브플롯에 스트라이크 존과 코어 존 추가
                 for i in range(len(innings)):
@@ -1155,11 +1145,7 @@ def show_main_page():
                     ), row=1, col=i+1)
                 
                 # 차트 표시 부분만 수정
-                st.plotly_chart(plate_discipline_fig, use_container_width=False, config={
-                    'responsive': False,
-                    'displayModeBar': True,
-                    'staticPlot': False
-                })
+                st.plotly_chart(plate_discipline_fig)
                 
                 st.markdown("""
                 <div style="text-align: left; font-size: 0.9em;">
@@ -1274,11 +1260,7 @@ def show_main_page():
                             ), row=1, col=i+1)
                         
                         # 차트 표시 부분만 수정
-                        st.plotly_chart(plate_discipline_fig, use_container_width=False, config={
-                            'responsive': False,
-                            'displayModeBar': True,
-                            'staticPlot': False
-                        })
+                        st.plotly_chart(plate_discipline_fig)
                         
                         # 날짜별 구분선 추가
                         st.markdown("---")
