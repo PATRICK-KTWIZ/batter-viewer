@@ -36,10 +36,42 @@ st.markdown("""
         overflow: auto;
     }
 
+    # /* 사이드바 스타일 */
+    # [data-testid="stSidebar"] {
+    #     background-color: #2d2d2d !important;
+    #     color: #ffffff !important;
+    # }
+
     /* 사이드바 스타일 */
     [data-testid="stSidebar"] {
         background-color: #2d2d2d !important;
         color: #ffffff !important;
+        position: fixed !important;
+        width: 335px !important;
+        min-width: 335px !important;
+        max-width: 335px !important;
+        top: 0 !important;
+        left: 0 !important;
+        height: 100vh !important;
+        display: flex !important;
+        flex-direction: column !important;
+        z-index: 1000 !important;
+        overflow: auto !important;
+        transform: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* 사이드바 토글 버튼 숨기기 */
+    [data-testid="stSidebarCollapseButton"] {
+        display: none !important;
+    }
+    
+    /* 메인 콘텐츠 영역 조정 */
+    .main .block-container {
+        margin-left: 335px !important;
+        max-width: calc(100% - 335px) !important;
     }
     
     /* 사이드바 버튼 스타일 */
