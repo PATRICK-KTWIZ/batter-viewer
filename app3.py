@@ -312,18 +312,16 @@ def show_main_page():
         show_login_page()
         return
     
-    # 메인 페이지 클래스 추가
-    st.markdown('<div class="main-page">', unsafe_allow_html=True)
-
     st.markdown("""
     <style>
         .stApp {
         background: #ffffff;
         background-attachment: fixed;
-        height: 95vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
+        height: 100vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
         max-height: 1000px; /* 최대 높이 설정 */
         overflow: auto;
     }
+    
     </style>
     """, unsafe_allow_html=True)
 
