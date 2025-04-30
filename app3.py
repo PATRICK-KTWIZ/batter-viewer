@@ -109,6 +109,7 @@ st.markdown("""
         padding: 10px;
         border-radius: 0px;
         margin-bottom: 0px;
+        color: red !important;
     }
     
     /* 메인 버튼 스타일 */
