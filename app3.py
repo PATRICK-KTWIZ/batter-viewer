@@ -46,14 +46,14 @@ st.markdown("""
         right: 50%;
         margin-left: -47vw;
         margin-right: -50vw;
-        margin-top: 0vw;
+        margin-top: -2vw;
     }
     
     /* 로그인 컨테이너 스타일 */
     .login-container {
         max-width: 100px;
         margin: 20px auto;
-        padding: 30px;
+        padding: 20px;
         background-color: #f0f0f0;
     }
     
@@ -70,6 +70,7 @@ st.markdown("""
         border-radius: 0px;
         margin-bottom: 0px;
     }
+    
     /* 메인 버튼 스타일 */
     .stButton > button {
         background-color: #333333;
