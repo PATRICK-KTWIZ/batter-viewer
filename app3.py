@@ -312,33 +312,6 @@ def show_main_page():
         overflow: auto;
     }
 
-     /* 사이드바 항상 표시 설정 */
-    [data-testid="stSidebar"] {
-        min-width: 300px;
-        max-width: 300px;
-        position: fixed !important;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        display: flex !important;
-        flex-direction: column;
-        z-index: 1000;
-        overflow: auto;
-        transform: none !important;
-        transition: none !important;
-    }
-    
-    /* 메인 콘텐츠 영역 조정 */
-    .main .block-container {
-        margin-left: 300px;
-        padding-left: 2rem;
-        max-width: calc(100% - 300px);
-    }
-    
-    /* 사이드바 토글 버튼 숨기기 */
-    button[kind="header"] {
-        display: none !important;
-    }
     </style>
     """, unsafe_allow_html=True)
 
