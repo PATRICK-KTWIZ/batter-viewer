@@ -329,7 +329,7 @@ def show_main_page():
             with col2:
                 st.image("ktwiz_emblem.png", width=270)
 
-            st.markdown('<div style="height: 70px;"></div>', unsafe_allow_html=True)
+            st.markdown('<div style="height: 60px;"></div>', unsafe_allow_html=True)
     
             id_dataset = pd.read_csv('./player_id_info_2025.csv')
             id_dataset = id_dataset[['team','NAME','POS','TM_ID']]
