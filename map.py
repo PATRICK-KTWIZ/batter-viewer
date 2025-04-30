@@ -19,23 +19,24 @@ def factor_year_count_map(dataframe, y_factor):
                                     xaxis = {'showgrid': False, 'zeroline': False}, yaxis = {'showgrid': False, 'zeroline': False})
 
     factor_year_count_map_fig.update_layout({'plot_bgcolor': 'rgba(13,8,135,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
+    factor_year_count_map_fig.update_layout(showlegend=False)
 
     factor_year_count_map_fig.update_yaxes(gridcolor='rgba(13,8,135,1)')
     factor_year_count_map_fig.update_xaxes(gridcolor='rgba(13,8,135,1)')
 
-    factor_year_count_map_fig.update_traces(contours_coloring="fill", contours_showlabels = True, colorscale="Viridis")
+    factor_year_count_map_fig.update_traces(contours_coloring="fill", contours_showlabels = True, colorscale="Viridis",showlegend=False)
 
     homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
     homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
 
-    factor_year_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='white', width=4) ), row = 'all' , col = 'all')
-    factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',), row = 'all' , col = 'all')
+    factor_year_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='white', width=4), showlegend=False ), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',showlegend=False), row = 'all' , col = 'all')
 
     homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
     homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
 
-    factor_year_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=3) ), row = 'all' , col = 'all')
-    factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.56], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
+    factor_year_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=3), showlegend=False ), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.56], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',showlegend=False), row = 'all' , col = 'all')
 
     factor_year_count_map_fig.add_shape(type="rect", x0=-0.34, y0=0.915, x1=-0.125, y1=1.15, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
     factor_year_count_map_fig.add_shape(type="rect", x0=-0.115, y0=0.915, x1=0.115, y1=1.15, line=dict(color="white", width=1,  dash='dash'), row = 'all' , col = 'all')
@@ -48,9 +49,11 @@ def factor_year_count_map(dataframe, y_factor):
     factor_year_count_map_fig.add_shape(type="rect", x0=-0.115, y0=0.35, x1=0.115, y1=0.585, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
     factor_year_count_map_fig.add_shape(type="rect", x0=0.125, y0=0.35, x1=0.34, y1=0.585, line=dict(color="white", width=1, dash='dash'), row = 'all' , col = 'all')
 
-    factor_year_count_map_fig.update_layout(showlegend=False)
-
     factor_year_count_map_fig.update_coloraxes(showscale=False)
+
+    # 모든 trace에 대해 범례 숨기기 적용
+    for trace in factor_year_count_map_fig.data:
+        trace.showlegend = False
 
     return factor_year_count_map_fig
 
