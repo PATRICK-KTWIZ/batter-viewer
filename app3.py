@@ -301,8 +301,8 @@ def show_main_page():
         show_login_page()
         return
 
-    # 메인 페이지 클래스 추가
-    st.markdown('<div class="main-page">', unsafe_allow_html=True)
+    # # 메인 페이지 클래스 추가
+    # st.markdown('<div class="main-page">', unsafe_allow_html=True)
     
     st.markdown("""
     <style>
@@ -311,7 +311,34 @@ def show_main_page():
         height: 100vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
         overflow: auto;
     }
-     
+
+     /* 사이드바 항상 표시 설정 */
+    [data-testid="stSidebar"] {
+        min-width: 300px;
+        max-width: 300px;
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        display: flex !important;
+        flex-direction: column;
+        z-index: 1000;
+        overflow: auto;
+        transform: none !important;
+        transition: none !important;
+    }
+    
+    /* 메인 콘텐츠 영역 조정 */
+    .main .block-container {
+        margin-left: 300px;
+        padding-left: 2rem;
+        max-width: calc(100% - 300px);
+    }
+    
+    /* 사이드바 토글 버튼 숨기기 */
+    button[kind="header"] {
+        display: none !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
