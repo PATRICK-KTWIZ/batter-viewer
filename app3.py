@@ -179,6 +179,23 @@ def show_login_page():
     #             , unsafe_allow_html=True)
 
     st.markdown("""
+    <style>
+        /* 특정 컨테이너에 스타일 적용 */
+        [data-testid="stVerticalBlock"] > div:first-child {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+        
+        /* 컨테이너 내부 제목 스타일 */
+        .header-container h1 {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            line-height: 1.2;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
                 <div class="header-container">
                     <h1 class="header-text">
                         <span style='color: #c0c0c0;'>KT WIZ</span> 
