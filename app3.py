@@ -66,7 +66,7 @@ st.markdown("""
     
     /* 사이드바 markdowncontainer 내부 텍스트 색상 변경 */
     [data-testid="stSidebar"] button:has([data-testid="stMarkdownContainer"]) {
-        color: white !important; 
+        color: black !important; 
         font-weight: bold !important;
         font-size: 15px;
     }
