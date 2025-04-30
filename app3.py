@@ -53,7 +53,7 @@ st.markdown("""
     .login-container {
         max-width: 100px;
         margin: 20px auto;
-        padding: 40px;
+        padding: 30px;
         background-color: #f0f0f0;
     }
     
