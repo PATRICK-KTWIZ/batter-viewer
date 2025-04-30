@@ -43,10 +43,8 @@ st.markdown("""
         margin: 0 !important;
         box-sizing: border-box;
         position: absolute;
-        top: -10;
-        left: 0;
-        right: 0;
-        z-index: 9999;
+        margin-left: -50vw !important;
+        margin-right: -50vw !important;
     }
     
     /* 로그인 컨테이너 스타일 */
