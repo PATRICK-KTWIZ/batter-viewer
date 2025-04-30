@@ -1152,7 +1152,7 @@ def show_main_page():
                 """, unsafe_allow_html=True)
                 
                 # 선수별 expander로 시즌 경기별 타석 결과 차트 표시
-                with st.expander(f"시즌 경기별 타석 결과: {batter_name}"):
+                with st.expander(f"시즌 경기별 타석 결과(최근 5경기): {batter_name}"):
                     # 시즌 데이터에서 게임 날짜 목록 가져오기
                     game_dates = sorted(batter_raw_df['game_date'].unique(), reverse=True)
                     
