@@ -122,10 +122,6 @@ st.markdown("""
         cursor: pointer;
     }
 
-    [data-testid="element-container"] [data-testid="stButton"][key="login_btn"] button {
-    background-color: #333333 !important;
-    color: #c0c0c0 !important;
-}
 
     /* 푸터 스타일 */
     .footer {
@@ -237,6 +233,10 @@ def show_login_page():
             margin-top: 0 !important;
             padding-top: 0 !important;
             line-height: 1.5;
+        }
+            [data-testid="element-container"] [data-testid="stButton"][key="login_btn"] button {
+            background-color: #333333 !important;
+            color: #c0c0c0 !important;
         }
     </style>
     """, unsafe_allow_html=True)
