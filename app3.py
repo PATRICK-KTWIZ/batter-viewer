@@ -56,7 +56,7 @@ st.markdown("""
     [data-testid="stSidebar"] .css-1inwz65,
     [data-testid="stSidebar"] label,
     [data-testid="stSidebar"] .stSelectbox > div > label {
-        color: #c0c0c0 !important;
+        color: #ababab !important;
     }
 
     /* 사이드바 selectbox 내부 텍스트 색상 변경 */
@@ -1057,7 +1057,7 @@ def show_main_page():
                     facet_col='inning',  # 이닝별로 facet
                     category_orders={"inning": innings},  # 이닝 순서대로 정렬
                     height=400, 
-                    width=300 * len(set(facet_df['inning'])) 
+                    width=300 * len(innings)
                 )
 
                 plate_discipline_fig.update_layout(showlegend=False)
@@ -1089,6 +1089,8 @@ def show_main_page():
                     margin=dict(l=50, r=50, t=50, b=50),
                     plot_bgcolor='rgba(255,255,255,0.1)', 
                     paper_bgcolor='rgba(255,255,255,1)',
+                    height=400,  # 전체 높이 고정
+                    width=300 * len(innings),  # 이닝 수에 따라 너비 조정
                 )
                 
                 # 모든 서브플롯에 동일한 x, y 범위 설정
