@@ -34,7 +34,7 @@ st.markdown("""
         height: 95vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
         max-height: 1000px; /* 최대 높이 설정 */
         overflow: auto;
-        margin: 0 !important;
+        margin: -20 !important;
         padding: 0 !important;
     }
     
