@@ -36,21 +36,6 @@ st.markdown("""
         overflow: auto;
     }
 
-    /* 사이드바를 항상 표시하기 위한 CSS */
-    [data-testid="stSidebar"] {
-        min-width: 350px;
-        max-width: 350px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        display: fixed !important;
-        flex-direction: column;
-        z-index: 1000;
-        overflow: auto;
-        transition: none !important;
-    }
-
     /* 사이드바 스타일 */
     [data-testid="stSidebar"] {
         background-color: #2d2d2d !important;
@@ -334,19 +319,19 @@ def show_main_page():
         
         st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
 
-        with st.sidebar:
+    with st.sidebar:
 
-            st.markdown("<br>", unsafe_allow_html=True)
-            
-            col1, col2, col3 = st.columns([1, 6, 1])
-            with col2:
-                st.image("ktwiz_emblem.png", width=300)
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        col1, col2, col3 = st.columns([1, 6, 1])
+        with col2:
+            st.image("ktwiz_emblem.png", width=300)
 
-            st.markdown('<div style="height: 30px;"></div>', unsafe_allow_html=True)
-    
-            id_dataset = pd.read_csv('./player_id_info_2025.csv')
-            id_dataset = id_dataset[['team','NAME','POS','TM_ID']]
-            id_dataset = id_dataset[id_dataset['POS'] != 'P']
+        st.markdown('<div style="height: 30px;"></div>', unsafe_allow_html=True)
+
+        id_dataset = pd.read_csv('./player_id_info_2025.csv')
+        id_dataset = id_dataset[['team','NAME','POS','TM_ID']]
+        id_dataset = id_dataset[id_dataset['POS'] != 'P']
 
         #------------------------------------------------------------------------------
 
