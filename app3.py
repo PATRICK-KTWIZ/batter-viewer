@@ -71,7 +71,7 @@ st.markdown("""
     .header-container {
         width: 100%;
         padding: 10px 20px;
-        margin: 0 !important;
+        margin: -10 !important;
         position: relative;
         left: 50%;
         right: 50%;
