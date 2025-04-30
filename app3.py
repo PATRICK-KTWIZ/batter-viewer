@@ -67,19 +67,6 @@ st.markdown("""
         z-index: 999;
     }
     
-    /* 헤더 스타일 */
-    .header-container {
-        width: 100%;
-        padding: 10px 20px;
-        margin: -10 !important;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -47vw !important;
-        margin-right: -50vw !important;
-        box-sizing: border-box;
-    }
-    
     /* 헤더 텍스트 스타일 */
     .header-text {
         font-size: 28px;
@@ -87,6 +74,18 @@ st.markdown("""
         margin: 0;
         padding: 0;
         line-height: 1.2;
+    }
+    
+    /* 모든 스트림릿 요소의 여백 제거 */
+    .stMarkdown, .stHeader, div[data-testid="stVerticalBlock"] {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* 첫 번째 요소의 여백 제거 */
+    .stMarkdown:first-child {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
     }
     
     /* 로그인 컨테이너 스타일 */
@@ -167,19 +166,6 @@ st.markdown("""
         font-size: 16px;
         text-align: right;
     }
-
-    /* 스트림릿 기본 패딩 제거 */
-    .stMarkdown {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* 첫 번째 요소 패딩 제거 */
-    .stMarkdown:first-child {
-        margin-top: 0 !important;
-        padding-top: 0 !important;
-    }
-
 
 </style>
 """, unsafe_allow_html=True)
