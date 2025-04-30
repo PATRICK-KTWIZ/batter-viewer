@@ -164,24 +164,6 @@ st.markdown("""
         text-align: right;
     }
 
-    /* 사이드바가 자동으로 사라지지 않도록 설정 */
-    @media (max-width: 992px) {
-        [data-testid="stSidebar"] {
-            min-width: 250px !important;
-            max-width: 250px !important;
-            transform: none !important;
-            transition: none !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            bottom: 0 !important;
-            z-index: 999 !important;
-            display: block !important;
-            overflow-x: hidden !important;
-            overflow-y: auto !important;
-        }
-    }
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -318,6 +300,9 @@ def show_main_page():
     if not is_user_logged_in():
         show_login_page()
         return
+
+    # 메인 페이지 클래스 추가
+    st.markdown('<div class="main-page">', unsafe_allow_html=True)
     
     st.markdown("""
     <style>
@@ -335,9 +320,25 @@ def show_main_page():
     with mainSection:
         
         st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
+
+        st.markdown("""
+                <style>
+                    [data-testid="stSidebar"] [data-testid="stImage"] {
+                        text-align: center;
+                        display: block;
+                        margin-left: auto;
+                        margin-right: auto;
+                    }
+                    
+                    [data-testid="stSidebar"] [data-testid="stImage"] > img {
+                        max-width: 100px;
+                        margin: 0 auto;
+                    }
+                </style>
+                """, unsafe_allow_html=True)
         
         with st.sidebar:
-            st.image("ktwiz_emblem.png", width=100)
+            st.image("ktwiz_emblem.png", width=300)
 
         id_dataset = pd.read_csv('./player_id_info_2025.csv')
         id_dataset = id_dataset[['team','NAME','POS','TM_ID']]
