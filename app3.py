@@ -13,7 +13,7 @@ import plotly.graph_objects as go
 # Set a unique token for the cookie
 COOKIE_TOKEN = "my_unique_cookie_token"
 
-# 페이지 설정 - 가능하다면 이 부분을 코드 최상단에 위치시키세요
+# 페이지 설정
 st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -26,11 +26,6 @@ if 'loggedIn' not in st.session_state:
 # 로그인 페이지와 메인 페이지를 위한 CSS 스타일 분리
 st.markdown("""
 <style>
-
-    /* 모든 기본 여백 제거 */
-    #root > div:nth-child(1) > div.withScreencast > div > div {
-        padding-top: 0 !important;
-    }
     
     /* 전체 페이지 스타일 */
     .stApp {
@@ -41,51 +36,6 @@ st.markdown("""
         overflow: auto;
         margin: 0 !important;
         padding: 0 !important;
-    }
-
-    /* 메인 블록 여백 제거 */
-    .main .block-container {
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        max-width: 100% !important;
-    }
-    
-
-    /* 헤더 컨테이너 스타일 */
-    .header-container {
-        background-color: #222222;
-        width: 100%;
-        padding: 10px 20px;
-        margin: -10 !important;
-        box-sizing: border-box;
-        position: sticky;
-        top: 0;
-        z-index: 999;
-    }
-    
-    /* 헤더 텍스트 스타일 */
-    .header-text {
-        font-size: 28px;
-        font-weight: bold;
-        margin: 0;
-        padding: 0;
-        line-height: 1.2;
-    }
-    
-    /* 모든 스트림릿 요소의 여백 제거 */
-    .stMarkdown, .stHeader, div[data-testid="stVerticalBlock"] {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* 첫 번째 요소의 여백 제거 */
-    .stMarkdown:first-child {
-        margin-top: 0 !important;
-        padding-top: 0 !important;
     }
     
     /* 로그인 컨테이너 스타일 */
