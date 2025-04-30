@@ -45,7 +45,7 @@ st.markdown("""
     /* 사이드바 버튼 스타일 */
     [data-testid="stSidebar"] .stButton > button {
         background-color: #cccccc !important;
-        color: black !important;
+        color: white !important;
         width: 100%;
         border-radius: 7px;  /* 모서리 둥글기 */
         padding: 0.5rem 1rem;  /* 패딩 */
