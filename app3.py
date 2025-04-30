@@ -301,8 +301,8 @@ def show_main_page():
         show_login_page()
         return
 
-    # # 메인 페이지 클래스 추가
-    # st.markdown('<div class="main-page">', unsafe_allow_html=True)
+    # 메인 페이지 클래스 추가
+    st.markdown('<div class="main-page">', unsafe_allow_html=True)
     
     st.markdown("""
     <style>
