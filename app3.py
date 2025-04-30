@@ -3,7 +3,7 @@ import pandas as pd
 from definition import select_league, stats, period_stats, seoson_inplay_events, period_inplay_events, season_pthrows, period_pthrows, stats_viewer_pkind, swing_viewer_pkind, stats_viewer_pitchname, swing_viewer_pitchname
 from definition import season_pkind, period_pkind, season_pitchname, period_pitchname, stats_viewer, swing_viewer, event_viewer, stats_viewer_pthrows, swing_viewer_pthrows, swingmap_df, spraychart_df
 from dataframe import dataframe
-from map import select_count_option, select_sum_option, select_sum_plate_option, swingmap_count_option, season_spraychart, season_period_spraychart, factor_year_count_map, factor_year_sum_map,factor_year_sum_plate_map, swingmap_count_map, season_hangtime_spraychart, zone_spraychart_fig, factor_year_sum_map_scatter, factor_year_count_map_scatter, factor_year_sum_plate_map_scatter, factor_year_count_map_scatter_swing, swingmap_count_map_scatter
+from map import season_spraychart, factor_year_count_map, factor_year_sum_map, swingmap_count_map, season_hangtime_spraychart, zone_spraychart_fig, factor_year_sum_map_scatter, factor_year_sum_plate_map_scatter, swingmap_count_map_scatter
 import time
 from PIL import Image
 from user import login
