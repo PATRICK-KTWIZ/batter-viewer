@@ -947,21 +947,21 @@ def zone_spraychart_fig(spraychart_dataframe):
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"one_spraychart_{zone}")
 
     with col2:
         zone = 'nz2'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"one_spraychart_{zone}")
 
     with col3:
         zone = 'nz3'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"one_spraychart_{zone}")
 
 
     col4, col5, col6 = st.columns(3)
@@ -971,21 +971,21 @@ def zone_spraychart_fig(spraychart_dataframe):
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"one_spraychart_{zone}")
 
     with col5:
         zone = 'core'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"one_spraychart_{zone}")
 
     with col6:
         zone = 'nz6'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"one_spraychart_{zone}")
 
     col7, col8, col9 = st.columns(3)
 
@@ -994,21 +994,21 @@ def zone_spraychart_fig(spraychart_dataframe):
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"one_spraychart_{zone}")
 
     with col8:
         zone = 'nz8'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"one_spraychart_{zone}")
 
     with col9:
         zone = 'nz9'
         season_zone_spraychart_fig = season_zone_spraychart(spraychart_dataframe, zone)
         season_zone_spraychart_fig.update_layout(height=500, width=500)
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
-        st.plotly_chart(season_zone_spraychart_fig, layout="wide")
+        st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"one_spraychart_{zone}")
 
 
 def season_hangtime_spraychart(dataframe):
