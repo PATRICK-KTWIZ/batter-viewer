@@ -38,13 +38,13 @@ st.markdown("""
 
     /* 사이드바를 항상 표시하기 위한 CSS */
     [data-testid="stSidebar"] {
-        min-width: 400px;
-        max-width: 400px;
+        min-width: 350px;
+        max-width: 350px;
         position: fixed;
         top: 0;
         left: 0;
         height: 100vh;
-        display: flex !important;
+        display: fixed !important;
         flex-direction: column;
         z-index: 1000;
         overflow: auto;
