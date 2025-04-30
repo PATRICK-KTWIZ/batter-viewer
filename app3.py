@@ -16,7 +16,7 @@ COOKIE_TOKEN = "my_unique_cookie_token"
 # 페이지 설정
 st.set_page_config(
     layout="wide",
-    initial_sidebar_state="collapsed",
+    # initial_sidebar_state="collapsed",
     page_title="KT WIZ BATTING ANALYTICS"
 )
 
