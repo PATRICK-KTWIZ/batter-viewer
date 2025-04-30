@@ -170,16 +170,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<div class="header-container">
-    <h1 class="header-text">
-        <span style='color: #c0c0c0;'>KT WIZ</span> 
-        <span style='color: red;'>BATTING ANALYTICS</span> 
-        <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span>
-    </h1>
-</div>
-""", unsafe_allow_html=True)
-
 
 headerSection = st.container()
 mainSection = st.container()
@@ -225,6 +215,15 @@ def show_login_page():
     # st.markdown("<h1 style='text-align: left'><span style='color: #c0c0c0;'>KT WIZ</span> <span style='color: red;'>BATTING ANALYTICS</span> <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span></h1>"
     #             , unsafe_allow_html=True)
 
+    st.markdown("""
+                <div class="header-container">
+                    <h1 class="header-text">
+                        <span style='color: #c0c0c0;'>KT WIZ</span> 
+                        <span style='color: red;'>BATTING ANALYTICS</span> 
+                        <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span>
+                    </h1>
+                </div>
+                """, unsafe_allow_html=True)
 
     # Main layout with two columns
     left_col, middle1_col, middle2_col, right_col = st.columns([0.7, 4, 5, 0.7])
