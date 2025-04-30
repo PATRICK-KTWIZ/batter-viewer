@@ -63,6 +63,11 @@ st.markdown("""
     [data-testid="stSidebar"] .stSelectbox > div > div > div {
         color: black !important;
     }
+    
+    /* 사이드바 markdowncontainer 내부 텍스트 색상 변경 */
+    [data-testid="stButton"] button:has([data-testid="stMarkdownContainer"]) {
+        color: red !important; 
+    }
 
     /* 드롭다운 메뉴 텍스트 색상 */
     .stSelectbox option {
