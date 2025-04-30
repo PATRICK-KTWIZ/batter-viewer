@@ -234,10 +234,6 @@ def show_login_page():
             padding-top: 0 !important;
             line-height: 1.5;
         }
-            [data-testid="element-container"] [data-testid="stButton"][key="login_btn"] button {
-            background-color: #333333 !important;
-            color: #c0c0c0 !important;
-        }
     </style>
     """, unsafe_allow_html=True)
     
@@ -279,6 +275,22 @@ def show_login_page():
             userName = st.text_input("", placeholder="아이디", label_visibility="collapsed")
             password = st.text_input("", placeholder="비밀번호", type="password", label_visibility="collapsed")
             st.session_state['password'] = password
+
+            st.markdown("""
+            <style>
+                /* 메인 버튼 스타일 */
+                .stButton > button {
+                    background-color: #333333 !important;
+                    color: #c0c0c0 !important;
+                    width: 100%;
+                    padding: 10px;
+                    border: none !important;
+                    border-radius: 3px;
+                    cursor: pointer;
+                }
+            </style>
+            """, unsafe_allow_html=True)
+            
             login_button = st.button("로그인", on_click=LoggedIn_Clicked, args=(userName, password))
         
         st.markdown('</div>', unsafe_allow_html=True)
