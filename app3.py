@@ -38,14 +38,13 @@ st.markdown("""
 
     /* 헤더 스타일 */
     .header-container {
-        background-color: #222222;
         padding: 1rem;
         margin: 0;
         width: 100vw;
         position: relative;
         left: 50%;
         right: 50%;
-        margin-left: -50vw;
+        margin-left: -47vw;
         margin-right: -50vw;
     }
     
