@@ -319,15 +319,15 @@ def show_main_page():
         
         st.title("KT WIZ :red[BATTING ANALYTICS] PAGE[Multiple Choice]")
 
-    with st.sidebar:
-
-        st.markdown("<br>", unsafe_allow_html=True)
-        
-        col1, col2, col3 = st.columns([1, 6, 1])
-        with col2:
-            st.image("ktwiz_emblem.png", width=300)
-
-        st.markdown('<div style="height: 30px;"></div>', unsafe_allow_html=True)
+        with st.sidebar:
+    
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            col1, col2, col3 = st.columns([1, 6, 1])
+            with col2:
+                st.image("ktwiz_emblem.png", width=300)
+    
+            st.markdown('<div style="height: 30px;"></div>', unsafe_allow_html=True)
 
         id_dataset = pd.read_csv('./player_id_info_2025.csv')
         id_dataset = id_dataset[['team','NAME','POS','TM_ID']]
