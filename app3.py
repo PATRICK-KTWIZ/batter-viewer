@@ -42,18 +42,13 @@ st.markdown("""
         color: #ffffff !important;
     }
     
-    # /* 사이드바 확장/축소 버튼 스타일 */
-    # button[kind="header"] {
-    #     background-color: #333333 !important;
-    #     color: #c0c0c0 !important;
-    # }
-    
     /* 사이드바 내부 요소 스타일 */
     [data-testid="stSidebar"] .stButton > button {
-        background-color: #444444 !important;
-        color: #ffffff !important;
+        background-color: #cccccc !important;
+        color: black !important;
         width: 100%;
-        margin-bottom: 10px;
+        border-radius: 7px;  /* 모서리 둥글기 */
+        padding: 0.5rem 1rem;  /* 패딩 */
     }
     
     /* 사이드바 헤더 스타일 */
@@ -66,14 +61,6 @@ st.markdown("""
         color: #e0e0e0 !important;
     }
 
-    /* 사이드바 버튼 배경색 및 텍스트 색상 변경 */
-    [data-testid="stSidebar"] .stButton > button {
-        background-color: #cccccc !important;
-        color: black !important;
-        border: none;
-        border-radius: 7px;  /* 모서리 둥글기 */
-        padding: 0.5rem 1rem;  /* 패딩 */
-    }
     
     /* 사이드바 버튼 호버 효과 (선택사항) */
     [data-testid="stSidebar"] .stButton > button:hover {
