@@ -19,7 +19,6 @@ def factor_year_count_map(dataframe, y_factor):
                                     xaxis = {'showgrid': False, 'zeroline': False}, yaxis = {'showgrid': False, 'zeroline': False}, showlegend = False)
 
     factor_year_count_map_fig.update_layout({'plot_bgcolor': 'rgba(13,8,135,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
-    factor_year_count_map_fig.update_layout(showlegend=False)
 
     factor_year_count_map_fig.update_yaxes(gridcolor='rgba(13,8,135,1)')
     factor_year_count_map_fig.update_xaxes(gridcolor='rgba(13,8,135,1)')
