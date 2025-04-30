@@ -109,17 +109,6 @@ st.markdown("""
         padding: 10px;
         border-radius: 0px;
         margin-bottom: 0px;
-        color: red !important;
-    }
-
-    /* 로그인 화면의 placeholder 색상 변경 */
-    .stTextInput > div > div > input::placeholder {
-        color: #c0c0c0 !important; /* 반투명 빨간색 */
-    }
-    
-    /* 로그인 후 화면에서의 텍스트 입력 필드 색상 (검정색으로 유지) */
-    body.logged-in .stTextInput > div > div > input {
-        color: black !important;
     }
 
     /* 메인 버튼 스타일 */
