@@ -41,6 +41,9 @@ st.markdown("""
         background-color: #2d2d2d !important;
         color: #ffffff !important;
         position: fixed !important;
+        transform: none !important;
+        transition: none !important;
+        display: flex !important;
     }
     
     /* 사이드바 버튼 스타일 */
