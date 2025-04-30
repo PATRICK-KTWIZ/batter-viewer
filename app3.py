@@ -190,7 +190,7 @@ def show_login_page():
         .header-container h1 {
             margin-top: 0 !important;
             padding-top: 0 !important;
-            line-height: 1.2;
+            line-height: 1.5;
         }
     </style>
     """, unsafe_allow_html=True)
