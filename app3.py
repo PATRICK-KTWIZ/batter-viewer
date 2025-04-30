@@ -34,8 +34,19 @@ st.markdown("""
         height: 95vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
         max-height: 1000px; /* 최대 높이 설정 */
         overflow: auto;
-        margin: -20 !important;
-        padding: 0 !important;
+    }
+
+    /* 헤더 컨테이너 스타일 - 절대 위치 사용 */
+    .header-container {
+        width: 100vw;
+        padding: 0px 20px;
+        margin: 0 !important;
+        box-sizing: border-box;
+        position: absolute;
+        top: -10;
+        left: 0;
+        right: 0;
+        z-index: 9999;
     }
     
     /* 로그인 컨테이너 스타일 */
@@ -45,11 +56,13 @@ st.markdown("""
         padding: 20px;
         background-color: #f0f0f0;
     }
+    
     /* 로고 컨테이너 */
     .logo-container {
         text-align: center;
         margin-bottom: 20px;
     }
+    
     /* 로그인 폼 스타일 */
     .stTextInput > div > div > input {
         border: 0px solid #ddd;
