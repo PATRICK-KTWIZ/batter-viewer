@@ -43,10 +43,28 @@ st.markdown("""
         padding: 0 !important;
     }
 
-    /* 상단 여백 제거 */
+    /* 메인 블록 여백 제거 */
     .main .block-container {
         padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
         margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        max-width: 100% !important;
+    }
+    
+
+    /* 헤더 컨테이너 스타일 */
+    .header-container {
+        background-color: #222222;
+        width: 100%;
+        padding: 10px 20px;
+        margin: 0 !important;
+        box-sizing: border-box;
+        position: sticky;
+        top: 0;
+        z-index: 999;
     }
     
     /* 헤더 스타일 */
@@ -213,15 +231,16 @@ def show_login_page():
 
 
     # 헤더를 컨테이너로 감싸서 배경색과 함께 표시
-    st.markdown("""
-    <div class="header-container">
-        <h1 class="header-text">
-            <span style='color: #c0c0c0;'>KT WIZ</span> 
-            <span style='color: red;'>BATTING ANALYTICS</span> 
-            <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span>
-        </h1>
-    </div>
-    """, unsafe_allow_html=True)
+    with headerSection:
+        st.markdown("""
+        <div class="header-container">
+            <h1 class="header-text">
+                <span style='color: #c0c0c0;'>KT WIZ</span> 
+                <span style='color: red;'>BATTING ANALYTICS</span> 
+                <span style='color: #c0c0c0;'>PAGE[Multiple Choice]</span>
+            </h1>
+        </div>
+        """, unsafe_allow_html=True)
     
     # Main layout with two columns
     left_col, middle1_col, middle2_col, right_col = st.columns([0.7, 4, 5, 0.7])
