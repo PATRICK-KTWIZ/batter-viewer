@@ -366,7 +366,7 @@ def show_main_page():
         if 'selected_players' not in st.session_state:
             st.session_state.selected_players = []
 
-        if st.sidebar.button('선수선택'):
+        if st.sidebar.button('선수추가'):
             st.session_state.selected_players.append({'Team': select_team, 'Player Name': select_player, 'League': option, 'ID' : player_id})
 
         selected_player_df = pd.DataFrame()
