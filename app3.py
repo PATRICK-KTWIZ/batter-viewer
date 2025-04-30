@@ -36,6 +36,21 @@ st.markdown("""
         overflow: auto;
     }
 
+    /* 사이드바를 항상 표시하기 위한 CSS */
+    [data-testid="stSidebar"] {
+        min-width: 400px;
+        max-width: 400px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        display: flex !important;
+        flex-direction: column;
+        z-index: 1000;
+        overflow: auto;
+        transition: none !important;
+    }
+
     /* 사이드바 스타일 */
     [data-testid="stSidebar"] {
         background-color: #2d2d2d !important;
@@ -311,22 +326,7 @@ def show_main_page():
         height: 100vh; /* 뷰포트 높이의 80%로 설정 - 원하는 대로 조정 가능 */
         overflow: auto;
     }
-
-        /* 사이드바를 항상 표시하기 위한 CSS */
-        [data-testid="stSidebar"] {
-            min-width: 300px;
-            max-width: 300px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            display: flex !important;
-            flex-direction: column;
-            z-index: 1000;
-            overflow: auto;
-            transition: none !important;
-        }
-        
+     
     </style>
     """, unsafe_allow_html=True)
 
