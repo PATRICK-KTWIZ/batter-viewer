@@ -56,7 +56,7 @@ st.markdown("""
     [data-testid="stSidebar"] .css-1inwz65,
     [data-testid="stSidebar"] label,
     [data-testid="stSidebar"] .stSelectbox > div > label {
-        color: #cccccc !important;
+        color: #c0c0c0 !important;
     }
 
     /* 사이드바 selectbox 내부 텍스트 색상 변경 */
