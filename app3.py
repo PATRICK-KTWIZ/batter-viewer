@@ -942,8 +942,8 @@ def show_main_page():
                 season_pitched_fig = swingmap_count_map(swingmap_dataframe, swingmap_factor)
                 season_pitched_fig_scatter = swingmap_count_map_scatter(swingmap_dataframe)
 
-                st.plotly_chart(season_pitched_fig, layout="wide")
-                st.plotly_chart(season_pitched_fig_scatter, layout="wide")
+                st.plotly_chart(season_pitched_fig, key=f"main_swingmap_{batter}", layout="wide")
+                st.plotly_chart(season_pitched_fig_scatter, key=f"main_swingmap_scatter_{batter}", layout="wide")
 
                                 # 선수별 연도별 스윙맵을 볼 수 있는 expander 추가
                 with st.expander(f"연도별: {batter_name}"):
@@ -978,8 +978,8 @@ def show_main_page():
                         year_swing_fig = swingmap_count_map(year_swingmap_df, swingmap_factor)
                         year_swing_scatter = swingmap_count_map_scatter(year_swingmap_df)
                         
-                        st.plotly_chart(year_swing_fig, layout="wide")
-                        st.plotly_chart(year_swing_scatter, layout="wide")
+                        st.plotly_chart(year_swing_fig, key=f"year_{batter}_{year}_swingmap", layout="wide")
+                        st.plotly_chart(year_swing_scatter, key=f"year_{batter}_{year}_swingmap_scatter", layout="wide")
                         
                         # 연도별 구분선 추가
                         st.markdown("---")
