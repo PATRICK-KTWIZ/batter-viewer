@@ -945,6 +945,46 @@ def show_main_page():
                 st.plotly_chart(season_pitched_fig, layout="wide")
                 st.plotly_chart(season_pitched_fig_scatter, layout="wide")
 
+                                # 선수별 연도별 스윙맵을 볼 수 있는 expander 추가
+                with st.expander(f"연도별: {batter_name}"):
+                    # 해당 선수의 모든 연도 데이터 가져오기
+                    years = sorted(batter_raw_df['game_year'].unique(), reverse=True)
+                    
+                    # 각 연도별로 그래프 표시
+                    for year in years:
+                        st.subheader(f"{year}년")
+                        
+                        # 해당 연도의 데이터 필터링
+                        year_df = batter_raw_df[batter_raw_df['game_year'] == year]
+                        
+                        # 연도별 스윙맵 데이터 준비
+                        year_called_strike_df = year_df[year_df['description'] == "called_strike"]
+                        year_called_strike_df['swingmap'] = 'Called_Strike'
+                        year_whiff_df = year_df[year_df['whiff'] == 1]
+                        year_whiff_df['swingmap'] = 'Whiff'
+                        year_ball_df = year_df[year_df['type'] == "B"]
+                        year_ball_df['swingmap'] = 'Ball'
+                        year_foul_df = year_df[year_df['foul'] == 1]
+                        year_foul_df['swingmap'] = 'Foul'
+                        year_hit_df = year_df[year_df['hit'] == 1]
+                        year_hit_df['swingmap'] = 'HIT'
+                        year_out_df = year_df[year_df['field_out'] == 1]
+                        year_out_df['swingmap'] = 'Out'
+                        
+                        year_swingmap_df = pd.concat([year_called_strike_df, year_whiff_df, year_ball_df, 
+                                                    year_foul_df, year_hit_df, year_out_df])
+                        
+                        # 연도별 스윙맵 그래프 표시
+                        year_swing_fig = swingmap_count_map(year_swingmap_df, swingmap_factor)
+                        year_swing_scatter = swingmap_count_map_scatter(year_swingmap_df)
+                        
+                        st.plotly_chart(year_swing_fig, layout="wide")
+                        st.plotly_chart(year_swing_scatter, layout="wide")
+                        
+                        # 연도별 구분선 추가
+                        st.markdown("---")
+            
+
             st.divider()
 
 # -------------------------------------------------------------------------------------------------------
