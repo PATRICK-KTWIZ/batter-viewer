@@ -804,7 +804,7 @@ def season_spraychart(dataframe, key=None):
     season_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='events', symbol="pitch_name",
                          color_discrete_map=colors,
                          hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate'],
-                         height = 580, width = 500)
+                         height = 580, width = 600)
     
     for i, d in enumerate(season_spraychart_fig.data):
         if len(season_spraychart_fig.data[i].name.split(', ')) > 1:
@@ -822,22 +822,6 @@ def season_spraychart(dataframe, key=None):
     season_spraychart_fig.update_xaxes(title_text='')
     season_spraychart_fig.update_yaxes(title_text='')
     
-    # 모든 annotation 업데이트
-    for annotation in season_spraychart_fig.layout.annotations:
-        # "swingmap=" 부분을 제거
-        if "game_year=" in annotation.text:
-            annotation.update(text=annotation.text.replace("game_year=", ""))
-        # "pitch_name=" 부분을 제거
-            # 왼쪽으로 이동하지 않고 기본 위치 유지
-        
-        # 기존 스타일 업데이트는 유지
-        annotation.update(font=dict(size=20, color='black', family='Arial, bold'))
-        # 제목 위치 조정
-        annotation.update(y=annotation.y + 0.02)
-    
-    swing_scatter_fig.update_traces(marker=dict(size=20))
-
-
     season_spraychart_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
     season_spraychart_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
 
