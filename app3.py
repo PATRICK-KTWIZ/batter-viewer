@@ -996,93 +996,122 @@ def show_main_page():
 
             for batter, batter_df in batter_dataframes.items():
                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-            batter_str = str(batter)
-            batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-            batter_name = batter_finder.iloc[0]['NAME']
-        
-            st.subheader(f"{batter_name}")
             
-            spraychart_dataframe = spraychart_df(batter_raw_df)
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
             
-            # HTML 컨테이너 시작
-            st.markdown("""
-            <div style="width: 100%; 
-                        height: 600px; 
-                        border: none; 
-                        padding: 10px; 
-                        margin-bottom: 20px;
-                        background-color: white;">
-            """, unsafe_allow_html=True)
-            
-            # 기존 함수 호출 (그대로 사용)
-            season_spraychart(spraychart_dataframe, key=f"season_spray_{batter}")
-            
-            # HTML 컨테이너 종료
-            st.markdown("</div>", unsafe_allow_html=True)
-        
-            st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
-                        <span style="font-weight: bold;">색상 범례:</span> 
-                        붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
-                            </div>
-                            """, 
-                        unsafe_allow_html=True)
-        
-            with st.expander(f" by 스트라이크 존:  {batter_name}(최근연도)"):
-                st.write("S존 기준차트")
+                st.subheader(f"{batter_name}")
                 
-                # HTML 컨테이너 시작
-                st.markdown("""
-                <div style="width: 100%; 
-                            height: 600px; 
-                            border: none; 
-                            padding: 10px; 
-                            margin-bottom: 20px;
-                            background-color: white;">
-                """, unsafe_allow_html=True)
+                # 시즌 데이터 확인 및 정렬
+                # 여기서는 데이터프레임에 'year' 또는 'season' 컬럼이 있다고 가정합니다
+                # 실제 컬럼명에 맞게 수정해주세요
+                if 'year' in batter_raw_df.columns:
+                    year_col = 'year'
+                elif 'season' in batter_raw_df.columns:
+                    year_col = 'season'
+                else:
+                    # 연도 컬럼이 없는 경우 기본값 설정
+                    year_col = None
                 
-                # 기존 함수 호출
-                zone_spraychart_fig(spraychart_dataframe, batter_name=batter_name)
+                if year_col:
+                    # 고유 연도 추출 및 내림차순 정렬
+                    years = sorted(batter_raw_df[year_col].unique(), reverse=True)
+                else:
+                    # 연도 정보가 없는 경우 단일 시즌으로 처리
+                    years = [None]
                 
-                # HTML 컨테이너 종료
-                st.markdown("</div>", unsafe_allow_html=True)
+                # 최대 3개 시즌만 표시
+                display_years = years[:3]
                 
+                # 3개 컬럼 생성
+                cols = st.columns(3)
+                
+                # 각 연도별 데이터 표시
+                for i in range(3):
+                    with cols[i]:
+                        if i < len(display_years) and display_years[i] is not None:
+                            current_year = display_years[i]
+                            st.write(f"#### {current_year} 시즌")
+                            
+                            # 해당 연도 데이터 필터링
+                            year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
+                            
+                            # Spray Chart 데이터 생성
+                            year_spraychart_dataframe = spraychart_df(year_data)
+                            
+                            # Spray Chart 표시
+                            season_spraychart(year_spraychart_dataframe, key=f"season_spray_{batter}_{current_year}")
+                            
+                        else:
+                            st.write("#### 시즌 정보 없음")
+                            st.info("해당 시즌의 데이터가 없습니다.")
+                
+                # 색상 범례 표시
                 st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
-                        <span style="font-weight: bold;">색상 범례:</span> 
-                        붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
+                            <span style="font-weight: bold;">색상 범례:</span> 
+                            붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
                             </div>
                             """, 
-                        unsafe_allow_html=True)
-        
-            with st.expander(f" by 타구비행시간:  {batter_name}(최근연도)"):
-                st.write("타구 비행시간")
+                            unsafe_allow_html=True)
                 
-                # HTML 컨테이너 시작
-                st.markdown("""
-                <div style="width: 100%; 
-                            height: 600px; 
-                            border: none; 
-                            padding: 10px; 
-                            margin-bottom: 20px;
-                            background-color: white;">
-                """, unsafe_allow_html=True)
-                
-                # 기존 함수 호출 - 이미 plotly 그래프 객체를 반환하는 것으로 가정
-                spraychart_hangtime_fig = season_hangtime_spraychart(spraychart_dataframe, batter_name=batter_name)
-                st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_{batter}")
-                
-                # HTML 컨테이너 종료
-                st.markdown("</div>", unsafe_allow_html=True)
-                
-                st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
-                        <span style="font-weight: bold;">색상 범례:</span> 
-                        붉은색: 1~4초 비행 / 살구색: 1초 미만 / 옅은 갈색: 4초 이상
+                # 스트라이크 존 기준 차트 (최근 연도만)
+                with st.expander(f" by 스트라이크 존:  {batter_name}(최근연도)"):
+                    if len(years) > 0 and years[0] is not None:
+                        st.write(f"S존 기준차트 ({years[0]} 시즌)")
+                        
+                        # 최근 연도 데이터 필터링
+                        recent_year_data = batter_raw_df[batter_raw_df[year_col] == years[0]]
+                        recent_spraychart_dataframe = spraychart_df(recent_year_data)
+                        
+                        # 스트라이크 존 차트는 중앙에 표시
+                        col1, col2, col3 = st.columns([1, 2, 1])
+                        with col2:
+                            zone_spraychart_fig(recent_spraychart_dataframe, batter_name=f"{batter_name} ({years[0]})")
+                        
+                        st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
+                                <span style="font-weight: bold;">색상 범례:</span> 
+                                붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
+                                </div>
+                                """, 
+                                unsafe_allow_html=True)
+                    else:
+                        st.info("스트라이크 존 분석을 위한 데이터가 없습니다.")
+            
+                # 타구 비행시간 차트 (최근 3개 연도)
+                with st.expander(f" by 타구비행시간:  {batter_name}(최근연도)"):
+                    st.write("타구 비행시간")
+                    
+                    # 3개 컬럼 생성
+                    hangtime_cols = st.columns(3)
+                    
+                    # 각 연도별 타구 비행시간 차트 표시
+                    for i in range(3):
+                        with hangtime_cols[i]:
+                            if i < len(display_years) and display_years[i] is not None:
+                                current_year = display_years[i]
+                                st.write(f"#### {current_year} 시즌")
+                                
+                                # 해당 연도 데이터 필터링
+                                year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
+                                
+                                # Spray Chart 데이터 생성
+                                year_spraychart_dataframe = spraychart_df(year_data)
+                                
+                                # 타구 비행시간 차트 표시
+                                spraychart_hangtime_fig = season_hangtime_spraychart(year_spraychart_dataframe, batter_name=f"{batter_name} ({current_year})")
+                                st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_{batter}_{current_year}")
+                                
+                            else:
+                                st.write("#### 시즌 정보 없음")
+                                st.info("해당 시즌의 데이터가 없습니다.")
+                    
+                    st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
+                            <span style="font-weight: bold;">색상 범례:</span> 
+                            붉은색: 1~4초 비행 / 살구색: 1초 미만 / 옅은 갈색: 4초 이상
                             </div>
                             """, 
-                        unsafe_allow_html=True)
-
-
-
+                            unsafe_allow_html=True)
                 
 
               
