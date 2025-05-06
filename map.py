@@ -818,6 +818,26 @@ def season_spraychart(dataframe, key=None):
 
     season_spraychart_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
 
+    # 모든 subplot에 대한 y축 제목 제거
+    season_spraychart_fig.update_xaxes(title_text='')
+    season_spraychart_fig.update_yaxes(title_text='')
+    
+    # 모든 annotation 업데이트
+    for annotation in season_spraychart_fig.layout.annotations:
+        # "swingmap=" 부분을 제거
+        if "game_year=" in annotation.text:
+            annotation.update(text=annotation.text.replace("game_year=", ""))
+        # "pitch_name=" 부분을 제거
+            # 왼쪽으로 이동하지 않고 기본 위치 유지
+        
+        # 기존 스타일 업데이트는 유지
+        annotation.update(font=dict(size=20, color='black', family='Arial, bold'))
+        # 제목 위치 조정
+        annotation.update(y=annotation.y + 0.02)
+    
+    swing_scatter_fig.update_traces(marker=dict(size=20))
+
+
     season_spraychart_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
     season_spraychart_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
 
