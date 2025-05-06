@@ -1004,12 +1004,12 @@ def show_main_page():
                 st.subheader(f"{batter_name}")
                 
                 # 시즌 데이터 확인 및 정렬
-                # 여기서는 데이터프레임에 'year' 또는 'season' 컬럼이 있다고 가정합니다
-                # 실제 컬럼명에 맞게 수정해주세요
                 if 'year' in batter_raw_df.columns:
                     year_col = 'year'
                 elif 'season' in batter_raw_df.columns:
                     year_col = 'season'
+                elif 'game_year' in batter_raw_df.columns:
+                    year_col = 'game_year'
                 else:
                     # 연도 컬럼이 없는 경우 기본값 설정
                     year_col = None
@@ -1100,7 +1100,7 @@ def show_main_page():
                                 
                                 # 타구 비행시간 차트 표시
                                 spraychart_hangtime_fig = season_hangtime_spraychart(year_spraychart_dataframe, batter_name=f"{batter_name} ({current_year})")
-                                st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_{batter}_{current_year}")
+                                st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_{batter}_{current_year}", use_container_width=True)
                                 
                             else:
                                 st.write("#### 시즌 정보 없음")
@@ -1112,11 +1112,8 @@ def show_main_page():
                             </div>
                             """, 
                             unsafe_allow_html=True)
-                
-
-              
-
-            st.divider()
+            
+                st.divider()
 
 # -------------------------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------------
