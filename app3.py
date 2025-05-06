@@ -1003,23 +1003,11 @@ def show_main_page():
             
                 st.subheader(f"{batter_name}")
                 
-                # 시즌 데이터 확인 및 정렬
-                if 'year' in batter_raw_df.columns:
-                    year_col = 'year'
-                elif 'season' in batter_raw_df.columns:
-                    year_col = 'season'
-                elif 'game_year' in batter_raw_df.columns:
-                    year_col = 'game_year'
-                else:
-                    # 연도 컬럼이 없는 경우 기본값 설정
-                    year_col = None
+                # 'game_year' 컬럼을 명시적으로 사용
+                year_col = 'game_year'
                 
-                if year_col:
-                    # 고유 연도 추출 및 내림차순 정렬
-                    years = sorted(batter_raw_df[year_col].unique(), reverse=True)
-                else:
-                    # 연도 정보가 없는 경우 단일 시즌으로 처리
-                    years = [None]
+                # 고유 연도 추출 및 내림차순 정렬
+                years = sorted(batter_raw_df[year_col].unique(), reverse=True)
                 
                 # 최대 3개 시즌만 표시
                 display_years = years[:3]
@@ -1028,24 +1016,25 @@ def show_main_page():
                 cols = st.columns(3)
                 
                 # 각 연도별 데이터 표시
-                for i in range(3):
+                for i in range(min(3, len(display_years))):  # 실제 연도 수와 3 중 작은 값만큼 반복
                     with cols[i]:
-                        if i < len(display_years) and display_years[i] is not None:
-                            current_year = display_years[i]
-                            st.write(f"#### {current_year} 시즌")
-                            
-                            # 해당 연도 데이터 필터링
-                            year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
-                            
-                            # Spray Chart 데이터 생성
-                            year_spraychart_dataframe = spraychart_df(year_data)
-                            
-                            # Spray Chart 표시
-                            season_spraychart(year_spraychart_dataframe, key=f"season_spray_{batter}_{current_year}")
-                            
-                        else:
-                            st.write("#### 시즌 정보 없음")
-                            st.info("해당 시즌의 데이터가 없습니다.")
+                        current_year = display_years[i]
+                        st.write(f"#### {current_year} 시즌")
+                        
+                        # 해당 연도 데이터 필터링
+                        year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
+                        
+                        # Spray Chart 데이터 생성
+                        year_spraychart_dataframe = spraychart_df(year_data)
+                        
+                        # Spray Chart 표시
+                        season_spraychart(year_spraychart_dataframe, key=f"season_spray_{batter}_{current_year}")
+                
+                # 남은 컬럼에 빈 내용 표시
+                for i in range(len(display_years), 3):
+                    with cols[i]:
+                        st.write("#### 시즌 정보 없음")
+                        st.info("해당 시즌의 데이터가 없습니다.")
                 
                 # 색상 범례 표시
                 st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
@@ -1057,7 +1046,7 @@ def show_main_page():
                 
                 # 스트라이크 존 기준 차트 (최근 연도만)
                 with st.expander(f" by 스트라이크 존:  {batter_name}(최근연도)"):
-                    if len(years) > 0 and years[0] is not None:
+                    if len(years) > 0:
                         st.write(f"S존 기준차트 ({years[0]} 시즌)")
                         
                         # 최근 연도 데이터 필터링
@@ -1086,25 +1075,26 @@ def show_main_page():
                     hangtime_cols = st.columns(3)
                     
                     # 각 연도별 타구 비행시간 차트 표시
-                    for i in range(3):
+                    for i in range(min(3, len(display_years))):  # 실제 연도 수와 3 중 작은 값만큼 반복
                         with hangtime_cols[i]:
-                            if i < len(display_years) and display_years[i] is not None:
-                                current_year = display_years[i]
-                                st.write(f"#### {current_year} 시즌")
-                                
-                                # 해당 연도 데이터 필터링
-                                year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
-                                
-                                # Spray Chart 데이터 생성
-                                year_spraychart_dataframe = spraychart_df(year_data)
-                                
-                                # 타구 비행시간 차트 표시
-                                spraychart_hangtime_fig = season_hangtime_spraychart(year_spraychart_dataframe, batter_name=f"{batter_name} ({current_year})")
-                                st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_{batter}_{current_year}", use_container_width=True)
-                                
-                            else:
-                                st.write("#### 시즌 정보 없음")
-                                st.info("해당 시즌의 데이터가 없습니다.")
+                            current_year = display_years[i]
+                            st.write(f"#### {current_year} 시즌")
+                            
+                            # 해당 연도 데이터 필터링
+                            year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
+                            
+                            # Spray Chart 데이터 생성
+                            year_spraychart_dataframe = spraychart_df(year_data)
+                            
+                            # 타구 비행시간 차트 표시
+                            spraychart_hangtime_fig = season_hangtime_spraychart(year_spraychart_dataframe, batter_name=f"{batter_name} ({current_year})")
+                            st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_{batter}_{current_year}", use_container_width=True)
+                    
+                    # 남은 컬럼에 빈 내용 표시
+                    for i in range(len(display_years), 3):
+                        with hangtime_cols[i]:
+                            st.write("#### 시즌 정보 없음")
+                            st.info("해당 시즌의 데이터가 없습니다.")
                     
                     st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                             <span style="font-weight: bold;">색상 범례:</span> 
@@ -1114,6 +1104,7 @@ def show_main_page():
                             unsafe_allow_html=True)
             
                 st.divider()
+
 
 # -------------------------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------------
