@@ -1064,7 +1064,7 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     for col in required_columns:
         if col not in dataframe.columns:
             # 필요한 컬럼이 없으면 빈 그래프 반환
-            empty_fig = px.scatter(height=580, width=500)
+            empty_fig = px.scatter(height=580, width=600)
             empty_fig.update_layout(
                 title=f"{batter_name} - 데이터 부족",
                 annotations=[dict(
@@ -1103,7 +1103,7 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
                         color_discrete_map=hangtime_colors,
                         hover_name="player_name" if "player_name" in dataframe.columns else None, 
                         hover_data=hover_data,
-                        height=580, width=500)
+                        height=580, width=600)
     
     # 타이틀 설정
     if batter_name:
@@ -1112,12 +1112,16 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     # 레이아웃 설정
     hangtime_fig.update_layout(
         autosize=False, 
-        margin=dict(l=50, r=50, t=50, b=50), 
+        margin=dict(l=0, r=0, t=30, b=0), 
         xaxis_range=[-10, 130], 
         yaxis_range=[-10, 130],
         plot_bgcolor='rgba(255,255,255,1)', 
         paper_bgcolor='rgba(255,255,255,1)'
     )
+
+    # 모든 subplot에 대한 y축 제목 제거
+    hangtime_fig.update_xaxes(title_text='',showticklabels=False)
+    hangtime_fig.update_yaxes(title_text='',showticklabels=False)
     
     # 그리드 및 축 설정
     hangtime_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
@@ -1126,7 +1130,7 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     hangtime_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
     
     # 마커 크기 설정
-    hangtime_fig.update_traces(marker=dict(size=20))
+    hangtime_fig.update_traces(marker=dict(size=22))
     
     # 범례 숨기기
     hangtime_fig.update_layout(showlegend=False)
