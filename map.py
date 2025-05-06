@@ -1059,6 +1059,23 @@ def zone_spraychart_fig(spraychart_dataframe, batter_name=None):
         st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"zone9_{batter_name}")
 
 def season_hangtime_spraychart(dataframe, batter_name=None):
+    # 필요한 컬럼이 있는지 확인
+    required_columns = ['groundX', 'groundY']
+    for col in required_columns:
+        if col not in dataframe.columns:
+            # 필요한 컬럼이 없으면 빈 그래프 반환
+            empty_fig = px.scatter(height=580, width=500)
+            empty_fig.update_layout(
+                title=f"{batter_name} - 데이터 부족",
+                annotations=[dict(
+                    text='필요한 데이터가 없습니다',
+                    showarrow=False,
+                    xref="paper", yref="paper",
+                    x=0.5, y=0.5
+                )]
+            )
+            return empty_fig
+    
     # 타구 비행시간에 따른 색상 맵 정의
     hangtime_colors = {
         'short': 'rgba(255,127,80,0.7)',  # 살구색 (1초 미만)
@@ -1075,11 +1092,17 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
         # hang_time 컬럼이 없는 경우 대체 로직
         dataframe['hang_time_category'] = 'medium'  # 모두 중간 비행시간으로 설정
     
+    # hover_data에 포함할 컬럼 확인
+    hover_data = []
+    for col in ["hang_time", "events", "exit_velocity", "launch_angle"]:
+        if col in dataframe.columns:
+            hover_data.append(col)
+    
     # 산점도 생성
     hangtime_fig = px.scatter(dataframe, x='groundX', y='groundY', color='hang_time_category',
                         color_discrete_map=hangtime_colors,
-                        hover_name="player_name", 
-                        hover_data=["hang_time", "events", "exit_velocity", "launch_angle"],
+                        hover_name="player_name" if "player_name" in dataframe.columns else None, 
+                        hover_data=hover_data,
                         height=580, width=500)
     
     # 타이틀 설정
