@@ -994,7 +994,17 @@ def show_main_page():
 
             st.title('[시즌 :red[Spray Chart]]')
 
-            st.markdown("""
+
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+            
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
+            
+                st.subheader(f"{batter_name}")
+
+                st.markdown("""
                         <style>
                             .element-container {
                                 padding: 0 !important;
@@ -1014,16 +1024,6 @@ def show_main_page():
                             }
                         </style>
                     """, unsafe_allow_html=True)
-            
-
-            for batter, batter_df in batter_dataframes.items():
-                batter_raw_df = globals()[f"df_{batter}"] = batter_df
-            
-                batter_str = str(batter)
-                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-                batter_name = batter_finder.iloc[0]['NAME']
-            
-                st.subheader(f"{batter_name}")
                 
                 # 'game_year' 컬럼을 명시적으로 사용
                 year_col = 'game_year'
@@ -1074,11 +1074,8 @@ def show_main_page():
                         # 최근 연도 데이터 필터링
                         recent_year_data = batter_raw_df[batter_raw_df[year_col] == years[0]]
                         recent_spraychart_dataframe = spraychart_df(recent_year_data)
-                        
-                        # 스트라이크 존 차트는 중앙에 표시
-                        col1, col2, col3 = st.columns([1, 2, 1])
-                        with col2:
-                            zone_spraychart_fig(recent_spraychart_dataframe, batter_name=f"{batter_name} ({years[0]})")
+
+                        zone_spraychart_fig(recent_spraychart_dataframe, batter_name=f"{batter_name} ({years[0]})")
                         
                         st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                                 <span style="font-weight: bold;">색상 범례:</span> 
