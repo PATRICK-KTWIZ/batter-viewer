@@ -804,7 +804,7 @@ def season_spraychart(dataframe, key=None):
     season_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='events', symbol="pitch_name",
                          color_discrete_map=colors,
                          hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate'],
-                         height = 580, width = 500)
+                         height = 580, width = 600)
     
     for i, d in enumerate(season_spraychart_fig.data):
         if len(season_spraychart_fig.data[i].name.split(', ')) > 1:
@@ -814,7 +814,7 @@ def season_spraychart(dataframe, key=None):
 
     season_spraychart_fig.update_yaxes(domain=[0.1, 0.97])
 
-    season_spraychart_fig.update_layout(autosize=False, margin=dict(l=0, r=0, t=30, b=0), xaxis_range=[-10,130], yaxis_range=[-10,130])
+    season_spraychart_fig.update_layout(autosize=False, margin=dict(l=0, r=10, t=30, b=0), xaxis_range=[-10,130], yaxis_range=[-10,130])
 
     season_spraychart_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
 
