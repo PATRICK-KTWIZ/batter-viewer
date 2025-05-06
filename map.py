@@ -796,22 +796,22 @@ def factor_period_sum_plate_map(dataframe, y_factor):
         return factor_period_sum_plate_map_fig
 
 def season_spraychart(dataframe, key=None):
-
     colors = {'field_out':'rgba(140,86,75,0.3)','fielders_choice_out':'rgba(140,86,75,0.3)', 'field_error':'rgba(140,86,75,0.3)', 'sac_fly':'rgba(140,86,75,0.3)', 
           'force_out':'rgba(140,86,75,0.3)', 'double_play':'rgba(140,86,75,0.3)', 'grounded_into_double_play':'rgba(140,86,75,0.3)',
           'home_run':'rgba(255,72,120,1)', 'triple':'rgba(255,72,120,1)', 'double':'rgba(255,72,120,1)', 'single':'rgba(67,89,119,0.7)' }
     symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
 
-    col_index = len(dataframe['game_year'].unique())
-
-    season_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='events',  facet_col='game_year', symbol="pitch_name",
+    # facet_col 옵션 제거 - 각 연도를 별도의 컬럼에 표시할 것이기 때문에
+    season_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='events', symbol="pitch_name",
                          color_discrete_map=colors,
                          hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate'],
-                        #  category_orders={"game_year": [2021,2022, 2023]},
-                         height = 580, width = col_index*500)
+                         height = 580, width = 500)
     
     for i, d in enumerate(season_spraychart_fig.data):
-        season_spraychart_fig.data[i].marker.symbol = symbols[season_spraychart_fig.data[i].name.split(', ')[1]]
+        if len(season_spraychart_fig.data[i].name.split(', ')) > 1:
+            pitch_name = season_spraychart_fig.data[i].name.split(', ')[1]
+            if pitch_name in symbols:
+                season_spraychart_fig.data[i].marker.symbol = symbols[pitch_name]
 
     season_spraychart_fig.update_yaxes(domain=[0.1, 0.97])
 
@@ -826,16 +826,61 @@ def season_spraychart(dataframe, key=None):
 
     season_spraychart_fig.update_layout(showlegend=False)
 
-    season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
+    season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5)
 
-    season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
+    season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5)
 
-    season_spraychart_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width = 5, row="all", col="all")
+    season_spraychart_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width = 5)
 
     season_spraychart_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
     season_spraychart_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
 
-    return  st.plotly_chart(season_spraychart_fig, layout="wide", key=key)
+    # key 매개변수 추가하여 각 차트가 고유한 ID를 가지도록 함
+    return st.plotly_chart(season_spraychart_fig, key=key, use_container_width=True)
+
+
+
+# def season_spraychart(dataframe, key=None):
+
+#     colors = {'field_out':'rgba(140,86,75,0.3)','fielders_choice_out':'rgba(140,86,75,0.3)', 'field_error':'rgba(140,86,75,0.3)', 'sac_fly':'rgba(140,86,75,0.3)', 
+#           'force_out':'rgba(140,86,75,0.3)', 'double_play':'rgba(140,86,75,0.3)', 'grounded_into_double_play':'rgba(140,86,75,0.3)',
+#           'home_run':'rgba(255,72,120,1)', 'triple':'rgba(255,72,120,1)', 'double':'rgba(255,72,120,1)', 'single':'rgba(67,89,119,0.7)' }
+#     symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
+
+#     col_index = len(dataframe['game_year'].unique())
+
+#     season_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='events',  facet_col='game_year', symbol="pitch_name",
+#                          color_discrete_map=colors,
+#                          hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate'],
+#                         #  category_orders={"game_year": [2021,2022, 2023]},
+#                          height = 580, width = col_index*500)
+    
+#     for i, d in enumerate(season_spraychart_fig.data):
+#         season_spraychart_fig.data[i].marker.symbol = symbols[season_spraychart_fig.data[i].name.split(', ')[1]]
+
+#     season_spraychart_fig.update_yaxes(domain=[0.1, 0.97])
+
+#     season_spraychart_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-10,130], yaxis_range=[-10,130])
+
+#     season_spraychart_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
+
+#     season_spraychart_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
+#     season_spraychart_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
+
+#     season_spraychart_fig.update_traces(marker=dict(size=20))
+
+#     season_spraychart_fig.update_layout(showlegend=False)
+
+#     season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
+
+#     season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
+
+#     season_spraychart_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width = 5, row="all", col="all")
+
+#     season_spraychart_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+#     season_spraychart_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+
+#     return  st.plotly_chart(season_spraychart_fig, layout="wide", key=key)
 
 def season_zone_spraychart(dataframe, zone):
 
@@ -1010,45 +1055,114 @@ def zone_spraychart_fig(spraychart_dataframe, batter_name=None):
         season_zone_spraychart_fig.update_coloraxes(showscale=False)
         st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"zone9_{batter_name}")
 
-
 def season_hangtime_spraychart(dataframe, batter_name=None):
-
-    colors = {'shrot':'rgba(67,89,119,0.7)','long':'rgba(140,86,75,0.3)', 'challenge':'rgba(255,72,120,1)' }
-    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
-
-    col_index = len(dataframe['game_year'].unique())
-
-    season_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='hangtime_type', color_discrete_map=colors, facet_col='game_year', symbol="pitch_name",
-                         hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate','hangtime'],
-                        #  category_orders={"game_year": [2021,2022, 2023]},
-                         height = 580, width = col_index*500)
+    # 타구 비행시간에 따른 색상 맵 정의
+    hangtime_colors = {
+        'short': 'rgba(255,127,80,0.7)',  # 살구색 (1초 미만)
+        'medium': 'rgba(255,0,0,0.7)',     # 붉은색 (1-4초)
+        'long': 'rgba(140,86,75,0.7)'      # 갈색 (4초 이상)
+    }
     
-    for i, d in enumerate(season_spraychart_fig.data):
-        season_spraychart_fig.data[i].marker.symbol = symbols[season_spraychart_fig.data[i].name.split(', ')[1]]
+    # 비행시간 카테고리 추가
+    if 'hang_time' in dataframe.columns:
+        dataframe['hang_time_category'] = 'medium'  # 기본값
+        dataframe.loc[dataframe['hang_time'] < 1, 'hang_time_category'] = 'short'
+        dataframe.loc[dataframe['hang_time'] >= 4, 'hang_time_category'] = 'long'
+    else:
+        # hang_time 컬럼이 없는 경우 대체 로직
+        dataframe['hang_time_category'] = 'medium'  # 모두 중간 비행시간으로 설정
+    
+    # 산점도 생성
+    hangtime_fig = px.scatter(dataframe, x='groundX', y='groundY', color='hang_time_category',
+                        color_discrete_map=hangtime_colors,
+                        hover_name="player_name", 
+                        hover_data=["hang_time", "events", "exit_velocity", "launch_angle"],
+                        height=580, width=500)
+    
+    # 타이틀 설정
+    if batter_name:
+        hangtime_fig.update_layout(title=f"{batter_name} - 타구 비행시간")
+    
+    # 레이아웃 설정
+    hangtime_fig.update_layout(
+        autosize=False, 
+        margin=dict(l=50, r=50, t=50, b=50), 
+        xaxis_range=[-10, 130], 
+        yaxis_range=[-10, 130],
+        plot_bgcolor='rgba(255,255,255,1)', 
+        paper_bgcolor='rgba(255,255,255,1)'
+    )
+    
+    # 그리드 및 축 설정
+    hangtime_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
+    hangtime_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
+    hangtime_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    hangtime_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    
+    # 마커 크기 설정
+    hangtime_fig.update_traces(marker=dict(size=20))
+    
+    # 범례 숨기기
+    hangtime_fig.update_layout(showlegend=False)
+    
+    # 야구장 요소 추가
+    # 홈플레이트
+    hangtime_fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5)
+    
+    # 외야 경계
+    hangtime_fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5)
+    
+    # 내야-외야 경계선
+    hangtime_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width=5)
+    
+    return hangtime_fig
 
-    season_spraychart_fig.update_yaxes(domain=[0.1, 0.97])
 
-    season_spraychart_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-10,130], yaxis_range=[-10,130])
 
-    season_spraychart_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
 
-    season_spraychart_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
-    season_spraychart_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
 
-    season_spraychart_fig.update_traces(marker=dict(size=20))
 
-    season_spraychart_fig.update_layout(showlegend=False)
 
-    season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
 
-    season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
 
-    season_spraychart_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width = 5, row="all", col="all")
+# def season_hangtime_spraychart(dataframe, batter_name=None):
 
-    season_spraychart_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
-    season_spraychart_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+#     colors = {'shrot':'rgba(67,89,119,0.7)','long':'rgba(140,86,75,0.3)', 'challenge':'rgba(255,72,120,1)' }
+#     symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
 
-    return  season_spraychart_fig
+#     col_index = len(dataframe['game_year'].unique())
+
+#     season_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='hangtime_type', color_discrete_map=colors, facet_col='game_year', symbol="pitch_name",
+#                          hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate','hangtime'],
+#                         #  category_orders={"game_year": [2021,2022, 2023]},
+#                          height = 580, width = col_index*500)
+    
+#     for i, d in enumerate(season_spraychart_fig.data):
+#         season_spraychart_fig.data[i].marker.symbol = symbols[season_spraychart_fig.data[i].name.split(', ')[1]]
+
+#     season_spraychart_fig.update_yaxes(domain=[0.1, 0.97])
+
+#     season_spraychart_fig.update_layout(autosize=False, margin=dict(l=50, r=50, t=50, b=50), xaxis_range=[-10,130], yaxis_range=[-10,130])
+
+#     season_spraychart_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
+
+#     season_spraychart_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
+#     season_spraychart_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
+
+#     season_spraychart_fig.update_traces(marker=dict(size=20))
+
+#     season_spraychart_fig.update_layout(showlegend=False)
+
+#     season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
+
+#     season_spraychart_fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5, row="all", col="all")
+
+#     season_spraychart_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width = 5, row="all", col="all")
+
+#     season_spraychart_fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+#     season_spraychart_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+
+#     return  season_spraychart_fig
 
 
 
