@@ -1068,7 +1068,7 @@ def show_main_page():
                         st.info("스트라이크 존 분석을 위한 데이터가 없습니다.")
             
                 # 타구 비행시간 차트 (최근 3개 연도)
-                with st.expander(f" by 타구비행시간:  {batter_name}(최근연도)"):
+                with st.expander(f" by 타구비행시간:  {batter_name}"):
                     st.write("타구 비행시간")
                     
                     # 3개 컬럼 생성
