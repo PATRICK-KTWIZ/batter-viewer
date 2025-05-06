@@ -819,8 +819,8 @@ def season_spraychart(dataframe, key=None):
     season_spraychart_fig.update_layout({'plot_bgcolor': 'rgba(255,255,255,1)', 'paper_bgcolor': 'rgba(255,255,255,1)',})
 
     # 모든 subplot에 대한 y축 제목 제거
-    season_spraychart_fig.update_xaxes(title_text='')
-    season_spraychart_fig.update_yaxes(title_text='')
+    season_spraychart_fig.update_xaxes(title_text='',showticklabels=False)
+    season_spraychart_fig.update_yaxes(title_text='',showticklabels=False)
     
     season_spraychart_fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
     season_spraychart_fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
