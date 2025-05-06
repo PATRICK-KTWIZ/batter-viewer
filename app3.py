@@ -9,6 +9,8 @@ from PIL import Image
 from user import login
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.io as pio
+from streamlit.components.v1 import html
 
 # Set a unique token for the cookie
 COOKIE_TOKEN = "my_unique_cookie_token"
