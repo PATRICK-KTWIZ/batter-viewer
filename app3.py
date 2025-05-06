@@ -1004,35 +1004,104 @@ def show_main_page():
                 st.subheader(f"{batter_name}")
                 
                 spraychart_dataframe = spraychart_df(batter_raw_df)
-                season_spraychart(spraychart_dataframe, key=f"season_spray_{batter}")
 
+                    # 기존 함수를 사용하여 plotly 그래프 객체 생성
+                spray_fig = season_spraychart(spraychart_dataframe, key=f"season_spray_{batter}", return_fig=True)
+                
+                # 그래프를 HTML로 변환
+                fig_html = pio.to_html(spray_fig, full_html=False, include_plotlyjs='cdn', config={'displayModeBar': False})
+                
+                # HTML 컴포넌트로 렌더링 (고정된 크기의 컨테이너 안에)
+                complete_html = f"""
+                <div style="width: 100%; 
+                            height: 600px; 
+                            border: none; 
+                            padding: 10px; 
+                            margin-bottom: 20px;
+                            background-color: white;">
+                    <div style="width: 100%; height: 100%; overflow: hidden;">
+                        {fig_html}
+                    </div>
+                </div>
+                """
+                
+                html(complete_html, height=620)
+            
                 st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                             <span style="font-weight: bold;">색상 범례:</span> 
                             붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
                                 </div>
                                 """, 
                             unsafe_allow_html=True)
-
+            
                 with st.expander(f" by 스트라이크 존:  {batter_name}(최근연도)"):
                     st.write("S존 기준차트")
-                    zone_spraychart_fig(spraychart_dataframe, batter_name=batter_name)
+                    
+                    # zone_spraychart_fig 함수가 plotly 그래프 객체를 반환하도록 수정 필요
+                    zone_fig = zone_spraychart_fig(spraychart_dataframe, batter_name=batter_name, return_fig=True)
+                    
+                    # 그래프를 HTML로 변환
+                    zone_fig_html = pio.to_html(zone_fig, full_html=False, include_plotlyjs='cdn', config={'displayModeBar': False})
+                    
+                    # HTML 컴포넌트로 렌더링
+                    zone_complete_html = f"""
+                    <div style="width: 100%; 
+                                height: 600px; 
+                                border: none; 
+                                padding: 10px; 
+                                margin-bottom: 20px;
+                                background-color: white;">
+                        <div style="width: 100%; height: 100%; overflow: hidden;">
+                            {zone_fig_html}
+                        </div>
+                    </div>
+                    """
+                    
+                    html(zone_complete_html, height=620)
+                    
                     st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                             <span style="font-weight: bold;">색상 범례:</span> 
                             붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
                                 </div>
                                 """, 
                             unsafe_allow_html=True)
-
-                with st.expander( f" by 타구비행시간:  {batter_name}(최근연도)"):
+            
+                with st.expander(f" by 타구비행시간:  {batter_name}(최근연도)"):
                     st.write("타구 비행시간")
+                    
+                    # 이미 plotly 그래프 객체를 반환하는 것으로 가정
                     spraychart_hangtime_fig = season_hangtime_spraychart(spraychart_dataframe, batter_name=batter_name)
-                    st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_{batter}")
+                    
+                    # 그래프를 HTML로 변환
+                    hangtime_fig_html = pio.to_html(spraychart_hangtime_fig, full_html=False, include_plotlyjs='cdn', config={'displayModeBar': False})
+                    
+                    # HTML 컴포넌트로 렌더링
+                    hangtime_complete_html = f"""
+                    <div style="width: 100%; 
+                                height: 600px; 
+                                border: none; 
+                                padding: 10px; 
+                                margin-bottom: 20px;
+                                background-color: white;">
+                        <div style="width: 100%; height: 100%; overflow: hidden;">
+                            {hangtime_fig_html}
+                        </div>
+                    </div>
+                    """
+                    
+                    html(hangtime_complete_html, height=620)
+                    
                     st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                             <span style="font-weight: bold;">색상 범례:</span> 
                             붉은색: 1~4초 비행 / 살구색: 1초 미만 / 옅은 갈색: 4초 이상
                                 </div>
                                 """, 
                             unsafe_allow_html=True)
+
+
+
+                
+
               
 
             st.divider()
