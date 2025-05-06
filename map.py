@@ -1059,51 +1059,38 @@ def zone_spraychart_fig(spraychart_dataframe, batter_name=None):
         st.plotly_chart(season_zone_spraychart_fig, layout="wide", key=f"zone9_{batter_name}")
 
 def season_hangtime_spraychart(dataframe, batter_name=None):
-    # 필요한 컬럼이 있는지 확인
-    required_columns = ['groundX', 'groundY']
-    for col in required_columns:
-        if col not in dataframe.columns:
-            # 필요한 컬럼이 없으면 빈 그래프 반환
-            empty_fig = px.scatter(height=580, width=600)
-            empty_fig.update_layout(
-                title=f"{batter_name} - 데이터 부족",
-                annotations=[dict(
-                    text='필요한 데이터가 없습니다',
-                    showarrow=False,
-                    xref="paper", yref="paper",
-                    x=0.5, y=0.5
-                )]
-            )
-            return empty_fig
     
     # 타구 비행시간에 따른 색상 맵 정의
-    hangtime_colors = {
+    colors = {
         'short': 'rgba(255,127,80,0.7)',  # 살구색 (1초 미만)
         'medium': 'rgba(255,0,0,0.7)',     # 붉은색 (1-4초)
         'long': 'rgba(140,86,75,0.7)'      # 갈색 (4초 이상)
     }
     
-    # 비행시간 카테고리 추가
-    if 'hang_time' in dataframe.columns:
-        dataframe['hang_time_category'] = 'medium'  # 기본값
-        dataframe.loc[dataframe['hang_time'] < 1, 'hang_time_category'] = 'short'
-        dataframe.loc[dataframe['hang_time'] >= 4, 'hang_time_category'] = 'long'
-    else:
-        # hang_time 컬럼이 없는 경우 대체 로직
-        dataframe['hang_time_category'] = 'medium'  # 모두 중간 비행시간으로 설정
-    
+    symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
+
     # hover_data에 포함할 컬럼 확인
     hover_data = []
-    for col in ["hang_time", "events", "exit_velocity", "launch_angle"]:
+    for col in ["hang_time", "events", "exit_velocity", "launch_angle", "pitch_name", "rel_speed(km)", "description", "launch_speed_angle", "hit_spin_rate"]:
         if col in dataframe.columns:
             hover_data.append(col)
     
+    col_index = len(dataframe['game_year'].unique())
+    
     # 산점도 생성
-    hangtime_fig = px.scatter(dataframe, x='groundX', y='groundY', color='hang_time_category',
-                        color_discrete_map=hangtime_colors,
+    hangtime_fig = px.scatter(dataframe, x='groundX', y='groundY', color='hang_time_type',
+                        color_discrete_map=colors,
                         hover_name="player_name" if "player_name" in dataframe.columns else None, 
                         hover_data=hover_data,
                         height=580, width=600)
+    
+    # 투구 타입에 따른 심볼 적용
+    if "pitch_name" in dataframe.columns:
+        for i, d in enumerate(hangtime_fig.data):
+            if len(hangtime_fig.data[i].name.split(', ')) > 1:
+                pitch_name = hangtime_fig.data[i].name.split(', ')[1]
+                if pitch_name in symbols:
+                    hangtime_fig.data[i].marker.symbol = symbols[pitch_name]
     
     # 타이틀 설정
     if batter_name:
@@ -1145,7 +1132,7 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     # 내야-외야 경계선
     hangtime_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width=5)
     
-    return hangtime_fig
+    return hangtime_figg
 
 
 
