@@ -1010,7 +1010,7 @@ def show_main_page():
                                 padding-right: 1rem;
                             }
                             div[data-testid="column"] {
-                                padding: 0 0.3rem;
+                                padding: 0 0.2rem;
                             }
                         </style>
                     """, unsafe_allow_html=True)
