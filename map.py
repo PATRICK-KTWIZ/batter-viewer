@@ -801,7 +801,6 @@ def season_spraychart(dataframe, key=None):
           'home_run':'rgba(255,72,120,1)', 'triple':'rgba(255,72,120,1)', 'double':'rgba(255,72,120,1)', 'single':'rgba(67,89,119,0.7)' }
     symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
 
-    # facet_col 옵션 제거 - 각 연도를 별도의 컬럼에 표시할 것이기 때문에
     season_spraychart_fig = px.scatter(dataframe, x='groundX', y='groundY', color='events', symbol="pitch_name",
                          color_discrete_map=colors,
                          hover_name="player_name", hover_data=["rel_speed(km)","pitch_name","events","exit_velocity","description","launch_speed_angle","launch_angle",'hit_spin_rate'],
