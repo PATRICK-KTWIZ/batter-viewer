@@ -417,718 +417,716 @@ def show_main_page():
 # -------------------------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------------
             
-#             st.title('[시즌별 :red[주요현황]]')
-#             st.subheader(':gray[기록 & 타구]')
+            st.title('[시즌별 :red[주요현황]]')
+            st.subheader(':gray[기록 & 타구]')
 
-#             season_stats_concat_df = pd.DataFrame()
+            season_stats_concat_df = pd.DataFrame()
 
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
 
-#                 season_stats_df = stats(batter_raw_df)
-#                 stats_viewer_df = stats_viewer(season_stats_df)
+                season_stats_df = stats(batter_raw_df)
+                stats_viewer_df = stats_viewer(season_stats_df)
 
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
 
-#                 stats_f_row_df = stats_viewer_df.iloc[:1]
-#                 game_year = stats_f_row_df.index.values[0]
+                stats_f_row_df = stats_viewer_df.iloc[:1]
+                game_year = stats_f_row_df.index.values[0]
 
-#                 stats_f_row_df['선수명'] = batter_name
-#                 stats_f_row_df.set_index('선수명', inplace=True)
+                stats_f_row_df['선수명'] = batter_name
+                stats_f_row_df.set_index('선수명', inplace=True)
 
-#                 stats_f_row_df.insert(0,'연도',game_year)
+                stats_f_row_df.insert(0,'연도',game_year)
                 
-#                 season_stats_concat_df = pd.concat([season_stats_concat_df, stats_f_row_df])
+                season_stats_concat_df = pd.concat([season_stats_concat_df, stats_f_row_df])
 
-#             pd.set_option('display.max_colwidth', 100)
+            pd.set_option('display.max_colwidth', 100)
 
-#             s1 = dict(selector='th', props=[('text-align', 'center')])
-#             s2 = dict(selector='td', props=[('text-align', 'center')])  
+            s1 = dict(selector='th', props=[('text-align', 'center')])
+            s2 = dict(selector='td', props=[('text-align', 'center')])  
 
-#             styled_df = season_stats_concat_df.style.set_table_styles([s1, s2])
+            styled_df = season_stats_concat_df.style.set_table_styles([s1, s2])
 
-#             st.dataframe(styled_df, width=1400)
+            st.dataframe(styled_df, width=1400)
             
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
 
-#                 season_stats_df = stats(batter_raw_df)
-#                 stats_viewer_df = stats_viewer(season_stats_df)
+                season_stats_df = stats(batter_raw_df)
+                stats_viewer_df = stats_viewer(season_stats_df)
 
-#                 stats_viewer_df = stats_viewer_df.reset_index()
-#                 stats_viewer_df = stats_viewer_df.astype({'game_year':'str'})
-#                 stats_viewer_df = stats_viewer_df.rename(columns={'game_year':'연도'})
-#                 stats_viewer_df = stats_viewer_df.set_index('연도')
+                stats_viewer_df = stats_viewer_df.reset_index()
+                stats_viewer_df = stats_viewer_df.astype({'game_year':'str'})
+                stats_viewer_df = stats_viewer_df.rename(columns={'game_year':'연도'})
+                stats_viewer_df = stats_viewer_df.set_index('연도')
 
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']                
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']                
 
-#                 with st.expander(f"상세기록:  {batter_name}"):
-#                     st.dataframe(stats_viewer_df, width=1300)
+                with st.expander(f"상세기록:  {batter_name}"):
+                    st.dataframe(stats_viewer_df, width=1300)
 
-# #-------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------
 
-#             st.subheader(':gray[스윙경향성]')
+            st.subheader(':gray[스윙경향성]')
 
-#             season_swing_concat_df = pd.DataFrame()
+            season_swing_concat_df = pd.DataFrame()
 
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
 
-#                 season_stats_df = stats(batter_raw_df)
-#                 swing_viewer_df = swing_viewer(season_stats_df)
+                season_stats_df = stats(batter_raw_df)
+                swing_viewer_df = swing_viewer(season_stats_df)
 
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
 
-#                 swing_f_row_df = swing_viewer_df.iloc[:1]
-#                 game_year = swing_f_row_df.index.values[0]
+                swing_f_row_df = swing_viewer_df.iloc[:1]
+                game_year = swing_f_row_df.index.values[0]
 
-#                 swing_f_row_df['선수명'] = batter_name
-#                 swing_f_row_df.set_index('선수명', inplace=True)
+                swing_f_row_df['선수명'] = batter_name
+                swing_f_row_df.set_index('선수명', inplace=True)
 
-#                 swing_f_row_df.insert(0,'연도',game_year)
+                swing_f_row_df.insert(0,'연도',game_year)
                 
-#                 season_swing_concat_df = pd.concat([season_swing_concat_df, swing_f_row_df])
+                season_swing_concat_df = pd.concat([season_swing_concat_df, swing_f_row_df])
 
-#             pd.set_option('display.max_colwidth', 100)
+            pd.set_option('display.max_colwidth', 100)
 
-#             st.dataframe(season_swing_concat_df, width=1400)
+            st.dataframe(season_swing_concat_df, width=1400)
             
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
 
-#                 season_stats_df = stats(batter_raw_df)
-#                 swing_viewer_df = swing_viewer(season_stats_df)
+                season_stats_df = stats(batter_raw_df)
+                swing_viewer_df = swing_viewer(season_stats_df)
 
-#                 swing_viewer_df = swing_viewer_df.reset_index()
-#                 swing_viewer_df = swing_viewer_df.astype({'game_year':'str'})
-#                 swing_viewer_df = swing_viewer_df.rename(columns={'game_year':'연도'})
-#                 swing_viewer_df = swing_viewer_df.set_index('연도')
+                swing_viewer_df = swing_viewer_df.reset_index()
+                swing_viewer_df = swing_viewer_df.astype({'game_year':'str'})
+                swing_viewer_df = swing_viewer_df.rename(columns={'game_year':'연도'})
+                swing_viewer_df = swing_viewer_df.set_index('연도')
 
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']                
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']                
 
-#                 with st.expander(f"상세기록:  {batter_name}"):
-#                     st.dataframe(swing_viewer_df, width=1300)
+                with st.expander(f"상세기록:  {batter_name}"):
+                    st.dataframe(swing_viewer_df, width=1300)
 
             
-#             with st.expander("LSA(Launch Speed Angle) 이란?"):
-#                 st.write("LSA(Launch Speed Angle)은 Baseball Savant의 타구표에서 활용되는 지표로 6단계로 타구의 질을 구분하고 있음 (*괄호의 %는 안타확률)")
-#                 st.write("LSA 1: Weak(10.4%) / LSA 2: Topped(22.3%) / LSA 3: Under(7.7%) / LSA 4: Flare & Burner(70.8%) / LSA 5: Solid Contact(46.3%) / LSA 6: Barrel(70.5%)")
-#                 st.markdown("""<style>[data-testid=stExpander] [data-testid=stImage]{text-align: left;display: block;margin-left: 10; margin-right: auto; width: 50%;}</style>""", unsafe_allow_html=True)
-#                 st.image("approach.jpg")
+            with st.expander("LSA(Launch Speed Angle) 이란?"):
+                st.write("LSA(Launch Speed Angle)은 Baseball Savant의 타구표에서 활용되는 지표로 6단계로 타구의 질을 구분하고 있음 (*괄호의 %는 안타확률)")
+                st.write("LSA 1: Weak(10.4%) / LSA 2: Topped(22.3%) / LSA 3: Under(7.7%) / LSA 4: Flare & Burner(70.8%) / LSA 5: Solid Contact(46.3%) / LSA 6: Barrel(70.5%)")
+                st.markdown("""<style>[data-testid=stExpander] [data-testid=stImage]{text-align: left;display: block;margin-left: 10; margin-right: auto; width: 50%;}</style>""", unsafe_allow_html=True)
+                st.image("approach.jpg")
 
-#             with st.expander("타격 어프로치 구분"):
-#                 st.write("타격 어프로치는 타자들의 타격성향을 나타내기 위해 작성된 내용으로 리그의 평균적인 존에 대한 스윙시도, 존 외부에 대한 스윙시도를 기준으로 4가지의 성향을 구분하고 있음")
-#                 st.markdown("""<style>[data-testid=stExpander] [data-testid=stImage]{text-align: left;display: block;margin-left: 10; margin-right: auto; width: 80%;}</style>""", unsafe_allow_html=True)
-#                 st.image("plate_discipline.png")
+            with st.expander("타격 어프로치 구분"):
+                st.write("타격 어프로치는 타자들의 타격성향을 나타내기 위해 작성된 내용으로 리그의 평균적인 존에 대한 스윙시도, 존 외부에 대한 스윙시도를 기준으로 4가지의 성향을 구분하고 있음")
+                st.markdown("""<style>[data-testid=stExpander] [data-testid=stImage]{text-align: left;display: block;margin-left: 10; margin-right: auto; width: 80%;}</style>""", unsafe_allow_html=True)
+                st.image("plate_discipline.png")
 
 
-#             st.divider()
+            st.divider()
 
-
-# # -------------------------------------------------------------------------------------------------------
-# # -------------------------------------------------------------------------------------------------------
-
-#             st.title('[시즌별 :red[인플레이 현황]]')
-
-#             season_inplay_concat_df = pd.DataFrame()
-
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-#                 season_events_df = seoson_inplay_events(batter_raw_df)
-#                 season_events_df = season_events_df.rename(columns={'game_year':'연도', 'events':'구분','pitch_name':'인플레이수','exit_velocity':'타구속도','launch_angleX':'발사각도', 'hit_spin_rate':'타구스핀량','hit_distance':'비거리'})
-
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']
-
-#                 events_f_row_df = season_events_df.iloc[:1]
-#                 game_year = events_f_row_df.iloc[0]['연도']
-#                 events_f_row_df = season_events_df[season_events_df['연도'] == game_year]
-                
-#                 events_f_row_df['선수명'] = batter_name
-#                 events_f_row_df.set_index('선수명', inplace=True)
-                
-#                 season_inplay_concat_df = pd.concat([season_inplay_concat_df, events_f_row_df])
-
-#             pd.set_option('display.max_colwidth', 100)
-
-#             st.dataframe(season_inplay_concat_df, width=1400)
-            
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-#                 season_events_df = seoson_inplay_events(batter_raw_df)
-
-
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']                
-
-#                 with st.expander(f"상세기록:  {batter_name}"):
-#                     st.dataframe(season_events_df, width=1300)
-            
-#             st.divider()
-
-# # -------------------------------------------------------------------------------------------------------
-# # -------------------------------------------------------------------------------------------------------
-
-#             st.title('[시즌 :red[투수유형별] 현황]')
-#             st.subheader(':gray[기록 & 타구]')
-
-#             throws_stats_concat_df = pd.DataFrame()
-
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-#                 throws_stats_df = season_pthrows(batter_raw_df)
-#                 throws_stats_df = throws_stats_df.set_index('game_year')
-#                 stats_viewer_df = stats_viewer_pthrows(throws_stats_df)
-
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']
-
-#                 stats_viewer_df = stats_viewer_df.reset_index()
-#                 stats_viewer_df = stats_viewer_df.astype({'game_year':'str'})
-#                 stats_viewer_df = stats_viewer_df.rename(columns={'game_year':'연도'})
-
-#                 stats_f_row_df = stats_viewer_df.iloc[:1]
-#                 game_year = stats_f_row_df.iloc[0]['연도']
-#                 stats_f_row_df = stats_viewer_df[stats_viewer_df['연도'] == game_year]
-
-#                 stats_f_row_df['선수명'] = batter_name
-#                 stats_f_row_df.set_index('선수명', inplace=True)
-
-#                 # stats_f_row_df.insert(0,'연도',game_year)
-                
-#                 throws_stats_concat_df = pd.concat([throws_stats_concat_df, stats_f_row_df])
-
-#             pd.set_option('display.max_colwidth', 100)
-
-#             st.dataframe(throws_stats_concat_df, width=1400)
-            
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-#                 throws_stats_df = season_pthrows(batter_raw_df)
-#                 throws_stats_df = throws_stats_df.rename(columns={'game_year':'연도'})
-#                 throws_stats_df = throws_stats_df.set_index('연도')
-#                 stats_viewer_df = stats_viewer_pthrows(throws_stats_df)
-
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']                
-
-#                 with st.expander(f"상세기록:  {batter_name}"):
-#                     st.dataframe(stats_viewer_df, width=1300)
-
-# # -------------------------------------------------------------------------------------------------------
-
-#             st.subheader(':gray[스윙경향성]')
-
-#             throws_swing_concat_df = pd.DataFrame()
-
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-#                 throws_stats_df = season_pthrows(batter_raw_df)
-#                 throws_stats_df = throws_stats_df.set_index('game_year')
-#                 swing_viewer_df = swing_viewer_pthrows(throws_stats_df)
-
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']
-
-#                 swing_viewer_df = swing_viewer_df.reset_index()
-#                 swing_viewer_df = swing_viewer_df.astype({'game_year':'str'})
-#                 swing_viewer_df = swing_viewer_df.rename(columns={'game_year':'연도'})
-
-#                 swing_f_row_df = swing_viewer_df.iloc[:1]
-#                 game_year = swing_f_row_df.iloc[0]['연도']
-#                 swing_f_row_df = swing_viewer_df[swing_viewer_df['연도'] == game_year]
-
-#                 swing_f_row_df['선수명'] = batter_name
-#                 swing_f_row_df.set_index('선수명', inplace=True)
-
-#                 # swing_f_row_df.insert(0,'연도',game_year)
-                
-#                 throws_swing_concat_df = pd.concat([throws_swing_concat_df, swing_f_row_df])
-
-#             pd.set_option('display.max_colwidth', 100)
-
-#             st.dataframe(throws_swing_concat_df, width=1400)
-            
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-#                 throws_stats_df = season_pthrows(batter_raw_df)
-#                 throws_stats_df = throws_stats_df.rename(columns={'game_year':'연도'})
-#                 throws_stats_df = throws_stats_df.set_index('연도')
-#                 swing_viewer_df = swing_viewer_pthrows(throws_stats_df)
-
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']                
-
-#                 with st.expander(f"상세기록:  {batter_name}"):
-#                     st.dataframe(swing_viewer_df, width=1300)
-
-#             st.divider()
-
-# # -------------------------------------------------------------------------------------------------------
-# # -------------------------------------------------------------------------------------------------------
-
-#             st.title('[시즌 :red[구종유형별] 현황]')
-#             st.subheader(':gray[기록 & 타구]')
-
-#             pkind_stats_concat_df = pd.DataFrame()
-
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-#                 pkind_stats_df = season_pkind(batter_raw_df)
-#                 pkind_stats_df = pkind_stats_df.set_index('game_year')
-#                 stats_viewer_df = stats_viewer_pkind(pkind_stats_df)
-
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']
-
-#                 stats_viewer_df = stats_viewer_df.reset_index()
-#                 stats_viewer_df = stats_viewer_df.astype({'game_year':'str'})
-#                 stats_viewer_df = stats_viewer_df.rename(columns={'game_year':'연도'})
-
-#                 stats_f_row_df = stats_viewer_df.iloc[:1]
-#                 game_year = stats_f_row_df.iloc[0]['연도']
-#                 stats_f_row_df = stats_viewer_df[stats_viewer_df['연도'] == game_year]
-
-#                 stats_f_row_df['선수명'] = batter_name
-#                 stats_f_row_df.set_index('선수명', inplace=True)
-
-#                 # stats_f_row_df.insert(0,'연도',game_year)
-                
-#                 pkind_stats_concat_df = pd.concat([pkind_stats_concat_df, stats_f_row_df])
-
-#             pd.set_option('display.max_colwidth', 100)
-
-#             st.dataframe(pkind_stats_concat_df, width=1400)
-            
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-#                 pkind_stats_df = season_pkind(batter_raw_df)
-#                 pkind_stats_df = pkind_stats_df.rename(columns={'game_year':'연도'})
-#                 pkind_stats_df = pkind_stats_df.set_index('연도')                
-#                 pkind_stats_df = stats_viewer_pkind(pkind_stats_df)
-
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']                
-
-#                 with st.expander(f"상세기록:  {batter_name}"):
-#                     st.dataframe(stats_viewer_df, width=1300)
-
-# # -------------------------------------------------------------------------------------------------------
-
-#             st.subheader(':gray[스윙경향성]')
-
-#             pkind_swing_concat_df = pd.DataFrame()
-
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-#                 pkind_stats_df = season_pkind(batter_raw_df)
-#                 pkind_stats_df = pkind_stats_df.set_index('game_year')
-#                 swing_viewer_df = swing_viewer_pkind(pkind_stats_df)
-
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']
-
-#                 swing_viewer_df = swing_viewer_df.reset_index()
-#                 swing_viewer_df = swing_viewer_df.astype({'game_year':'str'})
-#                 swing_viewer_df = swing_viewer_df.rename(columns={'game_year':'연도'})
-
-#                 swing_f_row_df = swing_viewer_df.iloc[:1]
-#                 game_year = swing_f_row_df.iloc[0]['연도']
-#                 swing_f_row_df = swing_viewer_df[swing_viewer_df['연도'] == game_year]
-
-#                 swing_f_row_df['선수명'] = batter_name
-#                 swing_f_row_df.set_index('선수명', inplace=True)
-
-#                 # swing_f_row_df.insert(0,'연도',game_year)
-                
-#                 pkind_swing_concat_df = pd.concat([pkind_swing_concat_df, swing_f_row_df])
-
-#             pd.set_option('display.max_colwidth', 100)
-
-#             st.dataframe(pkind_swing_concat_df, width=1400)
-            
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-#                 pkind_stats_df = season_pkind(batter_raw_df)
-#                 pkind_stats_df = pkind_stats_df.rename(columns={'game_year':'연도'})
-#                 pkind_stats_df = pkind_stats_df.set_index('연도')
-#                 pkind_stats_df = swing_viewer_pkind(pkind_stats_df)
-
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']                
-
-#                 with st.expander(f"상세기록:  {batter_name}"):
-#                     st.dataframe(swing_viewer_df, width=1300)
-
-#             st.divider()
-
-# # -------------------------------------------------------------------------------------------------------
-# # -------------------------------------------------------------------------------------------------------
-
-#             st.title('[시즌 :red[스윙지점]]')
-            
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-            
-#                 game_year = batter_raw_df['game_year'].max()
-#                 batter_recent_df = batter_raw_df[batter_raw_df['game_year'] == game_year]
-            
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']
-            
-#                 st.subheader(f"{batter_name}, {game_year}")
-            
-#                 col1, col2, col3, col4 = st.columns(4)
-            
-#                 pitched_factor = 'player_name'
-#                 swing_factor = 'swing'
-#                 lsa_factor = 'launch_speed_angle'
-            
-#                 with col1:
-#                     original_title = '<p style="text-align: center; color:gray; font-size: 25px;">투구지점</p>'
-#                     st.markdown(original_title, unsafe_allow_html=True)
-#                     season_pitched_fig = factor_year_count_map(batter_recent_df, pitched_factor)
-#                     season_pitched_fig.update_layout(height=400, width=450)
-#                     season_pitched_fig.update_coloraxes(showscale=False)
-#                     st.plotly_chart(season_pitched_fig, layout="wide", key=f"season_pitched_{batter}")
-            
-#                 with col2:
-#                     original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점</p>'
-#                     st.markdown(original_title, unsafe_allow_html=True)
-#                     season_swing_fig = factor_year_sum_map(batter_recent_df, swing_factor)
-#                     season_swing_fig.update_layout(height=400, width=450)
-#                     season_swing_fig.update_coloraxes(showscale=False)
-#                     st.plotly_chart(season_swing_fig, layout="wide", key=f"season_swing_{batter}")
-            
-#                 batter_recent_las4 = batter_recent_df[batter_recent_df['plus_lsa4'] == 1]
-            
-#                 with col3:
-#                     original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
-#                     st.markdown(original_title, unsafe_allow_html=True)
-#                     season_lsa_fig = factor_year_sum_map_scatter(batter_recent_las4)
-#                     season_lsa_fig.update_layout(height=400, width=450)
-#                     season_lsa_fig.update_coloraxes(showscale=False)
-#                     st.plotly_chart(season_lsa_fig, layout="wide", key=f"season_lsa_{batter}")
-            
-#                 with col4:
-#                     original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
-#                     st.markdown(original_title, unsafe_allow_html=True)
-#                     season_lsa_fig = factor_year_sum_plate_map_scatter(batter_recent_las4)
-#                     season_lsa_fig.update_layout(height=400, width=430)
-#                     season_lsa_fig.update_coloraxes(showscale=False)
-#                     st.plotly_chart(season_lsa_fig, layout="wide", key=f"season_lsa_plate_{batter}")
-                
-#                 st.markdown(""" <div style="text-align: right; font-size: 0.9em;">
-#                                 <span style="font-weight: bold;">색상 범례:</span> 
-#                                 붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
-#                             </div>
-#                             """, 
-#                             unsafe_allow_html=True)
-            
-#                 # 선수별 연도별 그림을 볼 수 있는 expander 추가
-#                 with st.expander(f"연도별: {batter_name}"):
-#                     # 해당 선수의 모든 연도 데이터 가져오기
-#                     years = sorted(batter_raw_df['game_year'].unique(), reverse=True)
-                    
-#                     # 각 연도별로 그래프 표시
-#                     for year_idx, year in enumerate(years):
-#                         st.subheader(f"{year}년")
-                        
-#                         # 해당 연도의 데이터 필터링
-#                         year_df = batter_raw_df[batter_raw_df['game_year'] == year]
-#                         year_swing_df = year_df[year_df['swing'] == 1]
-#                         year_lsa4_df = year_df[year_df['plus_lsa4'] == 1]
-                        
-#                         # 연도별 그래프 표시
-#                         col1, col2, col3, col4 = st.columns(4)
-                        
-#                         with col1:
-#                             original_title = '<p style="text-align: center; color:gray; font-size: 25px;">투구지점 (히트맵)</p>'
-#                             st.markdown(original_title, unsafe_allow_html=True)
-#                             year_pitched_heatmap = factor_year_count_map(year_df, pitched_factor)
-#                             year_pitched_heatmap.update_layout(height=400, width=450)
-#                             year_pitched_heatmap.update_coloraxes(showscale=False)
-#                             st.plotly_chart(year_pitched_heatmap, layout="wide", key=f"year_pitched_heatmap_{batter}_{year}")
-                        
-#                         with col2:
-#                             original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점 (히트맵)</p>'
-#                             st.markdown(original_title, unsafe_allow_html=True)
-#                             year_swing_heatmap = factor_year_sum_map(year_df, swing_factor)
-#                             year_swing_heatmap.update_layout(height=400, width=450)
-#                             year_swing_heatmap.update_coloraxes(showscale=False)
-#                             st.plotly_chart(year_swing_heatmap, layout="wide", key=f"year_swing_heatmap_{batter}_{year}")
-                        
-#                         with col3:
-#                             original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
-#                             st.markdown(original_title, unsafe_allow_html=True)
-#                             year_lsa_fig = factor_year_sum_map_scatter(year_lsa4_df)
-#                             year_lsa_fig.update_layout(height=400, width=450)
-#                             year_lsa_fig.update_coloraxes(showscale=False)
-#                             st.plotly_chart(year_lsa_fig, layout="wide", key=f"year_lsa_fig_{batter}_{year}")
-                        
-#                         with col4:
-#                             original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
-#                             st.markdown(original_title, unsafe_allow_html=True)
-#                             year_lsa_plate_fig = factor_year_sum_plate_map_scatter(year_lsa4_df)
-#                             year_lsa_plate_fig.update_layout(height=400, width=430)
-#                             year_lsa_plate_fig.update_coloraxes(showscale=False)
-#                             st.plotly_chart(year_lsa_plate_fig, layout="wide", key=f"year_lsa_plate_fig_{batter}_{year}")
-                        
-#                         # 연도별 구분선 추가
-#                         st.markdown("---")
-            
-#                 st.divider()
-
-# # -------------------------------------------------------------------------------------------------------
-# # -------------------------------------------------------------------------------------------------------
-
-#             st.title('[시즌 :red[Swing Map]]')
-
-#             for batter, batter_df in batter_dataframes.items():
-#                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-#                 game_year = batter_raw_df['game_year'].max()
-#                 batter_recent_df = batter_raw_df[batter_raw_df['game_year'] == game_year]
-
-#                 batter_str = str(batter)
-#                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-#                 batter_name = batter_finder.iloc[0]['NAME']
-
-#                 called_strike_df = batter_recent_df[batter_recent_df['description'] == "called_strike"]
-#                 called_strike_df['swingmap'] = 'Called_Strike'
-#                 whiff_df = batter_recent_df[batter_recent_df['whiff'] == 1]
-#                 whiff_df['swingmap'] = 'Whiff'
-#                 ball_df = batter_recent_df[batter_recent_df['type'] == "B"]
-#                 ball_df['swingmap'] = 'Ball'
-#                 foul_df = batter_recent_df[batter_recent_df['foul'] == 1]
-#                 foul_df['swingmap'] = 'Foul'
-#                 hit_df = batter_recent_df[batter_recent_df['hit'] == 1]
-#                 hit_df['swingmap'] = 'HIT'
-#                 out_df = batter_recent_df[batter_recent_df['field_out'] == 1]
-#                 out_df['swingmap'] = 'Out'
-
-#                 swingmap_dataframe = pd.concat([called_strike_df, whiff_df, ball_df, foul_df, hit_df, out_df])
-#                 swingmap_factor = 'player_name'
-
-#                 st.subheader(f"{batter_name}, {game_year}")
-
-#                 season_pitched_fig = swingmap_count_map(swingmap_dataframe, swingmap_factor)
-#                 season_pitched_fig_scatter = swingmap_count_map_scatter(swingmap_dataframe)
-
-#                 st.plotly_chart(season_pitched_fig, key=f"main_swingmap_{batter}", layout="wide")
-#                 st.plotly_chart(season_pitched_fig_scatter, key=f"main_swingmap_scatter_{batter}", layout="wide")
-
-#                                 # 선수별 연도별 스윙맵을 볼 수 있는 expander 추가
-#                 with st.expander(f"연도별: {batter_name}"):
-#                     # 해당 선수의 모든 연도 데이터 가져오기
-#                     years = sorted(batter_raw_df['game_year'].unique(), reverse=True)
-                    
-#                     # 각 연도별로 그래프 표시
-#                     for year in years:
-#                         st.subheader(f"{year}년")
-                        
-#                         # 해당 연도의 데이터 필터링
-#                         year_df = batter_raw_df[batter_raw_df['game_year'] == year]
-                        
-#                         # 연도별 스윙맵 데이터 준비
-#                         year_called_strike_df = year_df[year_df['description'] == "called_strike"]
-#                         year_called_strike_df['swingmap'] = 'Called_Strike'
-#                         year_whiff_df = year_df[year_df['whiff'] == 1]
-#                         year_whiff_df['swingmap'] = 'Whiff'
-#                         year_ball_df = year_df[year_df['type'] == "B"]
-#                         year_ball_df['swingmap'] = 'Ball'
-#                         year_foul_df = year_df[year_df['foul'] == 1]
-#                         year_foul_df['swingmap'] = 'Foul'
-#                         year_hit_df = year_df[year_df['hit'] == 1]
-#                         year_hit_df['swingmap'] = 'HIT'
-#                         year_out_df = year_df[year_df['field_out'] == 1]
-#                         year_out_df['swingmap'] = 'Out'
-                        
-#                         year_swingmap_df = pd.concat([year_called_strike_df, year_whiff_df, year_ball_df, 
-#                                                     year_foul_df, year_hit_df, year_out_df])
-                        
-#                         # 연도별 스윙맵 그래프 표시
-#                         year_swing_fig = swingmap_count_map(year_swingmap_df, swingmap_factor)
-#                         year_swing_scatter = swingmap_count_map_scatter(year_swingmap_df)
-                        
-#                         st.plotly_chart(year_swing_fig, key=f"year_{batter}_{year}_swingmap", layout="wide")
-#                         st.plotly_chart(year_swing_scatter, key=f"year_{batter}_{year}_swingmap_scatter", layout="wide")
-                        
-#                         # 연도별 구분선 추가
-#                         st.markdown("---")
-            
-
-#             st.divider()
 
 # -------------------------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------------
 
-            # st.title('[시즌 :red[Spray Chart]]')
+            st.title('[시즌별 :red[인플레이 현황]]')
 
+            season_inplay_concat_df = pd.DataFrame()
 
-            # for batter, batter_df in batter_dataframes.items():
-            #     batter_raw_df = globals()[f"df_{batter}"] = batter_df
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+
+                season_events_df = seoson_inplay_events(batter_raw_df)
+                season_events_df = season_events_df.rename(columns={'game_year':'연도', 'events':'구분','pitch_name':'인플레이수','exit_velocity':'타구속도','launch_angleX':'발사각도', 'hit_spin_rate':'타구스핀량','hit_distance':'비거리'})
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
+
+                events_f_row_df = season_events_df.iloc[:1]
+                game_year = events_f_row_df.iloc[0]['연도']
+                events_f_row_df = season_events_df[season_events_df['연도'] == game_year]
+                
+                events_f_row_df['선수명'] = batter_name
+                events_f_row_df.set_index('선수명', inplace=True)
+                
+                season_inplay_concat_df = pd.concat([season_inplay_concat_df, events_f_row_df])
+
+            pd.set_option('display.max_colwidth', 100)
+
+            st.dataframe(season_inplay_concat_df, width=1400)
             
-            #     batter_str = str(batter)
-            #     batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-            #     batter_name = batter_finder.iloc[0]['NAME']
-            
-            #     st.subheader(f"{batter_name}")
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
 
-            #     st.markdown("""
-            #             <style>
-            #                 .element-container {
-            #                     padding: 0 !important;
-            #                 }
-            #                 .stPlotlyChart {
-            #                     margin: 0 !important;
-            #                     padding: 0 !important;
-            #                 }
-            #                 .block-container {
-            #                     padding-top: 1rem;
-            #                     padding-bottom: 1rem;
-            #                     padding-left: 1rem;
-            #                     padding-right: 1rem;
-            #                 }
-            #                 div[data-testid="column"] {
-            #                     padding: 0 0.3rem;
-            #                 }
-            #             </style>
-            #         """, unsafe_allow_html=True)
-                
-            #     # 'game_year' 컬럼을 명시적으로 사용
-            #     year_col = 'game_year'
-                
-            #     # 고유 연도 추출 및 내림차순 정렬
-            #     years = sorted(batter_raw_df[year_col].unique(), reverse=True)
-                
-            #     # 최대 3개 시즌만 표시
-            #     display_years = years[:3]
-                
-            #     # 3개 컬럼 생성
-            #     cols = st.columns(3)
-                
-            #     # 각 연도별 데이터 표시
-            #     for i in range(min(3, len(display_years))):  # 실제 연도 수와 3 중 작은 값만큼 반복
-            #         with cols[i]:
-            #             current_year = display_years[i]
-            #             st.write(f"#### {current_year} 시즌")
-                        
-            #             # 해당 연도 데이터 필터링
-            #             year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
-                        
-            #             # Spray Chart 데이터 생성
-            #             year_spraychart_dataframe = spraychart_df(year_data)
-                        
-            #             # Spray Chart 표시
-            #             season_spraychart(year_spraychart_dataframe, key=f"season_spray_{batter}_{current_year}")
-                
-            #     # 남은 컬럼에 빈 내용 표시
-            #     for i in range(len(display_years), 3):
-            #         with cols[i]:
-            #             st.write("#### 시즌 정보 없음")
-            #             st.info("해당 시즌의 데이터가 없습니다.")
-                
-            #     # 색상 범례 표시
-            #     st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
-            #                 <span style="font-weight: bold;">색상 범례:</span> 
-            #                 붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
-            #                 </div>
-            #                 """, 
-            #                 unsafe_allow_html=True)
-                
-            #     # 스트라이크 존 기준 차트 (최근 연도만)
-            #     with st.expander(f" by 스트라이크 존:  {batter_name}(최근연도)"):
-            #         if len(years) > 0:
-            #             st.write(f"S존 기준차트 ({years[0]} 시즌)")
-                        
-            #             # 최근 연도 데이터 필터링
-            #             recent_year_data = batter_raw_df[batter_raw_df[year_col] == years[0]]
-            #             recent_spraychart_dataframe = spraychart_df(recent_year_data)
+                season_events_df = seoson_inplay_events(batter_raw_df)
 
-            #             zone_spraychart_fig(recent_spraychart_dataframe, batter_name=f"{batter_name} ({years[0]})")
-                        
-            #             st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
-            #                     <span style="font-weight: bold;">색상 범례:</span> 
-            #                     붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
-            #                     </div>
-            #                     """, 
-            #                     unsafe_allow_html=True)
-            #         else:
-            #             st.info("스트라이크 존 분석을 위한 데이터가 없습니다.")
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']                
+
+                with st.expander(f"상세기록:  {batter_name}"):
+                    st.dataframe(season_events_df, width=1300)
             
-            #     # 타구 비행시간 차트 (최근 3개 연도)
-            #     with st.expander(f" by 타구비행시간:  {batter_name}"):
-            #         st.write("타구 비행시간")
+            st.divider()
+
+# -------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------
+
+            st.title('[시즌 :red[투수유형별] 현황]')
+            st.subheader(':gray[기록 & 타구]')
+
+            throws_stats_concat_df = pd.DataFrame()
+
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+
+                throws_stats_df = season_pthrows(batter_raw_df)
+                throws_stats_df = throws_stats_df.set_index('game_year')
+                stats_viewer_df = stats_viewer_pthrows(throws_stats_df)
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
+
+                stats_viewer_df = stats_viewer_df.reset_index()
+                stats_viewer_df = stats_viewer_df.astype({'game_year':'str'})
+                stats_viewer_df = stats_viewer_df.rename(columns={'game_year':'연도'})
+
+                stats_f_row_df = stats_viewer_df.iloc[:1]
+                game_year = stats_f_row_df.iloc[0]['연도']
+                stats_f_row_df = stats_viewer_df[stats_viewer_df['연도'] == game_year]
+
+                stats_f_row_df['선수명'] = batter_name
+                stats_f_row_df.set_index('선수명', inplace=True)
+
+                # stats_f_row_df.insert(0,'연도',game_year)
+                
+                throws_stats_concat_df = pd.concat([throws_stats_concat_df, stats_f_row_df])
+
+            pd.set_option('display.max_colwidth', 100)
+
+            st.dataframe(throws_stats_concat_df, width=1400)
+            
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+
+                throws_stats_df = season_pthrows(batter_raw_df)
+                throws_stats_df = throws_stats_df.rename(columns={'game_year':'연도'})
+                throws_stats_df = throws_stats_df.set_index('연도')
+                stats_viewer_df = stats_viewer_pthrows(throws_stats_df)
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']                
+
+                with st.expander(f"상세기록:  {batter_name}"):
+                    st.dataframe(stats_viewer_df, width=1300)
+
+# -------------------------------------------------------------------------------------------------------
+
+            st.subheader(':gray[스윙경향성]')
+
+            throws_swing_concat_df = pd.DataFrame()
+
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+
+                throws_stats_df = season_pthrows(batter_raw_df)
+                throws_stats_df = throws_stats_df.set_index('game_year')
+                swing_viewer_df = swing_viewer_pthrows(throws_stats_df)
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
+
+                swing_viewer_df = swing_viewer_df.reset_index()
+                swing_viewer_df = swing_viewer_df.astype({'game_year':'str'})
+                swing_viewer_df = swing_viewer_df.rename(columns={'game_year':'연도'})
+
+                swing_f_row_df = swing_viewer_df.iloc[:1]
+                game_year = swing_f_row_df.iloc[0]['연도']
+                swing_f_row_df = swing_viewer_df[swing_viewer_df['연도'] == game_year]
+
+                swing_f_row_df['선수명'] = batter_name
+                swing_f_row_df.set_index('선수명', inplace=True)
+
+                # swing_f_row_df.insert(0,'연도',game_year)
+                
+                throws_swing_concat_df = pd.concat([throws_swing_concat_df, swing_f_row_df])
+
+            pd.set_option('display.max_colwidth', 100)
+
+            st.dataframe(throws_swing_concat_df, width=1400)
+            
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+
+                throws_stats_df = season_pthrows(batter_raw_df)
+                throws_stats_df = throws_stats_df.rename(columns={'game_year':'연도'})
+                throws_stats_df = throws_stats_df.set_index('연도')
+                swing_viewer_df = swing_viewer_pthrows(throws_stats_df)
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']                
+
+                with st.expander(f"상세기록:  {batter_name}"):
+                    st.dataframe(swing_viewer_df, width=1300)
+
+            st.divider()
+
+# -------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------
+
+            st.title('[시즌 :red[구종유형별] 현황]')
+            st.subheader(':gray[기록 & 타구]')
+
+            pkind_stats_concat_df = pd.DataFrame()
+
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+
+                pkind_stats_df = season_pkind(batter_raw_df)
+                pkind_stats_df = pkind_stats_df.set_index('game_year')
+                stats_viewer_df = stats_viewer_pkind(pkind_stats_df)
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
+
+                stats_viewer_df = stats_viewer_df.reset_index()
+                stats_viewer_df = stats_viewer_df.astype({'game_year':'str'})
+                stats_viewer_df = stats_viewer_df.rename(columns={'game_year':'연도'})
+
+                stats_f_row_df = stats_viewer_df.iloc[:1]
+                game_year = stats_f_row_df.iloc[0]['연도']
+                stats_f_row_df = stats_viewer_df[stats_viewer_df['연도'] == game_year]
+
+                stats_f_row_df['선수명'] = batter_name
+                stats_f_row_df.set_index('선수명', inplace=True)
+
+                # stats_f_row_df.insert(0,'연도',game_year)
+                
+                pkind_stats_concat_df = pd.concat([pkind_stats_concat_df, stats_f_row_df])
+
+            pd.set_option('display.max_colwidth', 100)
+
+            st.dataframe(pkind_stats_concat_df, width=1400)
+            
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+
+                pkind_stats_df = season_pkind(batter_raw_df)
+                pkind_stats_df = pkind_stats_df.rename(columns={'game_year':'연도'})
+                pkind_stats_df = pkind_stats_df.set_index('연도')                
+                pkind_stats_df = stats_viewer_pkind(pkind_stats_df)
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']                
+
+                with st.expander(f"상세기록:  {batter_name}"):
+                    st.dataframe(stats_viewer_df, width=1300)
+
+# -------------------------------------------------------------------------------------------------------
+
+            st.subheader(':gray[스윙경향성]')
+
+            pkind_swing_concat_df = pd.DataFrame()
+
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+
+                pkind_stats_df = season_pkind(batter_raw_df)
+                pkind_stats_df = pkind_stats_df.set_index('game_year')
+                swing_viewer_df = swing_viewer_pkind(pkind_stats_df)
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
+
+                swing_viewer_df = swing_viewer_df.reset_index()
+                swing_viewer_df = swing_viewer_df.astype({'game_year':'str'})
+                swing_viewer_df = swing_viewer_df.rename(columns={'game_year':'연도'})
+
+                swing_f_row_df = swing_viewer_df.iloc[:1]
+                game_year = swing_f_row_df.iloc[0]['연도']
+                swing_f_row_df = swing_viewer_df[swing_viewer_df['연도'] == game_year]
+
+                swing_f_row_df['선수명'] = batter_name
+                swing_f_row_df.set_index('선수명', inplace=True)
+
+                # swing_f_row_df.insert(0,'연도',game_year)
+                
+                pkind_swing_concat_df = pd.concat([pkind_swing_concat_df, swing_f_row_df])
+
+            pd.set_option('display.max_colwidth', 100)
+
+            st.dataframe(pkind_swing_concat_df, width=1400)
+            
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+
+                pkind_stats_df = season_pkind(batter_raw_df)
+                pkind_stats_df = pkind_stats_df.rename(columns={'game_year':'연도'})
+                pkind_stats_df = pkind_stats_df.set_index('연도')
+                pkind_stats_df = swing_viewer_pkind(pkind_stats_df)
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']                
+
+                with st.expander(f"상세기록:  {batter_name}"):
+                    st.dataframe(swing_viewer_df, width=1300)
+
+            st.divider()
+
+# -------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------
+
+            st.title('[시즌 :red[스윙지점]]')
+            
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+            
+                game_year = batter_raw_df['game_year'].max()
+                batter_recent_df = batter_raw_df[batter_raw_df['game_year'] == game_year]
+            
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
+            
+                st.subheader(f"{batter_name}, {game_year}")
+            
+                col1, col2, col3, col4 = st.columns(4)
+            
+                pitched_factor = 'player_name'
+                swing_factor = 'swing'
+                lsa_factor = 'launch_speed_angle'
+            
+                with col1:
+                    original_title = '<p style="text-align: center; color:gray; font-size: 25px;">투구지점</p>'
+                    st.markdown(original_title, unsafe_allow_html=True)
+                    season_pitched_fig = factor_year_count_map(batter_recent_df, pitched_factor)
+                    season_pitched_fig.update_layout(height=400, width=450)
+                    season_pitched_fig.update_coloraxes(showscale=False)
+                    st.plotly_chart(season_pitched_fig, layout="wide", key=f"season_pitched_{batter}")
+            
+                with col2:
+                    original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점</p>'
+                    st.markdown(original_title, unsafe_allow_html=True)
+                    season_swing_fig = factor_year_sum_map(batter_recent_df, swing_factor)
+                    season_swing_fig.update_layout(height=400, width=450)
+                    season_swing_fig.update_coloraxes(showscale=False)
+                    st.plotly_chart(season_swing_fig, layout="wide", key=f"season_swing_{batter}")
+            
+                batter_recent_las4 = batter_recent_df[batter_recent_df['plus_lsa4'] == 1]
+            
+                with col3:
+                    original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
+                    st.markdown(original_title, unsafe_allow_html=True)
+                    season_lsa_fig = factor_year_sum_map_scatter(batter_recent_las4)
+                    season_lsa_fig.update_layout(height=400, width=450)
+                    season_lsa_fig.update_coloraxes(showscale=False)
+                    st.plotly_chart(season_lsa_fig, layout="wide", key=f"season_lsa_{batter}")
+            
+                with col4:
+                    original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
+                    st.markdown(original_title, unsafe_allow_html=True)
+                    season_lsa_fig = factor_year_sum_plate_map_scatter(batter_recent_las4)
+                    season_lsa_fig.update_layout(height=400, width=430)
+                    season_lsa_fig.update_coloraxes(showscale=False)
+                    st.plotly_chart(season_lsa_fig, layout="wide", key=f"season_lsa_plate_{batter}")
+                
+                st.markdown(""" <div style="text-align: right; font-size: 0.9em;">
+                                <span style="font-weight: bold;">색상 범례:</span> 
+                                붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
+                            </div>
+                            """, 
+                            unsafe_allow_html=True)
+            
+                # 선수별 연도별 그림을 볼 수 있는 expander 추가
+                with st.expander(f"연도별: {batter_name}"):
+                    # 해당 선수의 모든 연도 데이터 가져오기
+                    years = sorted(batter_raw_df['game_year'].unique(), reverse=True)
                     
-            #         # 3개 컬럼 생성
-            #         hangtime_cols = st.columns(3)
+                    # 각 연도별로 그래프 표시
+                    for year_idx, year in enumerate(years):
+                        st.subheader(f"{year}년")
+                        
+                        # 해당 연도의 데이터 필터링
+                        year_df = batter_raw_df[batter_raw_df['game_year'] == year]
+                        year_swing_df = year_df[year_df['swing'] == 1]
+                        year_lsa4_df = year_df[year_df['plus_lsa4'] == 1]
+                        
+                        # 연도별 그래프 표시
+                        col1, col2, col3, col4 = st.columns(4)
+                        
+                        with col1:
+                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">투구지점 (히트맵)</p>'
+                            st.markdown(original_title, unsafe_allow_html=True)
+                            year_pitched_heatmap = factor_year_count_map(year_df, pitched_factor)
+                            year_pitched_heatmap.update_layout(height=400, width=450)
+                            year_pitched_heatmap.update_coloraxes(showscale=False)
+                            st.plotly_chart(year_pitched_heatmap, layout="wide", key=f"year_pitched_heatmap_{batter}_{year}")
+                        
+                        with col2:
+                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점 (히트맵)</p>'
+                            st.markdown(original_title, unsafe_allow_html=True)
+                            year_swing_heatmap = factor_year_sum_map(year_df, swing_factor)
+                            year_swing_heatmap.update_layout(height=400, width=450)
+                            year_swing_heatmap.update_coloraxes(showscale=False)
+                            st.plotly_chart(year_swing_heatmap, layout="wide", key=f"year_swing_heatmap_{batter}_{year}")
+                        
+                        with col3:
+                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
+                            st.markdown(original_title, unsafe_allow_html=True)
+                            year_lsa_fig = factor_year_sum_map_scatter(year_lsa4_df)
+                            year_lsa_fig.update_layout(height=400, width=450)
+                            year_lsa_fig.update_coloraxes(showscale=False)
+                            st.plotly_chart(year_lsa_fig, layout="wide", key=f"year_lsa_fig_{batter}_{year}")
+                        
+                        with col4:
+                            original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
+                            st.markdown(original_title, unsafe_allow_html=True)
+                            year_lsa_plate_fig = factor_year_sum_plate_map_scatter(year_lsa4_df)
+                            year_lsa_plate_fig.update_layout(height=400, width=430)
+                            year_lsa_plate_fig.update_coloraxes(showscale=False)
+                            st.plotly_chart(year_lsa_plate_fig, layout="wide", key=f"year_lsa_plate_fig_{batter}_{year}")
+                        
+                        # 연도별 구분선 추가
+                        st.markdown("---")
+            
+                st.divider()
+
+# -------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------
+
+            st.title('[시즌 :red[Swing Map]]')
+
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+
+                game_year = batter_raw_df['game_year'].max()
+                batter_recent_df = batter_raw_df[batter_raw_df['game_year'] == game_year]
+
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
+
+                called_strike_df = batter_recent_df[batter_recent_df['description'] == "called_strike"]
+                called_strike_df['swingmap'] = 'Called_Strike'
+                whiff_df = batter_recent_df[batter_recent_df['whiff'] == 1]
+                whiff_df['swingmap'] = 'Whiff'
+                ball_df = batter_recent_df[batter_recent_df['type'] == "B"]
+                ball_df['swingmap'] = 'Ball'
+                foul_df = batter_recent_df[batter_recent_df['foul'] == 1]
+                foul_df['swingmap'] = 'Foul'
+                hit_df = batter_recent_df[batter_recent_df['hit'] == 1]
+                hit_df['swingmap'] = 'HIT'
+                out_df = batter_recent_df[batter_recent_df['field_out'] == 1]
+                out_df['swingmap'] = 'Out'
+
+                swingmap_dataframe = pd.concat([called_strike_df, whiff_df, ball_df, foul_df, hit_df, out_df])
+                swingmap_factor = 'player_name'
+
+                st.subheader(f"{batter_name}, {game_year}")
+
+                season_pitched_fig = swingmap_count_map(swingmap_dataframe, swingmap_factor)
+                season_pitched_fig_scatter = swingmap_count_map_scatter(swingmap_dataframe)
+
+                st.plotly_chart(season_pitched_fig, key=f"main_swingmap_{batter}", layout="wide")
+                st.plotly_chart(season_pitched_fig_scatter, key=f"main_swingmap_scatter_{batter}", layout="wide")
+
+                                # 선수별 연도별 스윙맵을 볼 수 있는 expander 추가
+                with st.expander(f"연도별: {batter_name}"):
+                    # 해당 선수의 모든 연도 데이터 가져오기
+                    years = sorted(batter_raw_df['game_year'].unique(), reverse=True)
                     
-            #         # 각 연도별 타구 비행시간 차트 표시
-            #         for i in range(min(3, len(display_years))):  # 실제 연도 수와 3 중 작은 값만큼 반복
-            #             with hangtime_cols[i]:
-            #                 current_year = display_years[i]
-            #                 st.write(f"#### {current_year} 시즌")
+                    # 각 연도별로 그래프 표시
+                    for year in years:
+                        st.subheader(f"{year}년")
+                        
+                        # 해당 연도의 데이터 필터링
+                        year_df = batter_raw_df[batter_raw_df['game_year'] == year]
+                        
+                        # 연도별 스윙맵 데이터 준비
+                        year_called_strike_df = year_df[year_df['description'] == "called_strike"]
+                        year_called_strike_df['swingmap'] = 'Called_Strike'
+                        year_whiff_df = year_df[year_df['whiff'] == 1]
+                        year_whiff_df['swingmap'] = 'Whiff'
+                        year_ball_df = year_df[year_df['type'] == "B"]
+                        year_ball_df['swingmap'] = 'Ball'
+                        year_foul_df = year_df[year_df['foul'] == 1]
+                        year_foul_df['swingmap'] = 'Foul'
+                        year_hit_df = year_df[year_df['hit'] == 1]
+                        year_hit_df['swingmap'] = 'HIT'
+                        year_out_df = year_df[year_df['field_out'] == 1]
+                        year_out_df['swingmap'] = 'Out'
+                        
+                        year_swingmap_df = pd.concat([year_called_strike_df, year_whiff_df, year_ball_df, 
+                                                    year_foul_df, year_hit_df, year_out_df])
+                        
+                        # 연도별 스윙맵 그래프 표시
+                        year_swing_fig = swingmap_count_map(year_swingmap_df, swingmap_factor)
+                        year_swing_scatter = swingmap_count_map_scatter(year_swingmap_df)
+                        
+                        st.plotly_chart(year_swing_fig, key=f"year_{batter}_{year}_swingmap", layout="wide")
+                        st.plotly_chart(year_swing_scatter, key=f"year_{batter}_{year}_swingmap_scatter", layout="wide")
+                        
+                        # 연도별 구분선 추가
+                        st.markdown("---")
+            
+
+            st.divider()
+
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+
+            st.title('[시즌 :red[Spray Chart]]')
+
+
+            for batter, batter_df in batter_dataframes.items():
+                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+            
+                batter_str = str(batter)
+                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+                batter_name = batter_finder.iloc[0]['NAME']
+            
+                st.subheader(f"{batter_name}")
+
+                st.markdown("""
+                        <style>
+                            .element-container {
+                                padding: 0 !important;
+                            }
+                            .stPlotlyChart {
+                                margin: 0 !important;
+                                padding: 0 !important;
+                            }
+                            .block-container {
+                                padding-top: 1rem;
+                                padding-bottom: 1rem;
+                                padding-left: 1rem;
+                                padding-right: 1rem;
+                            }
+                            div[data-testid="column"] {
+                                padding: 0 0.3rem;
+                            }
+                        </style>
+                    """, unsafe_allow_html=True)
+                
+                # 'game_year' 컬럼을 명시적으로 사용
+                year_col = 'game_year'
+                
+                # 고유 연도 추출 및 내림차순 정렬
+                years = sorted(batter_raw_df[year_col].unique(), reverse=True)
+                
+                # 최대 3개 시즌만 표시
+                display_years = years[:3]
+                
+                # 3개 컬럼 생성
+                cols = st.columns(3)
+                
+                # 각 연도별 데이터 표시
+                for i in range(min(3, len(display_years))):  # 실제 연도 수와 3 중 작은 값만큼 반복
+                    with cols[i]:
+                        current_year = display_years[i]
+                        st.write(f"#### {current_year} 시즌")
+                        
+                        # 해당 연도 데이터 필터링
+                        year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
+                        
+                        # Spray Chart 데이터 생성
+                        year_spraychart_dataframe = spraychart_df(year_data)
+                        
+                        # Spray Chart 표시
+                        season_spraychart(year_spraychart_dataframe, key=f"season_spray_{batter}_{current_year}")
+                
+                # 남은 컬럼에 빈 내용 표시
+                for i in range(len(display_years), 3):
+                    with cols[i]:
+                        st.write("#### 시즌 정보 없음")
+                        st.info("해당 시즌의 데이터가 없습니다.")
+                
+                # 색상 범례 표시
+                st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
+                            <span style="font-weight: bold;">색상 범례:</span> 
+                            붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
+                            </div>
+                            """, 
+                            unsafe_allow_html=True)
+                
+                # 스트라이크 존 기준 차트 (최근 연도만)
+                with st.expander(f" by 스트라이크 존:  {batter_name}(최근연도)"):
+                    if len(years) > 0:
+                        st.write(f"S존 기준차트 ({years[0]} 시즌)")
+                        
+                        # 최근 연도 데이터 필터링
+                        recent_year_data = batter_raw_df[batter_raw_df[year_col] == years[0]]
+                        recent_spraychart_dataframe = spraychart_df(recent_year_data)
+
+                        zone_spraychart_fig(recent_spraychart_dataframe, batter_name=f"{batter_name} ({years[0]})")
+                        
+                        st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
+                                <span style="font-weight: bold;">색상 범례:</span> 
+                                붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
+                                </div>
+                                """, 
+                                unsafe_allow_html=True)
+                    else:
+                        st.info("스트라이크 존 분석을 위한 데이터가 없습니다.")
+            
+                # 타구 비행시간 차트 (최근 3개 연도)
+                with st.expander(f" by 타구비행시간:  {batter_name}"):
+                    st.write("타구 비행시간")
+                    
+                    # 3개 컬럼 생성
+                    hangtime_cols = st.columns(3)
+                    
+                    # 각 연도별 타구 비행시간 차트 표시
+                    for i in range(min(3, len(display_years))):  # 실제 연도 수와 3 중 작은 값만큼 반복
+                        with hangtime_cols[i]:
+                            current_year = display_years[i]
+                            st.write(f"#### {current_year} 시즌")
                             
-            #                 # 해당 연도 데이터 필터링
-            #                 year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
+                            # 해당 연도 데이터 필터링
+                            year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
                             
-            #                 # Spray Chart 데이터 생성
-            #                 year_spraychart_dataframe = spraychart_df(year_data)
+                            # Spray Chart 데이터 생성
+                            year_spraychart_dataframe = spraychart_df(year_data)
                             
-            #                 # 타구 비행시간 차트 표시
-            #                 spraychart_hangtime_fig = season_hangtime_spraychart(year_spraychart_dataframe, batter_name=f"{batter_name} ({current_year})")
-            #                 st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_{batter}_{current_year}", use_container_width=True)
+                            # 타구 비행시간 차트 표시
+                            spraychart_hangtime_fig = season_hangtime_spraychart(year_spraychart_dataframe, batter_name=f"{batter_name} ({current_year})")
+                            st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_{batter}_{current_year}", use_container_width=True)
                     
-            #         # 남은 컬럼에 빈 내용 표시
-            #         for i in range(len(display_years), 3):
-            #             with hangtime_cols[i]:
-            #                 st.write("#### 시즌 정보 없음")
-            #                 st.info("해당 시즌의 데이터가 없습니다.")
+                    # 남은 컬럼에 빈 내용 표시
+                    for i in range(len(display_years), 3):
+                        with hangtime_cols[i]:
+                            st.write("#### 시즌 정보 없음")
+                            st.info("해당 시즌의 데이터가 없습니다.")
                     
-            #         st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
-            #                 <span style="font-weight: bold;">색상 범례:</span> 
-            #                 붉은색: 1~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상
-            #                 </div>
-            #                 """, 
-            #                 unsafe_allow_html=True)
+                    st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
+                            <span style="font-weight: bold;">색상 범례:</span> 
+                            붉은색: 1~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상
+                            </div>
+                            """, 
+                            unsafe_allow_html=True)
             
-            #     st.divider()
+                st.divider()
 
 
-# # -------------------------------------------------------------------------------------------------------
-# # -------------------------------------------------------------------------------------------------------
-
-# swing_scatter_fig.update_yaxes(title_text='')
+# -------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------
 
             st.title('[시즌 :red[Plate Discipline]]')
             
@@ -1207,9 +1205,9 @@ def show_main_page():
                             # 투수 이름 가져오기
                             if not inning_data.empty:
                                 pitcher_name = inning_data['player_name'].iloc[0]
-                                st.write(f"#### {current_inning}이닝 - {pitcher_name}")
+                                st.write(f"#### {current_inning}회 - {pitcher_name}")
                             else:
-                                st.write(f"#### {current_inning}이닝")
+                                st.write(f"#### {current_inning}회")
                             
                             # 이닝별 차트 생성
                             inning_fig = px.scatter(
@@ -1251,8 +1249,8 @@ def show_main_page():
                             )
                             
                             # x, y 범위 설정
-                            inning_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False)
-                            inning_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False)
+                            inning_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
+                            inning_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
                             
                             inning_fig.update_traces(marker=dict(size=30, opacity=1))  # 마커 크기 조정 및 불투명도 설정
                             inning_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
@@ -1329,9 +1327,9 @@ def show_main_page():
                                     # 투수 이름 가져오기
                                     if not inning_data.empty:
                                         pitcher_name = inning_data['player_name'].iloc[0]
-                                        st.write(f"#### {current_inning}이닝 - {pitcher_name}")
+                                        st.write(f"#### {current_inning}회 - {pitcher_name}")
                                     else:
-                                        st.write(f"#### {current_inning}이닝")
+                                        st.write(f"#### {current_inning}회")
                                     
                                     # 이닝별 차트 생성
                                     inning_fig = px.scatter(
@@ -1373,8 +1371,8 @@ def show_main_page():
                                     )
                                     
                                     # x, y 범위 설정
-                                    inning_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False)
-                                    inning_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False)
+                                    inning_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
+                                    inning_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
                                     
                                     inning_fig.update_traces(marker=dict(size=30, opacity=1))  # 마커 크기 조정 및 불투명도 설정
                                     inning_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
@@ -1417,304 +1415,6 @@ def show_main_page():
                         
                         # 날짜별 구분선 추가
                         st.markdown("---")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            # st.title('[시즌 :red[Plate Discipline]]')
-
-            # # 최근 경기의 타석 결과를 타석별로 scatter chart로 표시
-            # for batter, batter_df in batter_dataframes.items():
-            #     batter_raw_df = globals()[f"df_{batter}"] = batter_df
-
-            #     batter_str = str(batter)
-            #     batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-            #     batter_name = batter_finder.iloc[0]['NAME']
-                
-            #     # 최근 경기 데이터 필터링
-            #     recent_game_date = batter_raw_df['game_date'].max()
-            #     recent_game_df = batter_raw_df[batter_raw_df['game_date'] == recent_game_date]
-
-            #     st.subheader(f"{batter_name} ({recent_game_date})")
-
-            #     # formatted_date = recent_game_date
-
-            #     # # HTML을 사용하여 선수 이름과 날짜를 다른 크기로 표시
-            #     # st.markdown(f"""
-            #     #     <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem;">
-            #     #         {batter_name} <span style="font-size: 0.9rem; font-weight: normal; color: #666;">({formatted_date})</span>
-            #     #     </div>
-            #     # """, unsafe_allow_html=True)
-                
-            #     # 타석별 결과 시각화
-            #     colors = {
-            #         'called_strike': 'rgba(24,85,144,0.6)', 
-            #         'swinging_strike': 'rgba(244,247,143,0.9)', 
-            #         'ball': 'rgba(108,122,137,0.7)', 
-            #         'foul': 'rgba(241,106,227,0.5)', 
-            #         'hit_into_play_no_out': 'rgba(255,105,97,1)', 
-            #         'hit_into_play_score': 'rgba(255,105,97,1)',
-            #         'hit_into_play': 'rgba(140,86,75,0.6)'
-            #     }
-                
-            #     symbols = {
-            #         '4-Seam Fastball': 'circle', 
-            #         '2-Seam Fastball': 'triangle-down', 
-            #         'Cutter': 'triangle-se', 
-            #         'Slider': 'triangle-right', 
-            #         'Curveball': 'triangle-up', 
-            #         'Changeup': 'diamond', 
-            #         'Split-Finger': 'square', 
-            #         'Sweeper': 'cross'
-            #     }
-                
-            #     # 최근 경기 이닝별 결과 차트 (facet_col 사용)
-            #     # 이닝 순서대로 정렬하고 최대 6개만 표시
-            #     innings = sorted(recent_game_df['inning'].unique())[:6]
-            #     facet_df = recent_game_df[recent_game_df['inning'].isin(innings)]
-                
-            #     # 각 이닝별로 투수 이름을 표시하기 위한 처리
-            #     facet_df['facet_title'] = facet_df.apply(lambda x: f"{x['inning']}이닝 - {x['player_name']}", axis=1)
-                
-            #     plate_discipline_fig = px.scatter(
-            #         facet_df, 
-            #         x='plate_x', 
-            #         y='plate_z', 
-            #         color='description', 
-            #         symbol='pitch_name',
-            #         text='pitch_number',
-            #         color_discrete_map=colors,
-            #         hover_name="player_name", 
-            #         hover_data=["rel_speed(km)", "pitch_name", "events", "exit_velocity", "description", "launch_speed_angle", "launch_angle"],
-            #         template="simple_white",
-            #         facet_col='inning',  # 이닝별로 facet
-            #         category_orders={"inning": innings},  # 이닝 순서대로 정렬
-            #         height=400, 
-            #         width=300*len(innings)
-            #     )
-                
-            #     plate_discipline_fig.update_layout(showlegend=False)
-            #     plate_discipline_fig.update_layout(
-            #                                         autosize=False,
-            #                                         margin=dict(l=50, r=50, t=80, b=50),  # 상단 여백(t)을 80으로 늘림
-            #                                         plot_bgcolor='rgba(255,255,255,0.1)', 
-            #                                         paper_bgcolor='rgba(255,255,255,1)',
-            #                                     )
-                
-            #     # facet 제목을 투수 이름으로 변경
-            #     for i, inning in enumerate(innings):
-            #         inning_data = facet_df[facet_df['inning'] == inning]
-            #         if not inning_data.empty:
-            #             pitcher_name = inning_data['player_name'].iloc[0]
-            #             plate_discipline_fig.layout.annotations[i].text = f"{inning}이닝 - {pitcher_name}"
-            #             plate_discipline_fig.layout.annotations[i].y = 1.05  
-            #             plate_discipline_fig.layout.annotations[i].font.size = 14  
-                
-            #     # 심볼 설정
-            #     for a, b in enumerate(plate_discipline_fig.data):
-            #         pitch_name = plate_discipline_fig.data[a].name.split(', ')[1] if ',' in plate_discipline_fig.data[a].name else plate_discipline_fig.data[a].name
-            #         if pitch_name in symbols:
-            #             plate_discipline_fig.data[a].marker.symbol = symbols[pitch_name]
-                
-            #     # 차트 레이아웃 설정
-            #     plate_discipline_fig.update_layout(
-            #         autosize=False,
-            #         margin=dict(l=50, r=50, t=50, b=50),
-            #         plot_bgcolor='rgba(255,255,255,0.1)', 
-            #         paper_bgcolor='rgba(255,255,255,1)',
-            #         height=400,  # 전체 높이 고정
-            #         width=300*len(innings),  # 이닝 수에 따라 너비 조정
-            #     )
-                
-            #     # 모든 서브플롯에 동일한 x, y 범위 설정
-            #     plate_discipline_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
-            #     plate_discipline_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
-                
-            #     plate_discipline_fig.update_traces(marker=dict(size=30))  # 마커 크기 조정
-            #     plate_discipline_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
-                
-            #     # 각 서브플롯에 스트라이크 존과 코어 존 추가
-            #     for i in range(len(innings)):
-            #         # 스트라이크 존 라인 추가
-            #         plate_discipline_fig.add_hline(y=0.59, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
-            #         plate_discipline_fig.add_hline(y=0.91, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
-            #         plate_discipline_fig.add_vline(x=-0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
-            #         plate_discipline_fig.add_vline(x=0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
-                    
-            #         # Core Zone 추가
-            #         homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
-            #         homey = [0.59, 0.59, 0.91, 0.91, 0.59]
-            #         plate_discipline_fig.add_trace(go.Scatter(
-            #             x=homex, 
-            #             y=homey, 
-            #             mode='lines', 
-            #             line=dict(color='red', width=2),
-            #             showlegend=False
-            #         ), row=1, col=i+1)
-                    
-            #         # Strike Zone 추가
-            #         homex = [-0.26, 0.26, 0.26, -0.26, -0.26]
-            #         homey = [0.45, 0.45, 1.05, 1.05, 0.45]
-            #         plate_discipline_fig.add_trace(go.Scatter(
-            #             x=homex, 
-            #             y=homey, 
-            #             mode='lines', 
-            #             line=dict(color='rgba(108,122,137,0.9)', width=2),
-            #             showlegend=False
-            #         ), row=1, col=i+1)
-                
-            #     # 차트 표시 부분만 수정
-            #     st.plotly_chart(plate_discipline_fig)
-                
-            #     st.markdown("""
-            #     <div style="text-align: left; font-size: 0.9em;">
-            #     <span style="font-weight: bold;">색상 범례:</span> 
-            #     파란색: 콜드 스트라이크 / 노란색: 스윙 스트라이크 / 회색: 볼 / 분홍색: 파울 / 빨간색: 안타 / 갈색: 아웃
-            #     </div>
-            #     """, unsafe_allow_html=True)
-                
-            #     # 선수별 expander로 시즌 경기별 타석 결과 차트 표시
-            #     with st.expander(f"시즌 경기별 타석 결과(최근 5경기): {batter_name}"):
-            #         # 시즌 데이터에서 게임 날짜 목록 가져오기
-            #         game_dates = sorted(batter_raw_df['game_date'].unique(), reverse=True)
-                    
-            #         for game_date in game_dates[:5]:  # 최근 5경기만 표시
-            #             st.write(f"경기 날짜: {game_date}")
-                        
-            #             # 해당 날짜의 데이터 필터링
-            #             game_df = batter_raw_df[batter_raw_df['game_date'] == game_date]
-                        
-            #             # 이닝 목록 가져오기 (최대 6개)
-            #             innings = sorted(game_df['inning'].unique())[:6]
-            #             facet_df = game_df[game_df['inning'].isin(innings)]
-                        
-            #             # 각 이닝별로 투수 이름을 표시하기 위한 처리
-            #             facet_df['facet_title'] = facet_df.apply(lambda x: f"{x['inning']}이닝 - {x['player_name']}", axis=1)
-                        
-            #             # 이닝별 타석 결과 차트 (facet_col 사용)
-            #             inning_fig = px.scatter(
-            #                 facet_df, 
-            #                 x='plate_x', 
-            #                 y='plate_z', 
-            #                 color='description', 
-            #                 symbol='pitch_name',
-            #                 text='pitch_number',  # 인덱스를 텍스트로 표시
-            #                 color_discrete_map=colors,
-            #                 hover_name="player_name", 
-            #                 hover_data=["rel_speed(km)", "pitch_name", "events", "exit_velocity", "description", "launch_speed_angle", "launch_angle"],
-            #                 template="simple_white",
-            #                 facet_col='inning',  # 이닝별로 facet
-            #                 category_orders={"inning": innings},  # 이닝 순서대로 정렬
-            #                 height=400, 
-            #                 width=300*len(innings)
-            #             )
-
-            #             inning_fig.update_layout(showlegend=False)
-            #             inning_fig.update_layout(
-            #                                                 autosize=False,
-            #                                                 margin=dict(l=50, r=50, t=80, b=50),  # 상단 여백(t)을 80으로 늘림
-            #                                                 plot_bgcolor='rgba(255,255,255,0.1)', 
-            #                                                 paper_bgcolor='rgba(255,255,255,1)',
-            #                                             )
-                        
-            #             # facet 제목을 투수 이름으로 변경
-            #             for i, inning in enumerate(innings):
-            #                 inning_data = facet_df[facet_df['inning'] == inning]
-            #                 if not inning_data.empty:
-            #                     pitcher_name = inning_data['player_name'].iloc[0]
-            #                     inning_fig.layout.annotations[i].text = f"{inning}이닝 - {pitcher_name}"
-            #                     inning_fig.layout.annotations[i].y = 1.05  
-            #                     inning_fig.layout.annotations[i].font.size = 14  
-                        
-            #             # 심볼 설정
-            #             for a, b in enumerate(inning_fig.data):
-            #                 pitch_name = inning_fig.data[a].name.split(', ')[1] if ',' in inning_fig.data[a].name else inning_fig.data[a].name
-            #                 if pitch_name in symbols:
-            #                     inning_fig.data[a].marker.symbol = symbols[pitch_name]
-                        
-            #             # 차트 레이아웃 설정
-            #             inning_fig.update_layout(
-            #                 title=f"{game_date} 경기 타석 결과",
-            #                 autosize=False,
-            #                 margin=dict(l=50, r=50, t=50, b=50),
-            #                 plot_bgcolor='rgba(255,255,255,0.1)', 
-            #                 paper_bgcolor='rgba(255,255,255,1)',
-            #             )
-                        
-            #             # 모든 서브플롯에 동일한 x, y 범위 설정
-            #             inning_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
-            #             inning_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
-                        
-            #             inning_fig.update_traces(marker=dict(size=30))  # 마커 크기 조정
-            #             inning_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
-                        
-            #             # 각 서브플롯에 스트라이크 존과 코어 존 추가
-            #             for i in range(len(innings)):
-            #                 # 스트라이크 존 라인 추가
-            #                 inning_fig.add_hline(y=0.59, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
-            #                 inning_fig.add_hline(y=0.91, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
-            #                 inning_fig.add_vline(x=-0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
-            #                 inning_fig.add_vline(x=0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)', row=1, col=i+1)
-                            
-            #                 # Core Zone 추가
-            #                 homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
-            #                 homey = [0.59, 0.59, 0.91, 0.91, 0.59]
-            #                 inning_fig.add_trace(go.Scatter(
-            #                     x=homex, 
-            #                     y=homey, 
-            #                     mode='lines', 
-            #                     line=dict(color='red', width=2),
-            #                     showlegend=False
-            #                 ), row=1, col=i+1)
-                            
-            #                 # Strike Zone 추가
-            #                 homex = [-0.26, 0.26, 0.26, -0.26, -0.26]
-            #                 homey = [0.45, 0.45, 1.05, 1.05, 0.45]
-            #                 inning_fig.add_trace(go.Scatter(
-            #                     x=homex, 
-            #                     y=homey, 
-            #                     mode='lines', 
-            #                     line=dict(color='rgba(108,122,137,0.9)', width=2),
-            #                     showlegend=False
-            #                 ), row=1, col=i+1)
-                        
-            #             # 차트 표시 부분만 수정
-            #             st.plotly_chart(inning_fig)
-                        
-            #             # 날짜별 구분선 추가
-            #             st.markdown("---")
-
 
             st.divider()
 # -------------------------------------------------------------------------------------------------------
