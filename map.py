@@ -1062,7 +1062,7 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     
     # 타구 비행시간에 따른 색상 맵 정의
     colors = {
-        'short': 'rgba(124,138,159,1)',  # 살구색 (1초 미만)
+        'short': 'rgba(255,73,120,1)',  # 살구색 (1초 미만)
         'medium': 'rgba(203,7,49,1)',     # 붉은색 (1-4초)
         'long': 'rgba(221,206,201,1)'      # 갈색 (4초 이상)
     }
