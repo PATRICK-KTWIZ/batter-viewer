@@ -1082,7 +1082,7 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
                         color_discrete_map=colors,
                         hover_name="player_name" if "player_name" in dataframe.columns else None, 
                         hover_data=hover_data,
-                        height=580, width=600)
+                        height=530, width=600)
     
     # 투구 타입에 따른 심볼 적용
     if "pitch_name" in dataframe.columns:
