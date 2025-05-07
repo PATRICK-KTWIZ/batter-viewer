@@ -1071,7 +1071,7 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
 
     # hover_data에 포함할 컬럼 확인
     hover_data = []
-    for col in ["hang_time", "events", "exit_velocity", "launch_angle", "pitch_name", "rel_speed(km)", "description", "launch_speed_angle", "hit_spin_rate"]:
+    for col in ["hang_time", "events", "exit_velocity", "launch_angle", "pitch_name", "rel_speed(km)", "description", "launch_speed_angle", "hit_spin_rate","hit_distance"]:
         if col in dataframe.columns:
             hover_data.append(col)
     
