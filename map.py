@@ -1078,7 +1078,7 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     col_index = len(dataframe['game_year'].unique())
     
     # 산점도 생성
-    hangtime_fig = px.scatter(dataframe, x='groundX', y='groundY', color='hang_time_type',
+    hangtime_fig = px.scatter(dataframe, x='groundX', y='groundY', color='hangtime_type',
                         color_discrete_map=colors,
                         hover_name="player_name" if "player_name" in dataframe.columns else None, 
                         hover_data=hover_data,
