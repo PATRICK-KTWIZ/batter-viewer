@@ -1117,7 +1117,7 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     hangtime_fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
     
     # 마커 크기 설정
-    hangtime_fig.update_traces(marker=dict(size=22))
+    hangtime_fig.update_traces(marker=dict(size=22, opacity=1))
     
     # 범례 숨기기
     hangtime_fig.update_layout(showlegend=False)
