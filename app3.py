@@ -1169,13 +1169,14 @@ def show_main_page():
                 
                 # 타석별 결과 시각화
                 colors = {
-                    'called_strike': 'rgba(24,85,144,1)', 
-                    'swinging_strike': 'rgba(244,247,143,1)', 
-                    'ball': 'rgba(108,122,137,0.9)', 
-                    'foul': 'rgba(241,106,227,0.9)', 
+
+                    'called_strike': 'rgba(24,85,144,0.6)', 
+                    'swinging_strike': 'rgba(244,247,143,0.9)', 
+                    'ball': 'rgba(108,122,137,0.7)', 
+                    'foul': 'rgba(241,106,227,0.5)', 
                     'hit_into_play_no_out': 'rgba(255,105,97,1)', 
                     'hit_into_play_score': 'rgba(255,105,97,1)',
-                    'hit_into_play': 'rgba(140,86,75,0.9)'
+                    'hit_into_play': 'rgba(140,86,75,0.6)'
                 }
                 
                 symbols = {
@@ -1299,8 +1300,8 @@ def show_main_page():
                 # 남은 컬럼에 빈 내용 표시
                 for i in range(len(display_at_bats), 5):
                     with cols[i]:
-                        st.write("#### 타석 정보 없음")
-                        st.info("해당 타석의 데이터가 없습니다.")
+                        st.write("#### -")
+                        st.info("-")
                 
                 st.markdown("""
                 <div style="text-align: left; font-size: 0.9em;">
@@ -1427,8 +1428,8 @@ def show_main_page():
                             # 남은 컬럼에 빈 내용 표시
                             for i in range(len(group_at_bats), 5):
                                 with game_cols[i]:
-                                    st.write("#### 타석 정보 없음")
-                                    st.info("해당 타석의 데이터가 없습니다.")
+                                    st.write("#### -")
+                                    st.info("-")
                         
                         # 날짜별 구분선 추가
                         st.markdown("---")
