@@ -1099,7 +1099,7 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     # 레이아웃 설정
     hangtime_fig.update_layout(
         autosize=False, 
-        margin=dict(l=0, r=0, t=30, b=0), 
+        margin=dict(l=0, r=10, t=30, b=0), 
         xaxis_range=[-10, 130], 
         yaxis_range=[-10, 130],
         plot_bgcolor='rgba(255,255,255,1)', 
