@@ -290,7 +290,7 @@ def swingmap_count_map_scatter(dataframe):
     # dataframe = dataframe[dataframe['player_name'] == y_factor]
     col_index = len(dataframe['swingmap'].unique())
         
-    colors = {'Called_Strike':'rgba(24,85,144,0.6)', 'Whiff':'rgba(244,247,143,0.9)', 'Ball': 'rgba(108,122,137,0.7)', 'Foul': 'rgba(241,106,227,0.5)', 'hit': 'rgba(255,105,97,1)', 'Out': 'rgba(140,86,75,0.6)'}
+    colors = {'Called_Strike':'rgba(24,85,144,0.6)', 'Whiff':'rgba(247,222,52,1)', 'Ball': 'rgba(108,122,137,0.7)', 'Foul': 'rgba(241,106,227,0.5)', 'hit': 'rgba(255,105,97,1)', 'Out': 'rgba(140,86,75,0.6)'}
     symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
 
     swingmap_period_symbol_map_fig = px.scatter(dataframe, x='plate_x', y='plate_z', color='swingmap', symbol='pitch_name', facet_col = 'swingmap',
@@ -414,7 +414,7 @@ def swingmap_period_symbol_map(dataframe):
 
     if len(dataframe) > 0:
 
-        colors = {'called_strike':'rgba(24,85,144,0.6)', 'whiff':'rgba(244,247,143,0.9)', 'ball': 'rgba(108,122,137,0.7)', 'foul': 'rgba(241,106,227,0.5)', 'hit': 'rgba(255,105,97,1)', 'out': 'rgba(140,86,75,0.6)'}
+        colors = {'called_strike':'rgba(24,85,144,0.6)', 'whiff':'rgba(247,222,52,1)', 'ball': 'rgba(108,122,137,0.7)', 'foul': 'rgba(241,106,227,0.5)', 'hit': 'rgba(255,105,97,1)', 'out': 'rgba(140,86,75,0.6)'}
         symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
 
         swingmap_period_symbol_map_fig = px.scatter(dataframe, x='plate_x', y='plate_z', color='swingmap', symbol='pitch_name', facet_col = 'swingmap',
