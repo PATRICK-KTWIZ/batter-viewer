@@ -1132,7 +1132,7 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     # 내야-외야 경계선
     hangtime_fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width=5)
     
-    return hangtime_figg
+    return hangtime_fig
 
 
 
