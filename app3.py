@@ -1251,7 +1251,15 @@ def show_main_page():
                             height=300, 
                             width=250
                         )
-                        
+
+                        # 텍스트 크기와 색상 설정
+                        plate_discipline_fig.update_traces(
+                            textfont=dict(
+                                size=18,
+                                color='rgba(0,0,0,1)'  # 검은색으로 설정 (완전 불투명)
+                            )
+                        )
+                                                
                         # 심볼 설정
                         for a, b in enumerate(plate_discipline_fig.data):
                             if len(plate_discipline_fig.data[a].name.split(', ')) > 1:
@@ -1388,7 +1396,15 @@ def show_main_page():
                                         height=300, 
                                         width=250
                                     )
-                                    
+
+                                    # 텍스트 크기와 색상 설정
+                                    at_bat_fig.update_traces(
+                                        textfont=dict(
+                                            size=18,
+                                            color='rgba(0,0,0,1)'  # 검은색으로 설정 (완전 불투명)
+                                        )
+                                    )
+                                                                        
                                     # 심볼 설정
                                     for a, b in enumerate(at_bat_fig.data):
                                         if len(at_bat_fig.data[a].name.split(', ')) > 1:
