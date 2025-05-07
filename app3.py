@@ -1224,7 +1224,7 @@ def show_main_page():
                         if not at_bat_data.empty:
                             pitcher_name = at_bat_data['player_name'].iloc[0]
                             inning = at_bat_data['inning'].iloc[0]
-                            st.write(f"{inning}이닝 - {pitcher_name}")
+                            st.write(f"{inning}회 - {pitcher_name}")
                         
                         # 타석별 차트 생성
                         plate_discipline_fig = px.scatter(
@@ -1352,7 +1352,7 @@ def show_main_page():
                                     if not at_bat_data.empty:
                                         pitcher_name = at_bat_data['player_name'].iloc[0]
                                         inning = at_bat_data['inning'].iloc[0]
-                                        st.write(f"{inning}이닝 - {pitcher_name}")
+                                        st.write(f"{inning}회 - {pitcher_name}")
                                     
                                     # 타석별 차트 생성
                                     at_bat_fig = px.scatter(
