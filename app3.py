@@ -1171,7 +1171,7 @@ def show_main_page():
                 colors = {
 
                     'called_strike': 'rgba(24,85,144,0.6)', 
-                    'swinging_strike': 'rgba(244,247,143,0.9)', 
+                    'swinging_strike': 'rgba(247,222,52,1)', 
                     'ball': 'rgba(108,122,137,0.7)', 
                     'foul': 'rgba(241,106,227,0.5)', 
                     'hit_into_play_no_out': 'rgba(255,105,97,1)', 
