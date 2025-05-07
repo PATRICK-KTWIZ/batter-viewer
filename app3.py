@@ -1004,26 +1004,26 @@ def show_main_page():
             
                 st.subheader(f"{batter_name}")
 
-                st.markdown("""
-                        <style>
-                            .element-container {
-                                padding: 0 !important;
-                            }
-                            .stPlotlyChart {
-                                margin: 0 !important;
-                                padding: 0 !important;
-                            }
-                            .block-container {
-                                padding-top: 1rem;
-                                padding-bottom: 1rem;
-                                padding-left: 1rem;
-                                padding-right: 1rem;
-                            }
-                            div[data-testid="column"] {
-                                padding: 0 0.3rem;
-                            }
-                        </style>
-                    """, unsafe_allow_html=True)
+                # st.markdown("""
+                #         <style>
+                #             .element-container {
+                #                 padding: 0 !important;
+                #             }
+                #             .stPlotlyChart {
+                #                 margin: 0 !important;
+                #                 padding: 0 !important;
+                #             }
+                #             .block-container {
+                #                 padding-top: 1rem;
+                #                 padding-bottom: 1rem;
+                #                 padding-left: 1rem;
+                #                 padding-right: 1rem;
+                #             }
+                #             div[data-testid="column"] {
+                #                 padding: 0 0.3rem;
+                #             }
+                #         </style>
+                #     """, unsafe_allow_html=True)
                 
                 # 'game_year' 컬럼을 명시적으로 사용
                 year_col = 'game_year'
@@ -1144,26 +1144,26 @@ def show_main_page():
             
                 st.subheader(f"{batter_name} ({recent_game_date})")
             
-                st.markdown("""
-                        <style>
-                            .element-container {
-                                padding: 0 !important;
-                            }
-                            .stPlotlyChart {
-                                margin: 0 !important;
-                                padding: 0 !important;
-                            }
-                            .block-container {
-                                padding-top: 1rem;
-                                padding-bottom: 1rem;
-                                padding-left: 1rem;
-                                padding-right: 1rem;
-                            }
-                            div[data-testid="column"] {
-                                padding: 0 0.3rem;
-                            }
-                        </style>
-                    """, unsafe_allow_html=True)
+                # st.markdown("""
+                #         <style>
+                #             .element-container {
+                #                 padding: 0 !important;
+                #             }
+                #             .stPlotlyChart {
+                #                 margin: 0 !important;
+                #                 padding: 0 !important;
+                #             }
+                #             .block-container {
+                #                 padding-top: 1rem;
+                #                 padding-bottom: 1rem;
+                #                 padding-left: 1rem;
+                #                 padding-right: 1rem;
+                #             }
+                #             div[data-testid="column"] {
+                #                 padding: 0 0.3rem;
+                #             }
+                #         </style>
+                #     """, unsafe_allow_html=True)
                 
                 # 타석별 결과 시각화
                 colors = {
