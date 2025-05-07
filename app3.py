@@ -1169,7 +1169,6 @@ def show_main_page():
                 
                 # 타석별 결과 시각화
                 colors = {
-
                     'called_strike': 'rgba(24,85,144,0.6)', 
                     'swinging_strike': 'rgba(247,222,52,1)', 
                     'ball': 'rgba(108,122,137,0.7)', 
@@ -1215,10 +1214,21 @@ def show_main_page():
                         # 해당 타석 데이터 필터링
                         if 'at_bat_number' in recent_game_df.columns:
                             at_bat_data = recent_game_df[recent_game_df['at_bat_number'] == current_at_bat]
-                            st.write(f"#### 타석 {current_at_bat}")
+                            at_bat_label = current_at_bat
                         else:
                             at_bat_data = recent_game_df[recent_game_df['at_bat_group'] == current_at_bat]
-                            st.write(f"#### 타석 {i+1}")
+                            at_bat_label = i+1
+                        
+                        # 타석 결과(events) 가져오기
+                        at_bat_result = "N/A"
+                        if not at_bat_data.empty and 'events' in at_bat_data.columns:
+                            # 마지막 투구의 결과를 가져옴 (타석의 최종 결과)
+                            last_pitch = at_bat_data.iloc[-1]
+                            if pd.notna(last_pitch['events']):
+                                at_bat_result = last_pitch['events']
+                        
+                        # 타석 번호와 결과 표시
+                        st.write(f"#### 타석 {at_bat_label} - {at_bat_result}")
                         
                         # 투수 이름 가져오기
                         if not at_bat_data.empty:
@@ -1346,7 +1356,16 @@ def show_main_page():
                                         at_bat_data = game_df[game_df['at_bat_group'] == at_bat]
                                         at_bat_label = group_idx+i+1
                                     
-                                    st.write(f"#### 타석 {at_bat_label}")
+                                    # 타석 결과(events) 가져오기
+                                    at_bat_result = "N/A"
+                                    if not at_bat_data.empty and 'events' in at_bat_data.columns:
+                                        # 마지막 투구의 결과를 가져옴 (타석의 최종 결과)
+                                        last_pitch = at_bat_data.iloc[-1]
+                                        if pd.notna(last_pitch['events']):
+                                            at_bat_result = last_pitch['events']
+                                    
+                                    # 타석 번호와 결과 표시
+                                    st.write(f"#### 타석 {at_bat_label} - {at_bat_result}")
                                     
                                     # 투수 이름 가져오기
                                     if not at_bat_data.empty:
