@@ -1144,6 +1144,28 @@ def show_main_page():
                 recent_game_date = batter_raw_df['game_date'].max()
                 recent_game_df = batter_raw_df[batter_raw_df['game_date'] == recent_game_date]
             
+                # 타석별로 pitch_number 재정렬 및 재할당 (중복 방지)
+                if 'at_bat_number' in recent_game_df.columns:
+                    for at_bat in recent_game_df['at_bat_number'].unique():
+                        mask = recent_game_df['at_bat_number'] == at_bat
+                        # 타석 내에서 시간 순서나 다른 적절한 기준으로 정렬
+                        if 'pitch_timestamp' in recent_game_df.columns:
+                            sorted_indices = recent_game_df[mask].sort_values('pitch_timestamp').index
+                        else:
+                            # 다른 정렬 기준이 없다면 기존 pitch_number로 정렬
+                            sorted_indices = recent_game_df[mask].sort_values('pitch_number').index
+                        
+                        # 1부터 시작하는 새 pitch_number 할당
+                        recent_game_df.loc[sorted_indices, 'pitch_number'] = range(1, len(sorted_indices) + 1)
+                else:
+                    # at_bat_number가 없는 경우 처리
+                    recent_game_df = recent_game_df.sort_values('pitch_number')
+                    recent_game_df['at_bat_group'] = (recent_game_df.index // 5)
+                    for group in recent_game_df['at_bat_group'].unique():
+                        mask = recent_game_df['at_bat_group'] == group
+                        sorted_indices = recent_game_df[mask].sort_values('pitch_number').index
+                        recent_game_df.loc[sorted_indices, 'pitch_number'] = range(1, len(sorted_indices) + 1)
+            
                 st.subheader(f"{batter_name} ({recent_game_date})")
             
                 st.markdown("""
@@ -1213,10 +1235,11 @@ def show_main_page():
                         
                         # 해당 타석 데이터 필터링
                         if 'at_bat_number' in recent_game_df.columns:
-                            at_bat_data = recent_game_df[recent_game_df['at_bat_number'] == current_at_bat].sort_values('pitch_number').reset_index(drop=True)
+                            # 이미 위에서 pitch_number를 재할당했으므로 여기서는 필터링만 수행
+                            at_bat_data = recent_game_df[recent_game_df['at_bat_number'] == current_at_bat]
                             at_bat_label = current_at_bat
                         else:
-                            at_bat_data = recent_game_df[recent_game_df['at_bat_group'] == current_at_bat].sort_values('pitch_number').reset_index(drop=True)
+                            at_bat_data = recent_game_df[recent_game_df['at_bat_group'] == current_at_bat]
                             at_bat_label = i+1
                         
                         # 타석 결과(events) 가져오기
@@ -1251,7 +1274,7 @@ def show_main_page():
                             height=300, 
                             width=250
                         )
-
+            
                         # 텍스트 크기와 색상 설정
                         plate_discipline_fig.update_traces(
                             textfont=dict(
@@ -1339,6 +1362,28 @@ def show_main_page():
                         # 해당 날짜의 데이터 필터링
                         game_df = batter_raw_df[batter_raw_df['game_date'] == game_date]
                         
+                        # 타석별로 pitch_number 재정렬 및 재할당 (중복 방지)
+                        if 'at_bat_number' in game_df.columns:
+                            for at_bat in game_df['at_bat_number'].unique():
+                                mask = game_df['at_bat_number'] == at_bat
+                                # 타석 내에서 시간 순서나 다른 적절한 기준으로 정렬
+                                if 'pitch_timestamp' in game_df.columns:
+                                    sorted_indices = game_df[mask].sort_values('pitch_timestamp').index
+                                else:
+                                    # 다른 정렬 기준이 없다면 기존 pitch_number로 정렬
+                                    sorted_indices = game_df[mask].sort_values('pitch_number').index
+                                
+                                # 1부터 시작하는 새 pitch_number 할당
+                                game_df.loc[sorted_indices, 'pitch_number'] = range(1, len(sorted_indices) + 1)
+                        else:
+                            # at_bat_number가 없는 경우 처리
+                            game_df = game_df.sort_values('pitch_number')
+                            game_df['at_bat_group'] = (game_df.index // 5)
+                            for group in game_df['at_bat_group'].unique():
+                                mask = game_df['at_bat_group'] == group
+                                sorted_indices = game_df[mask].sort_values('pitch_number').index
+                                game_df.loc[sorted_indices, 'pitch_number'] = range(1, len(sorted_indices) + 1)
+                        
                         # 타석별로 그룹화
                         if 'at_bat_number' in game_df.columns:
                             game_at_bats = sorted(game_df['at_bat_number'].unique())
@@ -1358,10 +1403,10 @@ def show_main_page():
                                 with game_cols[i]:
                                     # 해당 타석 데이터 필터링
                                     if 'at_bat_number' in game_df.columns:
-                                        at_bat_data = game_df[game_df['at_bat_number'] ==  at_bat].sort_values('pitch_number').reset_index(drop=True)
+                                        at_bat_data = game_df[game_df['at_bat_number'] == at_bat]
                                         at_bat_label = at_bat
                                     else:
-                                        at_bat_data = game_df[game_df['at_bat_group'] ==  at_bat].sort_values('pitch_number').reset_index(drop=True)
+                                        at_bat_data = game_df[game_df['at_bat_group'] == at_bat]
                                         at_bat_label = group_idx+i+1
                                     
                                     # 타석 결과(events) 가져오기
@@ -1396,7 +1441,7 @@ def show_main_page():
                                         height=300, 
                                         width=250
                                     )
-
+            
                                     # 텍스트 크기와 색상 설정
                                     at_bat_fig.update_traces(
                                         textfont=dict(
@@ -1404,7 +1449,7 @@ def show_main_page():
                                             color='rgba(0,0,0,1)'  # 검은색으로 설정 (완전 불투명)
                                         )
                                     )
-                                                                        
+                                                            
                                     # 심볼 설정
                                     for a, b in enumerate(at_bat_fig.data):
                                         if len(at_bat_fig.data[a].name.split(', ')) > 1:
@@ -1465,9 +1510,9 @@ def show_main_page():
                                 with game_cols[i]:
                                     st.write("#### -")
                                     st.info("-")
-                        
-                        # 날짜별 구분선 추가
-                        st.markdown("---")
+                            
+                            # 날짜별 구분선 추가
+                            st.markdown("---")
 
 
 
