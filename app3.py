@@ -1293,8 +1293,8 @@ def show_main_page():
                             showlegend=False
                         ))
                         
-                        # 차트 표시
-                        st.plotly_chart(plate_discipline_fig, use_container_width=True)
+                        # 차트 표시 - 고유한 키 추가
+                        st.plotly_chart(plate_discipline_fig, use_container_width=True, key=f"recent_at_bat_{batter}_{current_at_bat}_{i}")
                 
                 # 남은 컬럼에 빈 내용 표시
                 for i in range(len(display_at_bats), 5):
@@ -1314,7 +1314,7 @@ def show_main_page():
                     # 시즌 데이터에서 게임 날짜 목록 가져오기
                     game_dates = sorted(batter_raw_df['game_date'].unique(), reverse=True)
                     
-                    for game_date in game_dates[:5]:  # 최근 5경기만 표시
+                    for date_idx, game_date in enumerate(game_dates[:5]):  # 최근 5경기만 표시
                         st.write(f"### 경기 날짜: {game_date}")
                         
                         # 해당 날짜의 데이터 필터링
@@ -1340,10 +1340,12 @@ def show_main_page():
                                     # 해당 타석 데이터 필터링
                                     if 'at_bat_number' in game_df.columns:
                                         at_bat_data = game_df[game_df['at_bat_number'] == at_bat]
-                                        st.write(f"#### 타석 {at_bat}")
+                                        at_bat_label = at_bat
                                     else:
                                         at_bat_data = game_df[game_df['at_bat_group'] == at_bat]
-                                        st.write(f"#### 타석 {group_idx+i+1}")
+                                        at_bat_label = group_idx+i+1
+                                    
+                                    st.write(f"#### 타석 {at_bat_label}")
                                     
                                     # 투수 이름 가져오기
                                     if not at_bat_data.empty:
@@ -1419,8 +1421,8 @@ def show_main_page():
                                         showlegend=False
                                     ))
                                     
-                                    # 차트 표시
-                                    st.plotly_chart(at_bat_fig, use_container_width=True)
+                                    # 차트 표시 - 고유한 키 추가
+                                    st.plotly_chart(at_bat_fig, use_container_width=True, key=f"history_game_{date_idx}_atbat_{at_bat_label}_group_{group_idx}_idx_{i}")
                             
                             # 남은 컬럼에 빈 내용 표시
                             for i in range(len(group_at_bats), 5):
