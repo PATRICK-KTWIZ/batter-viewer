@@ -1213,10 +1213,10 @@ def show_main_page():
                         
                         # 해당 타석 데이터 필터링
                         if 'at_bat_number' in recent_game_df.columns:
-                            at_bat_data = recent_game_df[recent_game_df['at_bat_number'] == current_at_bat].sort_values('pitch_number').reset_index(drop=True)]
+                            at_bat_data = recent_game_df[recent_game_df['at_bat_number'] == current_at_bat].sort_values('pitch_number').reset_index(drop=True)
                             at_bat_label = current_at_bat
                         else:
-                            at_bat_data = recent_game_df[recent_game_df['at_bat_group'] == current_at_bat].sort_values('pitch_number').reset_index(drop=True)]
+                            at_bat_data = recent_game_df[recent_game_df['at_bat_group'] == current_at_bat].sort_values('pitch_number').reset_index(drop=True)
                             at_bat_label = i+1
                         
                         # 타석 결과(events) 가져오기
@@ -1358,10 +1358,10 @@ def show_main_page():
                                 with game_cols[i]:
                                     # 해당 타석 데이터 필터링
                                     if 'at_bat_number' in game_df.columns:
-                                        at_bat_data = game_df[game_df['at_bat_number'] ==  at_bat].sort_values('pitch_number').reset_index(drop=True)]
+                                        at_bat_data = game_df[game_df['at_bat_number'] ==  at_bat].sort_values('pitch_number').reset_index(drop=True)
                                         at_bat_label = at_bat
                                     else:
-                                        at_bat_data = game_df[game_df['at_bat_group'] ==  at_bat].sort_values('pitch_number').reset_index(drop=True)]
+                                        at_bat_data = game_df[game_df['at_bat_group'] ==  at_bat].sort_values('pitch_number').reset_index(drop=True)
                                         at_bat_label = group_idx+i+1
                                     
                                     # 타석 결과(events) 가져오기
