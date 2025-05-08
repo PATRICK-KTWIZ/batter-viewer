@@ -822,78 +822,118 @@ def stats_df(merged_base_df):
     merged_base_df['slg'] = 0
     merged_base_df['ops'] = 0
 
-    merged_base_df['inplay_pit'] = merged_base_df['inplay'] / merged_base_df['player_name']
+    # 안전한 나눗셈을 위한 함수 정의 (분모가 0인 경우 np.nan 반환)
+    def safe_divide(numerator, denominator):
+        if isinstance(denominator, pd.Series):
+            return np.where(denominator != 0, numerator / denominator, np.nan)
+        else:
+            return np.nan if denominator == 0 else numerator / denominator
+
+    # 모든 나눗셈 연산을 safe_divide로 대체
+    merged_base_df['inplay_pit'] = safe_divide(merged_base_df['inplay'], merged_base_df['player_name'])
   
-    # if merged_base_df['ab'] != 0:
-    merged_base_df['avg'] = merged_base_df['hit'] / merged_base_df['ab']
-    merged_base_df['obp'] = (merged_base_df['hit'] + merged_base_df['hit_by_pitch'] + merged_base_df['walk']) / (merged_base_df['ab'] + merged_base_df['hit_by_pitch'] + merged_base_df['walk'] + merged_base_df['sac_fly'])
-    merged_base_df['slg'] = ((merged_base_df['single'] * 1) + (merged_base_df['double'] * 2) + (merged_base_df['triple'] * 3) + (merged_base_df['home_run'] * 4)) / merged_base_df['ab']
+    merged_base_df['avg'] = safe_divide(merged_base_df['hit'], merged_base_df['ab'])
+    
+    obp_denominator = merged_base_df['ab'] + merged_base_df['hit_by_pitch'] + merged_base_df['walk'] + merged_base_df['sac_fly']
+    merged_base_df['obp'] = safe_divide(
+        (merged_base_df['hit'] + merged_base_df['hit_by_pitch'] + merged_base_df['walk']),
+        obp_denominator
+    )
+    
+    merged_base_df['slg'] = safe_divide(
+        ((merged_base_df['single'] * 1) + (merged_base_df['double'] * 2) + 
+         (merged_base_df['triple'] * 3) + (merged_base_df['home_run'] * 4)),
+        merged_base_df['ab']
+    )
+    
+    # NaN 값이 있는 경우 ops도 NaN으로 처리
     merged_base_df['ops'] = merged_base_df['obp'] + merged_base_df['slg']
 
-    merged_base_df['z%'] = merged_base_df['z_in'] / merged_base_df['player_name']
-    merged_base_df['z_swing%'] = merged_base_df['z_swing'] / merged_base_df['z_in']
-    merged_base_df['z_con%'] = merged_base_df['z_con'] / merged_base_df['z_swing']
-    merged_base_df['z_inplay%'] = merged_base_df['z_inplay'] / merged_base_df['z_swing']
+    # 스트라이크존 관련 통계
+    merged_base_df['z%'] = safe_divide(merged_base_df['z_in'], merged_base_df['player_name'])
+    merged_base_df['z_swing%'] = safe_divide(merged_base_df['z_swing'], merged_base_df['z_in'])
+    merged_base_df['z_con%'] = safe_divide(merged_base_df['z_con'], merged_base_df['z_swing'])
+    merged_base_df['z_inplay%'] = safe_divide(merged_base_df['z_inplay'], merged_base_df['z_swing'])
 
-    merged_base_df['o%'] = merged_base_df['z_out'] / merged_base_df['player_name']
-    merged_base_df['o_swing%'] = merged_base_df['o_swing'] / merged_base_df['z_out']
-    merged_base_df['o_con%'] = merged_base_df['o_con'] / merged_base_df['o_swing']
-    merged_base_df['o_inplay%'] = merged_base_df['o_inplay'] / merged_base_df['o_swing']
+    # 스트라이크존 밖 관련 통계
+    merged_base_df['o%'] = safe_divide(merged_base_df['z_out'], merged_base_df['player_name'])
+    merged_base_df['o_swing%'] = safe_divide(merged_base_df['o_swing'], merged_base_df['z_out'])
+    merged_base_df['o_con%'] = safe_divide(merged_base_df['o_con'], merged_base_df['o_swing'])
+    merged_base_df['o_inplay%'] = safe_divide(merged_base_df['o_inplay'], merged_base_df['o_swing'])
 
-    merged_base_df['f_swing%'] = merged_base_df['f_swing'] / merged_base_df['f_pitch']
-    merged_base_df['swing%'] = merged_base_df['swing'] / merged_base_df['player_name']
-    merged_base_df['whiff%'] = merged_base_df['whiff'] / merged_base_df['swing']
-    merged_base_df['inplay_sw'] = merged_base_df['inplay'] / merged_base_df['swing']
+    # 기타 스윙 관련 통계
+    merged_base_df['f_swing%'] = safe_divide(merged_base_df['f_swing'], merged_base_df['f_pitch'])
+    merged_base_df['swing%'] = safe_divide(merged_base_df['swing'], merged_base_df['player_name'])
+    merged_base_df['whiff%'] = safe_divide(merged_base_df['whiff'], merged_base_df['swing'])
+    merged_base_df['inplay_sw'] = safe_divide(merged_base_df['inplay'], merged_base_df['swing'])
 
+    # 접근 방식 분류 (NaN 값은 비교 시 항상 False를 반환하므로 별도 처리 필요)
     kbo_z_swing = 0.654
     kbo_o_swing = 0.261
 
+    # NaN 값 처리를 위해 fillna 사용
+    z_swing_filled = merged_base_df['z_swing%'].fillna(-1)  # NaN은 -1로 대체
+    o_swing_filled = merged_base_df['o_swing%'].fillna(-1)  # NaN은 -1로 대체
+
     condition = [
-                    (merged_base_df['z_swing%'] >= kbo_z_swing) & (merged_base_df['o_swing%'] >= kbo_o_swing),
-                    (merged_base_df['z_swing%'] >= kbo_z_swing) & (merged_base_df['o_swing%'] <= kbo_o_swing),
-                    (merged_base_df['z_swing%'] <= kbo_z_swing) & (merged_base_df['o_swing%'] >= kbo_o_swing),
-                    (merged_base_df['z_swing%'] <= kbo_z_swing) & (merged_base_df['o_swing%'] <= kbo_o_swing)
-                    ]
+        (z_swing_filled >= kbo_z_swing) & (o_swing_filled >= kbo_o_swing),
+        (z_swing_filled >= kbo_z_swing) & (o_swing_filled <= kbo_o_swing) & (o_swing_filled >= 0),
+        (z_swing_filled <= kbo_z_swing) & (z_swing_filled >= 0) & (o_swing_filled >= kbo_o_swing),
+        (z_swing_filled <= kbo_z_swing) & (z_swing_filled >= 0) & (o_swing_filled <= kbo_o_swing) & (o_swing_filled >= 0),
+        (z_swing_filled == -1) | (o_swing_filled == -1)  # NaN 값이 있는 경우
+    ]
 
-    choicelist = ['Aggressive','Selective','Non_Selective','Passive']
-
+    choicelist = ['Aggressive', 'Selective', 'Non_Selective', 'Passive', 'Not Available']
     merged_base_df['approach'] = np.select(condition, choicelist, default='Not Specified')
 
-    merged_base_df['sum'] = merged_base_df['weak'] + merged_base_df['topped'] + merged_base_df['under'] + merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
+    # 타구 품질 관련 통계
+    merged_base_df['sum'] = merged_base_df['weak'] + merged_base_df['topped'] + merged_base_df['under'] + \
+                           merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
 
-    merged_base_df['weak'] = (merged_base_df['weak'] / merged_base_df['sum']).round(3)
-    merged_base_df['topped'] = (merged_base_df['topped'] / merged_base_df['sum']).round(3)
-    merged_base_df['under'] = (merged_base_df['under'] / merged_base_df['sum']).round(3)
-    merged_base_df['flare'] = (merged_base_df['flare'] / merged_base_df['sum']).round(3)
-    merged_base_df['solid_contact'] = (merged_base_df['solid_contact'] / merged_base_df['sum']).round(3)
-    merged_base_df['barrel'] = (merged_base_df['barrel'] / merged_base_df['sum']).round(3)
+    # 각 타구 유형 비율 계산 (분모가 0인 경우 NaN으로 처리)
+    for col in ['weak', 'topped', 'under', 'flare', 'solid_contact', 'barrel']:
+        merged_base_df[col] = safe_divide(merged_base_df[col], merged_base_df['sum'])
 
-    merged_base_df['plus_lsa4'] = ((merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']) / (merged_base_df['weak'] + merged_base_df['topped'] + merged_base_df['under'] + merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel'])).round(3)
+    # plus_lsa4 계산 (양질의 타구 비율)
+    numerator = merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
+    denominator = merged_base_df['sum']
+    merged_base_df['plus_lsa4'] = safe_divide(numerator, denominator)
 
-    stats_output_df = merged_base_df[['game_date','player_name','pa','ab','hit','walk','rel_speed(km)','inplay_pit','exit_velocity','launch_angleX','hit_spin_rate','avg','obp','slg','ops',
-                        'z%','z_swing%','z_con%', 'z_inplay%', 'o%','o_swing%', 'o_con%', 'o_inplay%', 'f_swing%', 'swing%', 'whiff%','inplay_sw',
-                        'weak','topped','under','flare','solid_contact','barrel','approach', 'plus_lsa4']]
+    # 출력할 컬럼 선택
+    stats_output_df = merged_base_df[['game_date', 'player_name', 'pa', 'ab', 'hit', 'walk', 'rel_speed(km)', 
+                                     'inplay_pit', 'exit_velocity', 'launch_angleX', 'hit_spin_rate', 
+                                     'avg', 'obp', 'slg', 'ops', 'z%', 'z_swing%', 'z_con%', 'z_inplay%', 
+                                     'o%', 'o_swing%', 'o_con%', 'o_inplay%', 'f_swing%', 'swing%', 'whiff%', 
+                                     'inplay_sw', 'weak', 'topped', 'under', 'flare', 'solid_contact', 
+                                     'barrel', 'approach', 'plus_lsa4']]
     
+    # 반올림할 컬럼과 소수점 자릿수 정의
     round_dict = {
         'pa': 0, 'ab': 0, 'hit': 0, 'walk': 0, 'rel_speed(km)': 1, 'inplay_pit': 3, 
         'exit_velocity': 1, 'launch_angleX': 1, 'hit_spin_rate': 0, 'avg': 3, 
         'obp': 3, 'slg': 3, 'ops': 3, 'z%': 3, 'z_swing%': 3, 'z_con%': 3, 
         'z_inplay%': 3, 'o%': 3, 'o_swing%': 3, 'o_con%': 3, 'o_inplay%': 3, 
-        'f_swing%': 3, 'swing%': 3, 'whiff%': 3, 'inplay_sw': 3, 'inplay%': 3, 'approach': 3, 'plus_lsa4':3
-}
+        'f_swing%': 3, 'swing%': 3, 'whiff%': 3, 'inplay_sw': 3, 'inplay%': 3, 
+        'weak': 3, 'topped': 3, 'under': 3, 'flare': 3, 'solid_contact': 3, 'barrel': 3,
+        'plus_lsa4': 3
+    }
+    
+    # 중복 제거
     round_dict_corrected = {k: v for i, (k, v) in enumerate(round_dict.items()) if k not in list(round_dict.keys())[:i]}
 
+    # 존재하는 컬럼만 반올림
     existing_columns = {col: dec for col, dec in round_dict_corrected.items() if col in stats_output_df.columns}
     if existing_columns:
         stats_output_df = stats_output_df.round(existing_columns)
 
+    # 값 포맷팅 (NaN을 "-"로 변환)
     for column, decimals in round_dict_corrected.items():
         if column in stats_output_df.columns:
             try:
                 # NaN 값 처리를 위한 함수
                 def format_value(x):
                     if pd.isna(x):
-                        return ""
+                        return "-"  # NaN 값을 "-"로 표시
                     elif decimals == 0:
                         return f"{int(x)}"  # 소수점 없는 정수
                     else:
@@ -903,8 +943,5 @@ def stats_df(merged_base_df):
             except Exception as e:
                 print(f"열 '{column}' 처리 중 오류 발생: {e}")
                 continue
-
-    # stats_output_df = stats_output_df.round({'pa':0,'ab':0,'hit':0,'ab':0,'walk':0,'rel_speed(km)':1, 'inplay_pit':3, 'exit_velocity':1, 'launch_angleX':1, 'hit_spin_rate':0,'avg':3, 'obp':3, 'slg':3, 'ops':3 , 
-    #                             'z%': 3,'z_swing%':3,'z_con%':3,'z_inplay%':3, 'o%':3,'o_swing%':3, 'o_con%':3, 'o_inplay%':3, 'f_swing%':3, 'swing%':3, 'whiff%':3,'inplay_sw':3, 'inplay%':3, 'approach':3})
 
     return stats_output_df
