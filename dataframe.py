@@ -895,6 +895,27 @@ def stats_df(merged_base_df):
         
         numerator = merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
         merged_base_df.loc[mask_sum, 'plus_lsa4'] = numerator[mask_sum] / merged_base_df.loc[mask_sum, 'sum']
+    
+    # 접근 방식 분류 추가
+    kbo_z_swing = 0.654
+    kbo_o_swing = 0.261
+    
+    # NaN 값을 처리하기 위한 조건
+    # z_swing%와 o_swing% 값이 있는 행만 처리
+    valid_rows = merged_base_df['z_swing%'].notna() & merged_base_df['o_swing%'].notna()
+    
+    # 기본값 설정
+    merged_base_df['approach'] = 'Not Specified'
+    
+    if valid_rows.any():
+        condition = [
+            (merged_base_df['z_swing%'] >= kbo_z_swing) & (merged_base_df['o_swing%'] >= kbo_o_swing) & valid_rows,
+            (merged_base_df['z_swing%'] >= kbo_z_swing) & (merged_base_df['o_swing%'] < kbo_o_swing) & valid_rows,
+            (merged_base_df['z_swing%'] < kbo_z_swing) & (merged_base_df['o_swing%'] >= kbo_o_swing) & valid_rows,
+            (merged_base_df['z_swing%'] < kbo_z_swing) & (merged_base_df['o_swing%'] < kbo_o_swing) & valid_rows
+        ]
+        choicelist = ['Aggressive', 'Selective', 'Non_Selective', 'Passive']
+        merged_base_df['approach'] = np.select(condition, choicelist, default='Not Specified')
 
     # 출력할 컬럼 선택
     stats_output_df = merged_base_df[['game_date', 'player_name', 'pa', 'ab', 'hit', 'walk', 'rel_speed(km)', 
