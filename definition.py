@@ -22,13 +22,65 @@ def select_league(option):
 
 
 def stats(player_df):
-
+    # 데이터가 비어있는지 확인
+    if player_df.empty:
+        return pd.DataFrame()  # 빈 데이터프레임 반환
+    
+    # 기본 통계 계산
     merged_base_df = base_df(player_df)
+    
+    # 통계 데이터프레임이 비어있는지 확인
+    if merged_base_df.empty:
+        return pd.DataFrame()  # 빈 데이터프레임 반환
+    
+    # 통계 계산
     stats_output_df = stats_df(merged_base_df)
     
-    season_stats_df = stats_output_df.reindex([2025, 2024, 2023])
-
-    return season_stats_df
+    # 연도별로 존재하는 데이터만 필터링
+    try:
+        # 존재하는 연도 확인 (game_date에서 연도 추출)
+        if 'game_date' in stats_output_df.columns:
+            # game_date가 문자열인 경우 연도 추출
+            if stats_output_df['game_date'].dtype == 'object':
+                stats_output_df['year'] = stats_output_df['game_date'].str[:4].astype(int)
+            # game_date가 datetime인 경우 연도 추출
+            else:
+                stats_output_df['year'] = stats_output_df['game_date'].dt.year
+            
+            # 존재하는 연도 확인 (내림차순 정렬)
+            existing_years = sorted(stats_output_df['year'].unique(), reverse=True)
+            
+            # 최근 3년만 선택 (2023, 2024, 2025)
+            target_years = [2025, 2024, 2023]
+            
+            # 존재하는 연도 중 target_years에 있는 것만 필터링
+            available_years = [year for year in target_years if year in existing_years]
+            
+            # 데이터가 있는 연도만 선택
+            if available_years:
+                season_stats_df = stats_output_df[stats_output_df['year'].isin(available_years)]
+                
+                # 연도별로 그룹화하여 통계 계산
+                season_stats_df = season_stats_df.groupby('year').first().reset_index()
+                
+                # 연도 순서대로 정렬 (최신 연도가 먼저 오도록)
+                season_stats_df = season_stats_df.sort_values('year', ascending=False)
+                
+                # 인덱스 재설정
+                season_stats_df = season_stats_df.set_index('year')
+                
+                # 원하는 연도 순서대로 재정렬 (존재하는 연도만)
+                season_stats_df = season_stats_df.reindex(available_years)
+                
+                return season_stats_df
+            else:
+                return pd.DataFrame()  # 해당 연도의 데이터가 없으면 빈 데이터프레임 반환
+        else:
+            # game_date 컬럼이 없는 경우
+            return stats_output_df  # 원본 데이터 그대로 반환
+    except Exception as e:
+        print(f"연도별 데이터 처리 중 오류 발생: {e}")
+        return stats_output_df  # 오류 발생 시 원본 데이터 그대로 반환
 
 
 def period_stats(player_df):
