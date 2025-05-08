@@ -22,62 +22,13 @@ def select_league(option):
 
 
 def stats(player_df):
-    # 데이터가 비어있는지 확인
-    if player_df.empty:
-        return pd.DataFrame()  # 빈 데이터프레임 반환
-    
-    # 기본 통계 계산
+
     merged_base_df = base_df(player_df)
-    
-    # 통계 데이터프레임이 비어있는지 확인
-    if merged_base_df.empty:
-        return pd.DataFrame()  # 빈 데이터프레임 반환
-    
-    # 통계 계산
     stats_output_df = stats_df(merged_base_df)
     
-    # 연도 정보 확인 및 추출
-    try:
-        # game_date에서 연도 추출
-        if 'game_date' in stats_output_df.columns:
-            # 데이터 타입에 따라 연도 추출 방식 결정
-            if stats_output_df['game_date'].dtype == 'object':
-                stats_output_df['year'] = stats_output_df['game_date'].str[:4].astype(int)
-            else:
-                stats_output_df['year'] = stats_output_df['game_date'].dt.year
-            
-            # 2023년 이상 데이터만 필터링
-            year_filter = stats_output_df['year'] >= 2023
-            filtered_df = stats_output_df[year_filter]
-            
-            # 필터링 후 데이터가 없는 경우 빈 데이터프레임 반환
-            if filtered_df.empty:
-                return pd.DataFrame()
-            
-            # 존재하는 연도 확인 (내림차순 정렬)
-            existing_years = sorted(filtered_df['year'].unique())
-            
-            # 연도별로 그룹화하고 첫 번째 행 선택
-            result_dfs = []
-            for year in existing_years:
-                year_data = filtered_df[filtered_df['year'] == year].iloc[0:1]
-                if not year_data.empty:
-                    result_dfs.append(year_data)
-            
-            # 결과 데이터프레임 병합
-            if result_dfs:
-                result_df = pd.concat(result_dfs)
-                # 연도를 인덱스로 설정
-                result_df = result_df.set_index('year')
-                return result_df
-            else:
-                return pd.DataFrame()
-        else:
-            # game_date 컬럼이 없는 경우
-            return stats_output_df
-    except Exception as e:
-        print(f"연도별 데이터 처리 중 오류 발생: {e}")
-        return stats_output_df  # 오류 발생 시 원본 데이터 반환
+    season_stats_df = stats_output_df.reindex([2025, 2024, 2023])
+
+    return season_stats_df
 
 
 def period_stats(player_df):
