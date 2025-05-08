@@ -52,7 +52,7 @@ st.markdown("""
         padding: 0.8rem 1rem;  /* 상하 패딩 증가 (0.5rem → 0.8rem) */
         height: 3rem;  /* 버튼 높이 지정 */
         font-size: 16px;  /* 글자 크기 */
-        margin-bottom: 10px;  /* 버튼 사이 간격 */
+        margin-bottom: 0px;  /* 버튼 사이 간격 */
         font-weight: 500;  /* 글자 두께 */
     }
 
