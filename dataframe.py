@@ -844,7 +844,7 @@ def stats_df(merged_base_df):
     merged_base_df['ops'] = merged_base_df['obp'] + merged_base_df['slg']
     
     # 스트라이크존 관련 통계 (안전한 나눗셈)
-    mask_player = merged_base_df['pitname'] > 0  # player_name 대신 pitname 사용
+    mask_player = merged_base_df['player_name'] > 0  # player_name 대신 pitname 사용
     if mask_player.any():
         merged_base_df.loc[mask_player, 'z%'] = merged_base_df.loc[mask_player, 'z_in'] / merged_base_df.loc[mask_player, 'pitname']
         merged_base_df.loc[mask_player, 'inplay_pit'] = merged_base_df.loc[mask_player, 'inplay'] / merged_base_df.loc[mask_player, 'pitname']
