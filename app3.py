@@ -391,20 +391,20 @@ def show_main_page():
         with col1:
             if st.button('선수추가', key="add_player_btn"):
                 st.session_state.selected_players.append({'Team': select_team, 'Player Name': select_player, 'League': option, 'ID': player_id})
-
-                selected_player_df = pd.DataFrame()
-                # Display the selected player names
-                if st.session_state.selected_players:
-                    st.subheader('Selected Players:')
-                    for player_info in st.session_state.selected_players:
-                        st.write(f"Team: {player_info['Team']}, Player Name: {player_info['Player Name']}, League: {player_info['League']}, ID: {player_info['ID']}")
-        
-                        select_player_df = id_dataset[ (id_dataset['team'] == player_info['Team']) & (id_dataset['TM_ID'] == player_info['ID']) ]
-                        selected_player_df = pd.concat([selected_player_df, select_player_df])
-        
+     
         with col2:
             if st.button('새로고침', key="refresh_btn"):
                 st.session_state.selected_players = []
+
+        selected_player_df = pd.DataFrame()
+            # Display the selected player names
+            if st.session_state.selected_players:
+                st.subheader('Selected Players:')
+                for player_info in st.session_state.selected_players:
+                    st.write(f"Team: {player_info['Team']}, Player Name: {player_info['Player Name']}, League: {player_info['League']}, ID: {player_info['ID']}")
+    
+                    select_player_df = id_dataset[ (id_dataset['team'] == player_info['Team']) & (id_dataset['TM_ID'] == player_info['ID']) ]
+                    selected_player_df = pd.concat([selected_player_df, select_player_df])
         
 
         # if st.sidebar.button('선수추가'):
