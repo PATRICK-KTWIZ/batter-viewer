@@ -398,13 +398,13 @@ def show_main_page():
 
         selected_player_df = pd.DataFrame()
             # Display the selected player names
-            if st.session_state.selected_players:
-                st.subheader('Selected Players:')
-                for player_info in st.session_state.selected_players:
-                    st.write(f"Team: {player_info['Team']}, Player Name: {player_info['Player Name']}, League: {player_info['League']}, ID: {player_info['ID']}")
-    
-                    select_player_df = id_dataset[ (id_dataset['team'] == player_info['Team']) & (id_dataset['TM_ID'] == player_info['ID']) ]
-                    selected_player_df = pd.concat([selected_player_df, select_player_df])
+        if st.session_state.selected_players:
+            st.subheader('Selected Players:')
+            for player_info in st.session_state.selected_players:
+                st.write(f"Team: {player_info['Team']}, Player Name: {player_info['Player Name']}, League: {player_info['League']}, ID: {player_info['ID']}")
+
+                select_player_df = id_dataset[ (id_dataset['team'] == player_info['Team']) & (id_dataset['TM_ID'] == player_info['ID']) ]
+                selected_player_df = pd.concat([selected_player_df, select_player_df])
         
 
         # if st.sidebar.button('선수추가'):
