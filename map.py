@@ -89,7 +89,7 @@ def factor_year_count_map_scatter(dataframe):
     homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
 
     factor_year_count_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.9)', width=4) ), row = 'all' , col = 'all')
-    factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='white',), row = 'all' , col = 'all')
+    factor_year_count_map_fig.add_trace(go.Scatter(x=[0], y=[0.42], text=["<b>Strike Zone<b>"], mode="text", textfont_size=18, textfont_color='gray',), row = 'all' , col = 'all')
 
     homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
     homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
