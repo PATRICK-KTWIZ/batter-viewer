@@ -388,8 +388,8 @@ def period_pitchname(player_df):
 
 def stats_viewer(dataframe):
 
-    stats_viewer_df = dataframe[['game_date','pa','ab','hit','walk','avg','obp','slg','ops','exit_velocity','launch_angleX','hit_spin_rate']]
-    stats_viewer_df = stats_viewer_df.rename(columns={'game_year':'구분','game_date':'경기수','pa':'타석','ab':'타수','hit':'안타','walk':'볼넷','avg':'타율','obp':'출루율','slg':'장타율','ops':'OPS',
+    stats_viewer_df = dataframe[['game_date','pa','ab','hit','walk','strikeout','avg','obp','slg','ops','exit_velocity','launch_angleX','hit_spin_rate']]
+    stats_viewer_df = stats_viewer_df.rename(columns={'game_year':'구분','game_date':'경기수','pa':'타석','ab':'타수','hit':'안타','walk':'볼넷','strikeout':'삼진','avg':'타율','obp':'출루율','slg':'장타율','ops':'OPS',
                                                         'exit_velocity':'타구속도','launch_angleX':'발사각도','hit_spin_rate':'타구스핀량'})
 
     return stats_viewer_df
@@ -422,8 +422,8 @@ def event_viewer(dataframe):
 
 def stats_viewer_pthrows(dataframe):
 
-    stats_viewer_pthrows_df = dataframe[['p_throws','game_date','pa','ab','hit','walk','avg','obp','slg','ops','exit_velocity','launch_angleX','hit_spin_rate']]
-    stats_viewer_pthrows_df = stats_viewer_pthrows_df.rename(columns={'game_year':'구분','p_throws':'투수유형','game_date':'경기수','pa':'타석','ab':'타수','hit':'안타','walk':'볼넷','avg':'타율','obp':'출루율','slg':'장타율','ops':'OPS',
+    stats_viewer_pthrows_df = dataframe[['p_throws','game_date','pa','ab','hit','walk','strikeout','avg','obp','slg','ops','exit_velocity','launch_angleX','hit_spin_rate']]
+    stats_viewer_pthrows_df = stats_viewer_pthrows_df.rename(columns={'game_year':'구분','p_throws':'투수유형','game_date':'경기수','pa':'타석','ab':'타수','hit':'안타','walk':'볼넷','strikeout':'삼진','avg':'타율','obp':'출루율','slg':'장타율','ops':'OPS',
                                                         'exit_velocity':'타구속도','launch_angleX':'발사각도','hit_spin_rate':'타구스핀량'})
 
     return stats_viewer_pthrows_df
@@ -449,8 +449,8 @@ def swing_viewer_pthrows(dataframe):
 
 def stats_viewer_pkind(dataframe):
 
-    stats_viewer_pkind_df = dataframe[['p_kind','game_date','pa','ab','hit','walk','avg','obp','slg','ops','exit_velocity','launch_angleX','hit_spin_rate']]
-    stats_viewer_pkind_df = stats_viewer_pkind_df.rename(columns={'game_year':'구분','p_kind':'구종유형','game_date':'경기수','pa':'타석','ab':'타수','hit':'안타','walk':'볼넷','avg':'타율','obp':'출루율','slg':'장타율','ops':'OPS',
+    stats_viewer_pkind_df = dataframe[['p_kind','game_date','pa','ab','hit','walk','strikeout','avg','obp','slg','ops','exit_velocity','launch_angleX','hit_spin_rate']]
+    stats_viewer_pkind_df = stats_viewer_pkind_df.rename(columns={'game_year':'구분','p_kind':'구종유형','game_date':'경기수','pa':'타석','ab':'타수','hit':'안타','walk':'볼넷','strikeout':'삼진','avg':'타율','obp':'출루율','slg':'장타율','ops':'OPS',
                                                         'exit_velocity':'타구속도','launch_angleX':'발사각도','hit_spin_rate':'타구스핀량'})
 
     return stats_viewer_pkind_df
@@ -469,8 +469,8 @@ def swing_viewer_pkind(dataframe):
 
 def stats_viewer_pitchname(dataframe):
 
-    stats_viewer_pitchname_df = dataframe[['pitch_name','game_date','pa','ab','hit','walk','avg','obp','slg','ops','exit_velocity','launch_angleX','hit_spin_rate']]
-    stats_viewer_pitchname_df = stats_viewer_pitchname_df.rename(columns={'game_year':'구분','pitch_name':'세부구종','game_date':'경기수','pa':'타석','ab':'타수','hit':'안타','walk':'볼넷','avg':'타율','obp':'출루율','slg':'장타율','ops':'OPS',
+    stats_viewer_pitchname_df = dataframe[['pitch_name','game_date','pa','ab','hit','walk','strikeout','avg','obp','slg','ops','exit_velocity','launch_angleX','hit_spin_rate']]
+    stats_viewer_pitchname_df = stats_viewer_pitchname_df.rename(columns={'game_year':'구분','pitch_name':'세부구종','game_date':'경기수','pa':'타석','ab':'타수','hit':'안타','walk':'볼넷','strikeout':'삼진','avg':'타율','obp':'출루율','slg':'장타율','ops':'OPS',
                                                         'exit_velocity':'타구속도','launch_angleX':'발사각도','hit_spin_rate':'타구스핀량'})
 
     return stats_viewer_pitchname_df
