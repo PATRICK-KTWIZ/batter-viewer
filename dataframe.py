@@ -816,83 +816,85 @@ def pivot_base_df(player_df, pivot_index):
 
 
 def stats_df(merged_base_df):
+    # 기본값 설정
+    merged_base_df['avg'] = 0.0
+    merged_base_df['obp'] = 0.0
+    merged_base_df['slg'] = 0.0
+    merged_base_df['ops'] = 0.0
     
-    merged_base_df['avg'] = 0 
-    merged_base_df['obp'] = 0
-    merged_base_df['slg'] = 0
-    merged_base_df['ops'] = 0
-
-    # 안전한 나눗셈을 위한 함수 정의
-    def safe_divide(numerator, denominator):
-        # fill_value=np.nan을 사용하여 0으로 나누는 경우 NaN 반환
-        return numerator.div(denominator, fill_value=np.nan)
-
-    # 각 통계 계산 시 안전한 나눗셈 사용
-    merged_base_df['inplay_pit'] = safe_divide(merged_base_df['inplay'], merged_base_df['player_name'])
-    merged_base_df['avg'] = safe_divide(merged_base_df['hit'], merged_base_df['ab'])
+    # avg 계산 (안전한 나눗셈)
+    mask_ab = merged_base_df['ab'] > 0
+    if mask_ab.any():
+        merged_base_df.loc[mask_ab, 'avg'] = merged_base_df.loc[mask_ab, 'hit'] / merged_base_df.loc[mask_ab, 'ab']
     
+    # obp 계산 (안전한 나눗셈)
     obp_denominator = merged_base_df['ab'] + merged_base_df['hit_by_pitch'] + merged_base_df['walk'] + merged_base_df['sac_fly']
-    merged_base_df['obp'] = safe_divide(
-        (merged_base_df['hit'] + merged_base_df['hit_by_pitch'] + merged_base_df['walk']),
-        obp_denominator
-    )
+    mask_obp = obp_denominator > 0
+    if mask_obp.any():
+        obp_numerator = merged_base_df['hit'] + merged_base_df['hit_by_pitch'] + merged_base_df['walk']
+        merged_base_df.loc[mask_obp, 'obp'] = obp_numerator[mask_obp] / obp_denominator[mask_obp]
     
-    # 명시적으로 0으로 나누는 경우 처리
+    # slg 계산 (안전한 나눗셈)
     slg_numerator = ((merged_base_df['single'] * 1) + (merged_base_df['double'] * 2) + 
                      (merged_base_df['triple'] * 3) + (merged_base_df['home_run'] * 4))
-    merged_base_df['slg'] = safe_divide(slg_numerator, merged_base_df['ab'])
+    if mask_ab.any():
+        merged_base_df.loc[mask_ab, 'slg'] = slg_numerator[mask_ab] / merged_base_df.loc[mask_ab, 'ab']
     
-    # NaN 값이 있는 경우에도 덧셈 연산 수행
+    # ops 계산
     merged_base_df['ops'] = merged_base_df['obp'] + merged_base_df['slg']
-
-    # 스트라이크존 관련 통계
-    merged_base_df['z%'] = safe_divide(merged_base_df['z_in'], merged_base_df['player_name'])
-    merged_base_df['z_swing%'] = safe_divide(merged_base_df['z_swing'], merged_base_df['z_in'])
-    merged_base_df['z_con%'] = safe_divide(merged_base_df['z_con'], merged_base_df['z_swing'])
-    merged_base_df['z_inplay%'] = safe_divide(merged_base_df['z_inplay'], merged_base_df['z_swing'])
-
-    # 스트라이크존 밖 관련 통계
-    merged_base_df['o%'] = safe_divide(merged_base_df['z_out'], merged_base_df['player_name'])
-    merged_base_df['o_swing%'] = safe_divide(merged_base_df['o_swing'], merged_base_df['z_out'])
-    merged_base_df['o_con%'] = safe_divide(merged_base_df['o_con'], merged_base_df['o_swing'])
-    merged_base_df['o_inplay%'] = safe_divide(merged_base_df['o_inplay'], merged_base_df['o_swing'])
-
-    # 기타 스윙 관련 통계
-    merged_base_df['f_swing%'] = safe_divide(merged_base_df['f_swing'], merged_base_df['f_pitch'])
-    merged_base_df['swing%'] = safe_divide(merged_base_df['swing'], merged_base_df['player_name'])
-    merged_base_df['whiff%'] = safe_divide(merged_base_df['whiff'], merged_base_df['swing'])
-    merged_base_df['inplay_sw'] = safe_divide(merged_base_df['inplay'], merged_base_df['swing'])
-
-    # 접근 방식 분류
-    kbo_z_swing = 0.654
-    kbo_o_swing = 0.261
-
-    # NaN 값을 처리하기 위한 조건
-    z_swing_na = merged_base_df['z_swing%'].isna()
-    o_swing_na = merged_base_df['o_swing%'].isna()
     
-    condition = [
-        (~z_swing_na) & (~o_swing_na) & (merged_base_df['z_swing%'] >= kbo_z_swing) & (merged_base_df['o_swing%'] >= kbo_o_swing),
-        (~z_swing_na) & (~o_swing_na) & (merged_base_df['z_swing%'] >= kbo_z_swing) & (merged_base_df['o_swing%'] < kbo_o_swing),
-        (~z_swing_na) & (~o_swing_na) & (merged_base_df['z_swing%'] < kbo_z_swing) & (merged_base_df['o_swing%'] >= kbo_o_swing),
-        (~z_swing_na) & (~o_swing_na) & (merged_base_df['z_swing%'] < kbo_z_swing) & (merged_base_df['o_swing%'] < kbo_o_swing),
-        (z_swing_na) | (o_swing_na)  # NaN 값이 있는 경우
-    ]
-
-    choicelist = ['Aggressive', 'Selective', 'Non_Selective', 'Passive', 'Not Available']
-    merged_base_df['approach'] = np.select(condition, choicelist, default='Not Specified')
-
-    # 타구 품질 관련 통계
+    # 스트라이크존 관련 통계 (안전한 나눗셈)
+    mask_player = merged_base_df['player_name'] > 0
+    if mask_player.any():
+        merged_base_df.loc[mask_player, 'z%'] = merged_base_df.loc[mask_player, 'z_in'] / merged_base_df.loc[mask_player, 'player_name']
+        merged_base_df.loc[mask_player, 'inplay_pit'] = merged_base_df.loc[mask_player, 'inplay'] / merged_base_df.loc[mask_player, 'player_name']
+    
+    mask_z_in = merged_base_df['z_in'] > 0
+    if mask_z_in.any():
+        merged_base_df.loc[mask_z_in, 'z_swing%'] = merged_base_df.loc[mask_z_in, 'z_swing'] / merged_base_df.loc[mask_z_in, 'z_in']
+    
+    mask_z_swing = merged_base_df['z_swing'] > 0
+    if mask_z_swing.any():
+        merged_base_df.loc[mask_z_swing, 'z_con%'] = merged_base_df.loc[mask_z_swing, 'z_con'] / merged_base_df.loc[mask_z_swing, 'z_swing']
+        merged_base_df.loc[mask_z_swing, 'z_inplay%'] = merged_base_df.loc[mask_z_swing, 'z_inplay'] / merged_base_df.loc[mask_z_swing, 'z_swing']
+    
+    # 스트라이크존 밖 관련 통계 (안전한 나눗셈)
+    if mask_player.any():
+        merged_base_df.loc[mask_player, 'o%'] = merged_base_df.loc[mask_player, 'z_out'] / merged_base_df.loc[mask_player, 'player_name']
+    
+    mask_z_out = merged_base_df['z_out'] > 0
+    if mask_z_out.any():
+        merged_base_df.loc[mask_z_out, 'o_swing%'] = merged_base_df.loc[mask_z_out, 'o_swing'] / merged_base_df.loc[mask_z_out, 'z_out']
+    
+    mask_o_swing = merged_base_df['o_swing'] > 0
+    if mask_o_swing.any():
+        merged_base_df.loc[mask_o_swing, 'o_con%'] = merged_base_df.loc[mask_o_swing, 'o_con'] / merged_base_df.loc[mask_o_swing, 'o_swing']
+        merged_base_df.loc[mask_o_swing, 'o_inplay%'] = merged_base_df.loc[mask_o_swing, 'o_inplay'] / merged_base_df.loc[mask_o_swing, 'o_swing']
+    
+    # 기타 스윙 관련 통계 (안전한 나눗셈)
+    mask_f_pitch = merged_base_df['f_pitch'] > 0
+    if mask_f_pitch.any():
+        merged_base_df.loc[mask_f_pitch, 'f_swing%'] = merged_base_df.loc[mask_f_pitch, 'f_swing'] / merged_base_df.loc[mask_f_pitch, 'f_pitch']
+    
+    if mask_player.any():
+        merged_base_df.loc[mask_player, 'swing%'] = merged_base_df.loc[mask_player, 'swing'] / merged_base_df.loc[mask_player, 'player_name']
+    
+    mask_swing = merged_base_df['swing'] > 0
+    if mask_swing.any():
+        merged_base_df.loc[mask_swing, 'whiff%'] = merged_base_df.loc[mask_swing, 'whiff'] / merged_base_df.loc[mask_swing, 'swing']
+        merged_base_df.loc[mask_swing, 'inplay_sw'] = merged_base_df.loc[mask_swing, 'inplay'] / merged_base_df.loc[mask_swing, 'swing']
+    
+    # 타구 품질 관련 통계 (안전한 나눗셈)
     merged_base_df['sum'] = merged_base_df['weak'] + merged_base_df['topped'] + merged_base_df['under'] + \
                            merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
-
-    # 각 타구 유형 비율 계산
-    for col in ['weak', 'topped', 'under', 'flare', 'solid_contact', 'barrel']:
-        merged_base_df[col] = safe_divide(merged_base_df[col], merged_base_df['sum'])
-
-    # plus_lsa4 계산
-    numerator = merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
-    merged_base_df['plus_lsa4'] = safe_divide(numerator, merged_base_df['sum'])
+    
+    mask_sum = merged_base_df['sum'] > 0
+    if mask_sum.any():
+        for col in ['weak', 'topped', 'under', 'flare', 'solid_contact', 'barrel']:
+            merged_base_df.loc[mask_sum, col] = merged_base_df.loc[mask_sum, col] / merged_base_df.loc[mask_sum, 'sum']
+        
+        numerator = merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
+        merged_base_df.loc[mask_sum, 'plus_lsa4'] = numerator[mask_sum] / merged_base_df.loc[mask_sum, 'sum']
 
     # 출력할 컬럼 선택
     stats_output_df = merged_base_df[['game_date', 'player_name', 'pa', 'ab', 'hit', 'walk', 'rel_speed(km)', 
