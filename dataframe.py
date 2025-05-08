@@ -54,6 +54,7 @@ def dataframe(level, player_id, password):
         when playresult = 'Sacrifice' and distance < 30 then 'sac_bunt'
         when playresult = 'Undefined' and pitchcall = 'HitByPitch' then 'hit_by_pitch'
         when playresult = 'Undefined' and korbb = 'Strikeout' then 'strikeout'
+        when playresult = 'Undefined' and korbb = 'Strikeout' then 'strikeout'
         when playresult = 'Undefined' and korbb = 'Walk' then 'walk' else NULL END as events
 
     -- description
@@ -515,6 +516,7 @@ def dataframe(level, player_id, password):
         df['triple'] = df['events'].apply(lambda x: 1 if x == 'triple' else None)
         df['home_run'] = df['events'].apply(lambda x: 1 if x == 'home_run' else None)
         df['walk'] = df['events'].apply(lambda x: 1 if x == 'walk' else None)
+        df['strikeout'] = df['events'].apply(lambda x: 1 if x == 'strikeout' else None)
         df['hit_by_pitch'] = df['events'].apply(lambda x: 1 if x == 'hit_by_pitch' else None)
         df['sac_fly'] = df['events'].apply(lambda x: 1 if x == 'sac_fly' else None)
         df['sac_bunt'] = df['events'].apply(lambda x: 1 if x == 'sac_bunt' else None)
@@ -590,7 +592,7 @@ def dataframe(level, player_id, password):
                 'rel_speed(km)','release_spin_rate', 'release_spin_axis','rel_height', 'rel_side', 'extension','pitch_name', 'p_kind',
                 'exit_speed(km)','launch_angle','launch_direction','hit_distance','hit_spin_rate','launch_speed_angle', 'contactX', 'contactY', 'contactZ', 'groundX', 'groundY', 'l_r','h_l',
                 'pa', 'ab', 'hit', 'swing', 'con', 'whiff','foul','z_in','z_out','count', 'count_value', 'z_left','z_right','z_high','z_low',
-                'ld','fb','gb','pu','single','double','triple','home_run','walk','hit_by_pitch','sac_fly','sac_bunt','field_out','inplay',
+                'ld','fb','gb','pu','single','double','triple','home_run','walk','strikeout','hit_by_pitch','sac_fly','sac_bunt','field_out','inplay',
                 'weak','topped','under','flare','solid_contact','barrel','plus_lsa4', 'level','hangtime','hangtime_type',
                 'DH','cs', 'Height', 'high', 'low', '2/3', '1/3', 'zonehigh', 'corehigh', 'corelow', 'zonelow'
                 ]]
@@ -733,6 +735,7 @@ def base_df(player_df):
     triple = pd.pivot_table(player_df, index='game_year', values='triple', aggfunc='sum', margins=False)
     home_run = pd.pivot_table(player_df, index='game_year', values='home_run', aggfunc='sum', margins=False)
     walk = pd.pivot_table(player_df, index='game_year', values='walk', aggfunc='sum', margins=False)
+    strikeout = pd.pivot_table(player_df, index='game_year', values='strikeout', aggfunc='sum', margins=False)
     hit_by_pitch = pd.pivot_table(player_df, index='game_year', values='hit_by_pitch', aggfunc='sum', margins=False)
     sac_fly = pd.pivot_table(player_df, index='game_year', values='sac_fly', aggfunc='sum', margins=False)
 
@@ -757,7 +760,7 @@ def base_df(player_df):
     solid_contact = pd.pivot_table(player_df, index='game_year', values='solid_contact', aggfunc='sum', margins=False)
     barrel = pd.pivot_table(player_df, index='game_year', values='barrel', aggfunc='sum', margins=False)
 
-    merged_base_df = pd.concat([game, pitched, rel_speed, inplay, exit_velocity, launch_angleX, hit_spin_rate, hit, ab, pa, single, double, triple, home_run, walk, hit_by_pitch, sac_fly,
+    merged_base_df = pd.concat([game, pitched, rel_speed, inplay, exit_velocity, launch_angleX, hit_spin_rate, hit, ab, pa, single, double, triple, home_run, walk, strikeout, hit_by_pitch, sac_fly,
                         z_in, z_swing, z_con, z_out, z_inplay, o_swing, o_con, o_inplay, f_swing, f_pitch, swing, whiff,
                         weak, topped, under, flare, solid_contact, barrel], axis=1)
     
@@ -782,6 +785,7 @@ def pivot_base_df(player_df, pivot_index):
     triple = player_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index=pivot_index, values='triple', aggfunc='sum', margins=True))
     home_run = player_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index=pivot_index, values='home_run', aggfunc='sum', margins=True))
     walk = player_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index=pivot_index, values='walk', aggfunc='sum', margins=True))
+    strikeout = player_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index=pivot_index, values='strikeout', aggfunc='sum', margins=True))
     hit_by_pitch = player_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index=pivot_index, values='hit_by_pitch', aggfunc='sum', margins=True))
     sac_fly = player_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index=pivot_index, values='sac_fly', aggfunc='sum', margins=True))
 
@@ -806,7 +810,7 @@ def pivot_base_df(player_df, pivot_index):
     solid_contact = player_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index=pivot_index, values='solid_contact', aggfunc='sum', margins=True))
     barrel = player_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index=pivot_index, values='barrel', aggfunc='sum', margins=True))
 
-    pivot_df = pd.concat([game, pitched, rel_speed, inplay, exit_velocity, launch_angleX, hit_spin_rate, hit, ab, pa, single, double, triple, home_run, walk, hit_by_pitch, sac_fly,
+    pivot_df = pd.concat([game, pitched, rel_speed, inplay, exit_velocity, launch_angleX, hit_spin_rate, hit, ab, pa, single, double, triple, home_run, walk, strikeout, hit_by_pitch, sac_fly,
                         z_in, z_swing, z_con, z_out, z_inplay, o_swing, o_con, o_inplay, f_swing, f_pitch, swing, whiff,
                         weak, topped, under, flare, solid_contact, barrel], axis=1)
     
@@ -917,7 +921,7 @@ def stats_df(merged_base_df):
         merged_base_df['approach'] = np.select(condition, choicelist, default='Not Specified')
 
     # 출력할 컬럼 선택
-    stats_output_df = merged_base_df[['game_date', 'player_name', 'pa', 'ab', 'hit', 'walk', 'rel_speed(km)', 
+    stats_output_df = merged_base_df[['game_date', 'player_name', 'pa', 'ab', 'hit', 'walk', 'strikeout','rel_speed(km)', 
                                      'inplay_pit', 'exit_velocity', 'launch_angleX', 'hit_spin_rate', 
                                      'avg', 'obp', 'slg', 'ops', 'z%', 'z_swing%', 'z_con%', 'z_inplay%', 
                                      'o%', 'o_swing%', 'o_con%', 'o_inplay%', 'f_swing%', 'swing%', 'whiff%', 
