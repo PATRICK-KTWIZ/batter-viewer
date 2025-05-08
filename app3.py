@@ -396,8 +396,12 @@ def show_main_page():
                 select_player_df = id_dataset[ (id_dataset['team'] == player_info['Team']) & (id_dataset['TM_ID'] == player_info['ID']) ]
                 selected_player_df = pd.concat([selected_player_df, select_player_df])
 
+        st.sidebar.markdown("<br>", unsafe_allow_html=True)
+
         if st.sidebar.button('새로고침', key="refresh_btn"):
             st.session_state.selected_players = []
+            
+        st.sidebar.markdown("<br>", unsafe_allow_html=True)
 
         if st.sidebar.button('실행', key="execute_btn"):
             
