@@ -383,7 +383,7 @@ def show_main_page():
         if 'selected_players' not in st.session_state:
             st.session_state.selected_players = []
 
-        if st.sidebar.button('선수추가', key="add_player_btn"):
+        if st.sidebar.button('선수추가'):
             st.session_state.selected_players.append({'Team': select_team, 'Player Name': select_player, 'League': option, 'ID' : player_id})
 
         selected_player_df = pd.DataFrame()
@@ -396,14 +396,10 @@ def show_main_page():
                 select_player_df = id_dataset[ (id_dataset['team'] == player_info['Team']) & (id_dataset['TM_ID'] == player_info['ID']) ]
                 selected_player_df = pd.concat([selected_player_df, select_player_df])
 
-        st.sidebar.markdown("<br>", unsafe_allow_html=True)
-
         if st.sidebar.button('새로고침', key="refresh_btn"):
             st.session_state.selected_players = []
-            
-        st.sidebar.markdown("<br>", unsafe_allow_html=True)
 
-        if st.sidebar.button('실행', key="execute_btn"):
+        if st.sidebar.button('실행'):
             
             concatenated_df = pd.DataFrame()
             # final_results = pd.DataFrame()
