@@ -327,14 +327,15 @@ def swingmap_count_map_scatter(dataframe):
     homex = [-0.271, 0.271, 0.271, -0.271, -0.271]
     homey = [dataframe['low'].mean(), dataframe['low'].mean(), dataframe['high'].mean() , dataframe['high'].mean(), dataframe['low'].mean()]
 
-    swingmap_period_symbol_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=4) ), row = 'all' , col = 'all')
+    swingmap_period_symbol_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.9)', width=4) ), row = 'all' , col = 'all')
     swingmap_period_symbol_map_fig.add_trace(go.Scatter(x=[0], y=[0.43], text=["<b>Strike Zone<b>"], mode="text", textfont_size=20, textfont_color='rgba(108,122,137,0.9)',), row = 'all' , col = 'all')
 
     homex = [-0.161, 0.161, 0.161, -0.161, -0.161]
     homey = [dataframe['corelow'].mean(), dataframe['corelow'].mean(), dataframe['corehigh'].mean(), dataframe['corehigh'].mean(), dataframe['corelow'].mean()]
 
     # period_swingmap_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.8)', width=4) ), row = 1 , col = 1)
-    swingmap_period_symbol_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='rgba(108,122,137,0.9)', width=4) ), row = 'all' , col = 'all')
+    
+    swingmap_period_symbol_map_fig.append_trace(go.Scatter(x=homex,y=homey, mode = 'lines', line=dict(color='red', width=4) ), row = 'all' , col = 'all')
     swingmap_period_symbol_map_fig.add_trace(go.Scatter(x=[0], y=[0.57], text=["<b>Core Zone<b>"], mode="text", textfont_size=20, textfont_color='red',), row = 'all' , col = 'all')
    
 
