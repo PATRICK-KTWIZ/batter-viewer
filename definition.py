@@ -55,7 +55,7 @@ def stats(player_df):
                 return pd.DataFrame()
             
             # 존재하는 연도 확인 (내림차순 정렬)
-            existing_years = sorted(filtered_df['year'].unique(), reverse=True)
+            existing_years = sorted(filtered_df['year'].unique())
             
             # 연도별로 그룹화하고 첫 번째 행 선택
             result_dfs = []
