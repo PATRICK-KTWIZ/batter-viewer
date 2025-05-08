@@ -216,6 +216,9 @@ def LoggedIn_Clicked(userName, password):
         st.session_state['loggedIn'] = False
         st.error("유효하지 않은 ID 또는 패스워드 입니다.")
 
+def reset_selections():
+    st.session_state.selected_players = []
+
 def show_login_page():
 
    
@@ -393,6 +396,8 @@ def show_main_page():
                 select_player_df = id_dataset[ (id_dataset['team'] == player_info['Team']) & (id_dataset['TM_ID'] == player_info['ID']) ]
                 selected_player_df = pd.concat([selected_player_df, select_player_df])
 
+        if st.sidebar.button('새로고침'):
+            st.session_state.selected_players = []
 
         if st.sidebar.button('실행'):
             
