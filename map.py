@@ -1062,9 +1062,9 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     
     # 타구 비행시간에 따른 색상 맵 정의
     colors = {
-        'short': 'rgba(67,89,119,0.7)',  # 살구색 (1초 미만)
-        'medium': 'rgba(255,72,120,1)',     # 붉은색 (1-4초)
-        'long': 'rgba(140,86,75,0.3)'      # 갈색 (4초 이상)
+        'short': 'rgba(67,89,119,0.7)',  
+        'challenge': 'rgba(255,72,120,1)',     
+        'long': 'rgba(140,86,75,0.3)'      
     }
     
     symbols = {'4-Seam Fastball':'circle', '2-Seam Fastball':'triangle-down', 'Cutter': 'triangle-se', 'Slider': 'triangle-right', 'Curveball': 'triangle-up', 'Changeup': 'diamond', 'Split-Finger':'square','Sweeper' : 'cross'}
