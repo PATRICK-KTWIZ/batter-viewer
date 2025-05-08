@@ -843,7 +843,7 @@ def stats_df(merged_base_df):
     merged_base_df['ops'] = merged_base_df['obp'] + merged_base_df['slg']
     
     # 스트라이크존 관련 통계 (안전한 나눗셈)
-    mask_player = merged_base_df['player_name'] > 0  # player_name 대신 pitname 사용
+    mask_player = merged_base_df['player_name'] > 0
     if mask_player.any():
         merged_base_df.loc[mask_player, 'z%'] = merged_base_df.loc[mask_player, 'z_in'] / merged_base_df.loc[mask_player, 'player_name']
         merged_base_df.loc[mask_player, 'inplay_pit'] = merged_base_df.loc[mask_player, 'inplay'] / merged_base_df.loc[mask_player, 'player_name']
@@ -887,15 +887,13 @@ def stats_df(merged_base_df):
     merged_base_df['sum'] = merged_base_df['weak'] + merged_base_df['topped'] + merged_base_df['under'] + \
                            merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
     
-    # 타구 품질 지표를 퍼센트로 변환 (0~1 → 0~100)
     mask_sum = merged_base_df['sum'] > 0
     if mask_sum.any():
         for col in ['weak', 'topped', 'under', 'flare', 'solid_contact', 'barrel']:
-            merged_base_df.loc[mask_sum, col] = (merged_base_df.loc[mask_sum, col] / merged_base_df.loc[mask_sum, 'sum'] * 100).round(1)
+            merged_base_df.loc[mask_sum, col] = merged_base_df.loc[mask_sum, col] / merged_base_df.loc[mask_sum, 'sum']
         
-        # plus_lsa4 계산 (이미 퍼센트로 변환된 값들을 사용)
-        numerator = merged_base_df.loc[mask_sum, 'flare'] + merged_base_df.loc[mask_sum, 'solid_contact'] + merged_base_df.loc[mask_sum, 'barrel']
-        merged_base_df.loc[mask_sum, 'plus_lsa4'] = numerator.round(1)
+        numerator = merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
+        merged_base_df.loc[mask_sum, 'plus_lsa4'] = numerator[mask_sum] / merged_base_df.loc[mask_sum, 'sum']
     
     # 접근 방식 분류 추가
     kbo_z_swing = 0.654
@@ -917,32 +915,24 @@ def stats_df(merged_base_df):
         ]
         choicelist = ['Aggressive', 'Selective', 'Non_Selective', 'Passive']
         merged_base_df['approach'] = np.select(condition, choicelist, default='Not Specified')
-    
-    # 출력할 컬럼 선택 (pitname 추가, strikeout 추가)
-    stats_output_df = merged_base_df[['game_date', 'pitname', 'pa', 'ab', 'hit', 'walk', 'strikeout', 'rel_speed(km)', 
+
+    # 출력할 컬럼 선택
+    stats_output_df = merged_base_df[['game_date', 'player_name', 'pa', 'ab', 'hit', 'walk', 'rel_speed(km)', 
                                      'inplay_pit', 'exit_velocity', 'launch_angleX', 'hit_spin_rate', 
                                      'avg', 'obp', 'slg', 'ops', 'z%', 'z_swing%', 'z_con%', 'z_inplay%', 
                                      'o%', 'o_swing%', 'o_con%', 'o_inplay%', 'f_swing%', 'swing%', 'whiff%', 
                                      'inplay_sw', 'weak', 'topped', 'under', 'flare', 'solid_contact', 
                                      'barrel', 'approach', 'plus_lsa4']]
     
-    # 퍼센트 표시 열 목록
-    percent_columns = ['inplay_pit', 'z%', 'z_swing%', 'z_con%', 'z_inplay%', 'o%', 'o_swing%', 'o_con%', 
-                      'o_inplay%', 'f_swing%', 'swing%', 'whiff%', 'inplay_sw']
-    
-    # 모든 퍼센트 열에 대해 값을 100배로 변환 (타구 품질 지표는 이미 변환했으므로 제외)
-    for col in percent_columns:
-        stats_output_df[col] = stats_output_df[col] * 100
-    
     # 반올림할 컬럼과 소수점 자릿수 정의
     round_dict = {
-        'pa': 0, 'ab': 0, 'hit': 0, 'walk': 0, 'strikeout': 0, 'rel_speed(km)': 1, 'inplay_pit': 1, 
+        'pa': 0, 'ab': 0, 'hit': 0, 'walk': 0, 'rel_speed(km)': 1, 'inplay_pit': 3, 
         'exit_velocity': 1, 'launch_angleX': 1, 'hit_spin_rate': 0, 'avg': 3, 
-        'obp': 3, 'slg': 3, 'ops': 3, 'z%': 1, 'z_swing%': 1, 'z_con%': 1, 
-        'z_inplay%': 1, 'o%': 1, 'o_swing%': 1, 'o_con%': 1, 'o_inplay%': 1, 
-        'f_swing%': 1, 'swing%': 1, 'whiff%': 1, 'inplay_sw': 1, 'inplay%': 1, 
-        'weak': 1, 'topped': 1, 'under': 1, 'flare': 1, 'solid_contact': 1, 'barrel': 1,
-        'plus_lsa4': 1
+        'obp': 3, 'slg': 3, 'ops': 3, 'z%': 3, 'z_swing%': 3, 'z_con%': 3, 
+        'z_inplay%': 3, 'o%': 3, 'o_swing%': 3, 'o_con%': 3, 'o_inplay%': 3, 
+        'f_swing%': 3, 'swing%': 3, 'whiff%': 3, 'inplay_sw': 3, 'inplay%': 3, 
+        'weak': 3, 'topped': 3, 'under': 3, 'flare': 3, 'solid_contact': 3, 'barrel': 3,
+        'plus_lsa4': 3
     }
     
     # 중복 제거
@@ -974,11 +964,7 @@ def stats_df(merged_base_df):
                             return "-"  # 변환 실패 시 "-" 표시
                     else:
                         try:
-                            # 퍼센트 컬럼에 % 기호 추가
-                            if column in percent_columns + ['weak', 'topped', 'under', 'flare', 'solid_contact', 'barrel', 'plus_lsa4']:
-                                return f"{float(x):.{decimals}f}%"  # % 기호 추가
-                            else:
-                                return f"{float(x):.{decimals}f}"  # 소수점 고정 표시
+                            return f"{float(x):.{decimals}f}"  # 소수점 고정 표시
                         except:
                             return "-"  # 변환 실패 시 "-" 표시
                 
