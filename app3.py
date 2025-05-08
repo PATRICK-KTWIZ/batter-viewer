@@ -397,7 +397,7 @@ def show_main_page():
                 selected_player_df = pd.concat([selected_player_df, select_player_df])
 
         if st.sidebar.button('새로고침', key="refresh_btn"):
-            st.session_state.selected_players = []
+             st.session_state.selected_players = []
 
         if st.sidebar.button('실행'):
             
