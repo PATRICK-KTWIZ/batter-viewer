@@ -814,7 +814,6 @@ def pivot_base_df(player_df, pivot_index):
 
 
 
-
 def stats_df(merged_base_df):
     # 기본값 설정
     merged_base_df['avg'] = 0.0
@@ -846,8 +845,8 @@ def stats_df(merged_base_df):
     # 스트라이크존 관련 통계 (안전한 나눗셈)
     mask_player = merged_base_df['player_name'] > 0  # player_name 대신 pitname 사용
     if mask_player.any():
-        merged_base_df.loc[mask_player, 'z%'] = merged_base_df.loc[mask_player, 'z_in'] / merged_base_df.loc[mask_player, 'pitname']
-        merged_base_df.loc[mask_player, 'inplay_pit'] = merged_base_df.loc[mask_player, 'inplay'] / merged_base_df.loc[mask_player, 'pitname']
+        merged_base_df.loc[mask_player, 'z%'] = merged_base_df.loc[mask_player, 'z_in'] / merged_base_df.loc[mask_player, 'player_name']
+        merged_base_df.loc[mask_player, 'inplay_pit'] = merged_base_df.loc[mask_player, 'inplay'] / merged_base_df.loc[mask_player, 'player_name']
     
     mask_z_in = merged_base_df['z_in'] > 0
     if mask_z_in.any():
@@ -860,7 +859,7 @@ def stats_df(merged_base_df):
     
     # 스트라이크존 밖 관련 통계 (안전한 나눗셈)
     if mask_player.any():
-        merged_base_df.loc[mask_player, 'o%'] = merged_base_df.loc[mask_player, 'z_out'] / merged_base_df.loc[mask_player, 'pitname']
+        merged_base_df.loc[mask_player, 'o%'] = merged_base_df.loc[mask_player, 'z_out'] / merged_base_df.loc[mask_player, 'player_name']
     
     mask_z_out = merged_base_df['z_out'] > 0
     if mask_z_out.any():
@@ -877,7 +876,7 @@ def stats_df(merged_base_df):
         merged_base_df.loc[mask_f_pitch, 'f_swing%'] = merged_base_df.loc[mask_f_pitch, 'f_swing'] / merged_base_df.loc[mask_f_pitch, 'f_pitch']
     
     if mask_player.any():
-        merged_base_df.loc[mask_player, 'swing%'] = merged_base_df.loc[mask_player, 'swing'] / merged_base_df.loc[mask_player, 'pitname']
+        merged_base_df.loc[mask_player, 'swing%'] = merged_base_df.loc[mask_player, 'swing'] / merged_base_df.loc[mask_player, 'player_name']
     
     mask_swing = merged_base_df['swing'] > 0
     if mask_swing.any():
@@ -920,7 +919,7 @@ def stats_df(merged_base_df):
         merged_base_df['approach'] = np.select(condition, choicelist, default='Not Specified')
     
     # 출력할 컬럼 선택 (pitname 추가, strikeout 추가)
-    stats_output_df = merged_base_df[['game_date', 'pitname', 'pa', 'ab', 'hit', 'walk', 'strikeout', 'rel_speed(km)', 
+    stats_output_df = merged_base_df[['game_date', 'player_name', 'pa', 'ab', 'hit', 'walk', 'strikeout', 'rel_speed(km)', 
                                      'inplay_pit', 'exit_velocity', 'launch_angleX', 'hit_spin_rate', 
                                      'avg', 'obp', 'slg', 'ops', 'z%', 'z_swing%', 'z_con%', 'z_inplay%', 
                                      'o%', 'o_swing%', 'o_con%', 'o_inplay%', 'f_swing%', 'swing%', 'whiff%', 
