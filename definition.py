@@ -36,51 +36,50 @@ def stats(player_df):
     # 통계 계산
     stats_output_df = stats_df(merged_base_df)
     
-    # 연도별로 존재하는 데이터만 필터링
+    # 연도 정보 확인 및 추출
     try:
-        # 존재하는 연도 확인 (game_date에서 연도 추출)
+        # game_date에서 연도 추출 (문자열 또는 datetime 형식 처리)
         if 'game_date' in stats_output_df.columns:
-            # game_date가 문자열인 경우 연도 추출
             if stats_output_df['game_date'].dtype == 'object':
                 stats_output_df['year'] = stats_output_df['game_date'].str[:4].astype(int)
-            # game_date가 datetime인 경우 연도 추출
             else:
                 stats_output_df['year'] = stats_output_df['game_date'].dt.year
             
-            # 존재하는 연도 확인 (내림차순 정렬)
+            # 존재하는 연도 확인
             existing_years = sorted(stats_output_df['year'].unique(), reverse=True)
             
-            # 최근 3년만 선택 (2023, 2024, 2025)
-            target_years = [2025, 2024, 2023]
+            # 목표 연도 설정 (2023년 이상)
+            target_years = [year for year in existing_years if year >= 2023]
             
-            # 존재하는 연도 중 target_years에 있는 것만 필터링
-            available_years = [year for year in target_years if year in existing_years]
+            # 데이터가 있는 연도가 없으면 빈 데이터프레임 반환
+            if not target_years:
+                return pd.DataFrame()
             
-            # 데이터가 있는 연도만 선택
-            if available_years:
-                season_stats_df = stats_output_df[stats_output_df['year'].isin(available_years)]
-                
-                # 연도별로 그룹화하여 통계 계산
-                season_stats_df = season_stats_df.groupby('year').first().reset_index()
-                
-                # 연도 순서대로 정렬 (최신 연도가 먼저 오도록)
-                season_stats_df = season_stats_df.sort_values('year', ascending=False)
-                
-                # 인덱스 재설정
+            # 연도별로 첫 번째 행만 선택하여 새 데이터프레임 생성
+            season_stats_list = []
+            for year in target_years:
+                year_data = stats_output_df[stats_output_df['year'] == year].copy()
+                if not year_data.empty:
+                    # 각 연도별 첫 번째 행 선택
+                    season_stats_list.append(year_data.iloc[0:1])
+            
+            # 모든 연도 데이터 합치기
+            if season_stats_list:
+                season_stats_df = pd.concat(season_stats_list)
+                # 연도를 인덱스로 설정
                 season_stats_df = season_stats_df.set_index('year')
-                
-                # 원하는 연도 순서대로 재정렬 (존재하는 연도만)
-                season_stats_df = season_stats_df.reindex(available_years)
-                
+                # 최신 연도가 먼저 오도록 정렬
+                season_stats_df = season_stats_df.sort_index(ascending=False)
                 return season_stats_df
             else:
-                return pd.DataFrame()  # 해당 연도의 데이터가 없으면 빈 데이터프레임 반환
+                return pd.DataFrame()
         else:
             # game_date 컬럼이 없는 경우
-            return stats_output_df  # 원본 데이터 그대로 반환
+            return stats_output_df
     except Exception as e:
         print(f"연도별 데이터 처리 중 오류 발생: {e}")
-        return stats_output_df  # 오류 발생 시 원본 데이터 그대로 반환
+        # 오류 발생 시 원본 데이터 반환
+        return stats_output_df
 
 
 def period_stats(player_df):
