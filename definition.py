@@ -59,32 +59,142 @@ def period_stats(player_df):
 
 
 def seoson_inplay_events(player_df):
-
-    year = player_df['game_year'] >= 2023
-    inplay_df = player_df[year]
-
-    pitched = inplay_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index='events', values='pitch_name', aggfunc='count', margins=True))
-    rel_speed = inplay_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index='events', values='rel_speed(km)', aggfunc='mean', margins=True))
-    inplay = inplay_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index='events', values='inplay', aggfunc='count', margins=True))
-    exit_velocity = inplay_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index='events', values='exit_velocity', aggfunc='mean', margins=True))
-    launch_angleX = inplay_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index='events', values='launch_angleX', aggfunc='mean', margins=True))
-    hit_spin_rate = inplay_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index='events', values='hit_spin_rate', aggfunc='mean', margins=True))
-    hit_distance = inplay_df.groupby(['game_year']).apply(lambda x: x.pivot_table(index='events', values='hit_distance', aggfunc='mean', margins=True))
-
-    season_events = pd.concat([pitched, rel_speed, inplay,exit_velocity,launch_angleX,hit_spin_rate, hit_distance], axis=1)
-
-    season_events = season_events[['pitch_name', 'exit_velocity','launch_angleX','hit_spin_rate','hit_distance']]
-    season_events = season_events.round({'rel_speed(km)':1, 'exit_velocity':1, 'launch_angleX':1, 'hit_spin_rate':0, 'hit_distance':1 })
-
-    season_events = season_events.reindex([2025, 2024, 2023, 2022, 2021, 2020, 2018], level='game_year')
-    season_events = season_events.reindex(['single','double','triple','home_run','field_out'], level='events')
-
-    season_events = season_events.reset_index()
-    season_events = season_events.astype({'game_year':'str'})
-    season_events = season_events.rename(columns={'game_year': '연도'})
-
-    # season_events = season_events.rename(columns={'game_year':'연도', 'events':'구분','pitch_name':'인플레이수','exit_velocity':'타구속도','launch_angleX':'발사각도','hit_spin_rate':'타구스핀량','hit_distance':'비거리'})
-
+    # 데이터가 비어있는지 확인
+    if player_df.empty:
+        return pd.DataFrame()  # 빈 데이터프레임 반환
+    
+    # 2023년 이상 데이터만 필터링 (데이터가 있는 경우에만)
+    if 'game_year' in player_df.columns:
+        year = player_df['game_year'] >= 2023
+        inplay_df = player_df[year]
+        
+        # 필터링 후 데이터가 없는 경우 빈 데이터프레임 반환
+        if inplay_df.empty:
+            return pd.DataFrame()
+    else:
+        return pd.DataFrame()  # game_year 컬럼이 없으면 빈 데이터프레임 반환
+    
+    # 필요한 컬럼이 모두 있는지 확인하고 안전하게 피벗 테이블 생성
+    dfs = {}
+    
+    # 각 피벗 테이블을 안전하게 생성
+    try:
+        if 'events' in inplay_df.columns and 'pitch_name' in inplay_df.columns:
+            dfs['pitched'] = inplay_df.groupby(['game_year']).apply(
+                lambda x: x.pivot_table(index='events', values='pitch_name', aggfunc='count', margins=True)
+            )
+    except:
+        dfs['pitched'] = pd.DataFrame()
+        
+    try:
+        if 'events' in inplay_df.columns and 'rel_speed(km)' in inplay_df.columns:
+            dfs['rel_speed'] = inplay_df.groupby(['game_year']).apply(
+                lambda x: x.pivot_table(index='events', values='rel_speed(km)', aggfunc='mean', margins=True)
+            )
+    except:
+        dfs['rel_speed'] = pd.DataFrame()
+        
+    try:
+        if 'events' in inplay_df.columns and 'inplay' in inplay_df.columns:
+            dfs['inplay'] = inplay_df.groupby(['game_year']).apply(
+                lambda x: x.pivot_table(index='events', values='inplay', aggfunc='count', margins=True)
+            )
+    except:
+        dfs['inplay'] = pd.DataFrame()
+        
+    try:
+        if 'events' in inplay_df.columns and 'exit_velocity' in inplay_df.columns:
+            dfs['exit_velocity'] = inplay_df.groupby(['game_year']).apply(
+                lambda x: x.pivot_table(index='events', values='exit_velocity', aggfunc='mean', margins=True)
+            )
+    except:
+        dfs['exit_velocity'] = pd.DataFrame()
+        
+    try:
+        if 'events' in inplay_df.columns and 'launch_angleX' in inplay_df.columns:
+            dfs['launch_angleX'] = inplay_df.groupby(['game_year']).apply(
+                lambda x: x.pivot_table(index='events', values='launch_angleX', aggfunc='mean', margins=True)
+            )
+    except:
+        dfs['launch_angleX'] = pd.DataFrame()
+        
+    try:
+        if 'events' in inplay_df.columns and 'hit_spin_rate' in inplay_df.columns:
+            dfs['hit_spin_rate'] = inplay_df.groupby(['game_year']).apply(
+                lambda x: x.pivot_table(index='events', values='hit_spin_rate', aggfunc='mean', margins=True)
+            )
+    except:
+        dfs['hit_spin_rate'] = pd.DataFrame()
+        
+    try:
+        if 'events' in inplay_df.columns and 'hit_distance' in inplay_df.columns:
+            dfs['hit_distance'] = inplay_df.groupby(['game_year']).apply(
+                lambda x: x.pivot_table(index='events', values='hit_distance', aggfunc='mean', margins=True)
+            )
+    except:
+        dfs['hit_distance'] = pd.DataFrame()
+    
+    # 모든 데이터프레임이 비어있는지 확인
+    if all(df.empty for df in dfs.values()):
+        return pd.DataFrame()
+    
+    # 비어있지 않은 데이터프레임만 concat
+    non_empty_dfs = [df for df in dfs.values() if not df.empty]
+    if not non_empty_dfs:
+        return pd.DataFrame()
+    
+    season_events = pd.concat(non_empty_dfs, axis=1)
+    
+    # 필요한 컬럼만 선택 (존재하는 경우에만)
+    columns_to_select = []
+    for col in ['pitch_name', 'exit_velocity', 'launch_angleX', 'hit_spin_rate', 'hit_distance']:
+        if col in season_events.columns:
+            columns_to_select.append(col)
+    
+    if not columns_to_select:
+        return pd.DataFrame()
+    
+    season_events = season_events[columns_to_select]
+    
+    # 반올림 (존재하는 컬럼에만 적용)
+    round_cols = {
+        'rel_speed(km)': 1, 
+        'exit_velocity': 1, 
+        'launch_angleX': 1, 
+        'hit_spin_rate': 0, 
+        'hit_distance': 1
+    }
+    
+    for col, decimal in round_cols.items():
+        if col in season_events.columns:
+            season_events[col] = season_events[col].round(decimal)
+    
+    # 인덱스 재정렬 (존재하는 연도와 이벤트만)
+    try:
+        # 존재하는 연도만 필터링
+        existing_years = sorted(inplay_df['game_year'].unique(), reverse=True)
+        if existing_years:
+            season_events = season_events.reindex(existing_years, level='game_year')
+        
+        # 존재하는 이벤트만 필터링
+        event_types = ['single', 'double', 'triple', 'home_run', 'field_out']
+        existing_events = [event for event in event_types if event in inplay_df['events'].unique()]
+        if existing_events:
+            season_events = season_events.reindex(existing_events, level='events')
+    except:
+        # 인덱스 재정렬에 실패한 경우 처리하지 않고 계속 진행
+        pass
+    
+    # 인덱스 리셋 및 컬럼명 변경
+    try:
+        season_events = season_events.reset_index()
+        if 'game_year' in season_events.columns:
+            season_events = season_events.astype({'game_year': 'str'})
+            season_events = season_events.rename(columns={'game_year': '연도'})
+    except:
+        # 오류 발생 시 현재 상태 그대로 반환
+        pass
+    
     return season_events
 
 
