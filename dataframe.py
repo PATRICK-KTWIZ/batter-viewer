@@ -919,7 +919,7 @@ def stats_df(merged_base_df):
         merged_base_df['approach'] = np.select(condition, choicelist, default='Not Specified')
     
     # 출력할 컬럼 선택 (pitname 추가, strikeout 추가)
-    stats_output_df = merged_base_df[['game_date', 'player_name', 'pa', 'ab', 'hit', 'walk', 'strikeout', 'rel_speed(km)', 
+    stats_output_df = merged_base_df[['game_date', 'pitname', 'pa', 'ab', 'hit', 'walk', 'strikeout', 'rel_speed(km)', 
                                      'inplay_pit', 'exit_velocity', 'launch_angleX', 'hit_spin_rate', 
                                      'avg', 'obp', 'slg', 'ops', 'z%', 'z_swing%', 'z_con%', 'z_inplay%', 
                                      'o%', 'o_swing%', 'o_con%', 'o_inplay%', 'f_swing%', 'swing%', 'whiff%', 
