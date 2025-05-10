@@ -1436,7 +1436,7 @@ def show_main_page():
                                     ))
                                     
                                     # 차트 표시 - 고유한 키 추가
-                                    st.plotly_chart(inning_fig, use_container_width=True, key=f"history_game_{date_idx}_inning_{current_inning}_idx_{i}")
+                                    st.plotly_chart(inning_fig, use_container_width=True, key=f"history_game_{date_idx}_inning_past_{current_inning}_idx_{i}")
                                 
                                 else:  # 이닝 데이터가 없는 경우
                                     st.write("#### -")
