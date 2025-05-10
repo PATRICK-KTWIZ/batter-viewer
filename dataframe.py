@@ -886,18 +886,9 @@ def stats_df(merged_base_df):
     if mask_swing.any():
         merged_base_df.loc[mask_swing, 'whiff%'] = merged_base_df.loc[mask_swing, 'whiff'] / merged_base_df.loc[mask_swing, 'swing']
         merged_base_df.loc[mask_swing, 'inplay_sw'] = merged_base_df.loc[mask_swing, 'inplay'] / merged_base_df.loc[mask_swing, 'swing']
-    
-    # 타구 품질 관련 통계 (안전한 나눗셈)
-    merged_base_df['sum'] = merged_base_df['weak'] + merged_base_df['topped'] + merged_base_df['under'] + \
-                           merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
-    
-    mask_sum = merged_base_df['sum'] > 0
-    if mask_sum.any():
-        for col in ['weak', 'topped', 'under', 'flare', 'solid_contact', 'barrel']:
-            merged_base_df.loc[mask_sum, col] = merged_base_df.loc[mask_sum, col] / merged_base_df.loc[mask_sum, 'sum']
         
-        numerator = merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
-        merged_base_df.loc[mask_sum, 'plus_lsa4'] = numerator[mask_sum] / merged_base_df.loc[mask_sum, 'sum']
+    merged_base_df['plus_lsa4'] = merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
+
     
     # 접근 방식 분류 추가
     kbo_z_swing = 0.654
