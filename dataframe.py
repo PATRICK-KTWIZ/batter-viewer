@@ -886,9 +886,20 @@ def stats_df(merged_base_df):
     if mask_swing.any():
         merged_base_df.loc[mask_swing, 'whiff%'] = merged_base_df.loc[mask_swing, 'whiff'] / merged_base_df.loc[mask_swing, 'swing']
         merged_base_df.loc[mask_swing, 'inplay_sw'] = merged_base_df.loc[mask_swing, 'inplay'] / merged_base_df.loc[mask_swing, 'swing']
-        
-    merged_base_df['plus_lsa4'] = merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
 
+
+    mask_inplay = merged_base_df['inplay'] > 0
+    
+    if mask_inplay.any():
+        # 각 타구 타입별 비율 계산
+        merged_base_df.loc[mask_inplay, 'weak'] = merged_base_df.loc[mask_inplay, 'weak'] / merged_base_df.loc[mask_inplay, 'inplay']
+        merged_base_df.loc[mask_inplay, 'topped'] = merged_base_df.loc[mask_inplay, 'topped'] / merged_base_df.loc[mask_inplay, 'inplay']
+        merged_base_df.loc[mask_inplay, 'under'] = merged_base_df.loc[mask_inplay, 'under'] / merged_base_df.loc[mask_inplay, 'inplay']
+        merged_base_df.loc[mask_inplay, 'flare'] = merged_base_df.loc[mask_inplay, 'flare'] / merged_base_df.loc[mask_inplay, 'inplay']
+        merged_base_df.loc[mask_inplay, 'solid_contact'] = merged_base_df.loc[mask_inplay, 'solid_contact'] / merged_base_df.loc[mask_inplay, 'inplay']
+        merged_base_df.loc[mask_inplay, 'barrel'] = merged_base_df.loc[mask_inplay, 'barrel'] / merged_base_df.loc[mask_inplay, 'inplay']
+
+    merged_base_df['plus_lsa4'] = merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
     
     # 접근 방식 분류 추가
     kbo_z_swing = 0.654
@@ -919,7 +930,6 @@ def stats_df(merged_base_df):
                                      'inplay_sw', 'weak', 'topped', 'under', 'flare', 'solid_contact', 
                                      'barrel', 'approach', 'plus_lsa4']]
 
-
     # 퍼센트 표시 열 목록
     percent_columns = ['inplay_pit', 'z%', 'z_swing%', 'z_con%', 'z_inplay%', 'o%', 'o_swing%', 'o_con%', 
                       'o_inplay%', 'f_swing%', 'swing%', 'whiff%', 'inplay_sw',
@@ -927,9 +937,7 @@ def stats_df(merged_base_df):
     
     # 퍼센트 열 중 타구 품질 지표를 제외한 열에 대해 값을 100배로 변환
     for col in percent_columns:
-        if col not in ['weak', 'topped', 'under', 'flare', 'solid_contact', 'barrel', 'plus_lsa4']:
-            if col in stats_output_df.columns:
-                stats_output_df[col] = stats_output_df[col] * 100
+        stats_output_df[col] = stats_output_df[col] * 100
                 
     # 반올림할 컬럼과 소수점 자릿수 정의
     round_dict = {
