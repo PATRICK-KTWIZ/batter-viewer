@@ -888,16 +888,24 @@ def stats_df(merged_base_df):
         merged_base_df.loc[mask_swing, 'inplay_sw'] = merged_base_df.loc[mask_swing, 'inplay'] / merged_base_df.loc[mask_swing, 'swing']
 
 
-    mask_inplay = merged_base_df['inplay'] > 0
+    merged_base_df['total_contact'] = (merged_base_df['weak'] + 
+                                      merged_base_df['topped'] + 
+                                      merged_base_df['under'] + 
+                                      merged_base_df['flare'] + 
+                                      merged_base_df['solid_contact'] + 
+                                      merged_base_df['barrel'])
     
-    if mask_inplay.any():
-        # 각 타구 타입별 비율 계산
-        merged_base_df.loc[mask_inplay, 'weak'] = merged_base_df.loc[mask_inplay, 'weak'] / merged_base_df.loc[mask_inplay, 'inplay']
-        merged_base_df.loc[mask_inplay, 'topped'] = merged_base_df.loc[mask_inplay, 'topped'] / merged_base_df.loc[mask_inplay, 'inplay']
-        merged_base_df.loc[mask_inplay, 'under'] = merged_base_df.loc[mask_inplay, 'under'] / merged_base_df.loc[mask_inplay, 'inplay']
-        merged_base_df.loc[mask_inplay, 'flare'] = merged_base_df.loc[mask_inplay, 'flare'] / merged_base_df.loc[mask_inplay, 'inplay']
-        merged_base_df.loc[mask_inplay, 'solid_contact'] = merged_base_df.loc[mask_inplay, 'solid_contact'] / merged_base_df.loc[mask_inplay, 'inplay']
-        merged_base_df.loc[mask_inplay, 'barrel'] = merged_base_df.loc[mask_inplay, 'barrel'] / merged_base_df.loc[mask_inplay, 'inplay']
+    # 합계가 0보다 큰 경우에만 계산 수행
+    mask_contact = merged_base_df['total_contact'] > 0
+    
+    if mask_contact.any():
+        # 각 타구 타입별 비율 계산 (전체 타구 타입 합계로 나눔)
+        merged_base_df.loc[mask_contact, 'weak%'] = merged_base_df.loc[mask_contact, 'weak'] / merged_base_df.loc[mask_contact, 'total_contact']
+        merged_base_df.loc[mask_contact, 'topped%'] = merged_base_df.loc[mask_contact, 'topped'] / merged_base_df.loc[mask_contact, 'total_contact']
+        merged_base_df.loc[mask_contact, 'under%'] = merged_base_df.loc[mask_contact, 'under'] / merged_base_df.loc[mask_contact, 'total_contact']
+        merged_base_df.loc[mask_contact, 'flare%'] = merged_base_df.loc[mask_contact, 'flare'] / merged_base_df.loc[mask_contact, 'total_contact']
+        merged_base_df.loc[mask_contact, 'solid_contact%'] = merged_base_df.loc[mask_contact, 'solid_contact'] / merged_base_df.loc[mask_contact, 'total_contact']
+        merged_base_df.loc[mask_contact, 'barrel%'] = merged_base_df.loc[mask_contact, 'barrel'] / merged_base_df.loc[mask_contact, 'total_contact']
 
     merged_base_df['plus_lsa4'] = merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
     
