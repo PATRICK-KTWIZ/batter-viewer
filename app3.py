@@ -1158,7 +1158,7 @@ def show_main_page():
 # -------------------------------------------------------------------------------------------------------
 
             st.title('[시즌 :red[Plate Discipline]]')
-            
+
             # 최근 경기의 타석 결과를 타석별로 scatter chart로 표시
             for batter, batter_df in batter_dataframes.items():
                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
@@ -1172,27 +1172,6 @@ def show_main_page():
                 recent_game_df = batter_raw_df[batter_raw_df['game_date'] == recent_game_date]
             
                 st.subheader(f"{batter_name} ({recent_game_date})")
-            
-                # st.markdown("""
-                #         <style>
-                #             .element-container {
-                #                 padding: 0 !important;
-                #             }
-                #             .stPlotlyChart {
-                #                 margin: 0 !important;
-                #                 padding: 0 !important;
-                #             }
-                #             .block-container {
-                #                 padding-top: 1rem;
-                #                 padding-bottom: 1rem;
-                #                 padding-left: 1rem;
-                #                 padding-right: 1rem;
-                #             }
-                #             div[data-testid="column"] {
-                #                 padding: 0 0.3rem;
-                #             }
-                #         </style>
-                #     """, unsafe_allow_html=True)
                 
                 # 타석별 결과 시각화
                 colors = {
@@ -1314,7 +1293,7 @@ def show_main_page():
                             ))
                             
                             # 차트 표시 - 고유한 키 추가
-                            st.plotly_chart(inning_fig, use_container_width=True, key=f"recent_inning_{batter}_{current_inning}_{i}")
+                            st.plotly_chart(inning_fig, use_container_width=True, key=f"recent_{batter}_{current_inning}_{i}_{recent_game_date}")
                         
                         else:  # 이닝 데이터가 없는 경우
                             st.write("#### -")
@@ -1435,8 +1414,8 @@ def show_main_page():
                                         showlegend=False
                                     ))
                                     
-                                    # 차트 표시 - 고유한 키 추가
-                                    st.plotly_chart(inning_fig, use_container_width=True, key=f"history_game_{date_idx}_inning_past_{current_inning}_idx_{i}")
+                                    # 차트 표시 - 고유한 키 추가 (날짜와 이닝을 조합)
+                                    st.plotly_chart(inning_fig, use_container_width=True, key=f"history_{batter}_{game_date}_{current_inning}_{i}")
                                 
                                 else:  # 이닝 데이터가 없는 경우
                                     st.write("#### -")
@@ -1444,6 +1423,8 @@ def show_main_page():
                         
                         # 날짜별 구분선 추가
                         st.markdown("---")
+            
+            
 
             st.divider()
 # -------------------------------------------------------------------------------------------------------
