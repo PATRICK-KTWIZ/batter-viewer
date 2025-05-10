@@ -900,12 +900,12 @@ def stats_df(merged_base_df):
     
     if mask_contact.any():
         # 각 타구 타입별 비율 계산 (전체 타구 타입 합계로 나눔)
-        merged_base_df.loc[mask_contact, 'weak%'] = merged_base_df.loc[mask_contact, 'weak'] / merged_base_df.loc[mask_contact, 'total_contact']
-        merged_base_df.loc[mask_contact, 'topped%'] = merged_base_df.loc[mask_contact, 'topped'] / merged_base_df.loc[mask_contact, 'total_contact']
-        merged_base_df.loc[mask_contact, 'under%'] = merged_base_df.loc[mask_contact, 'under'] / merged_base_df.loc[mask_contact, 'total_contact']
-        merged_base_df.loc[mask_contact, 'flare%'] = merged_base_df.loc[mask_contact, 'flare'] / merged_base_df.loc[mask_contact, 'total_contact']
-        merged_base_df.loc[mask_contact, 'solid_contact%'] = merged_base_df.loc[mask_contact, 'solid_contact'] / merged_base_df.loc[mask_contact, 'total_contact']
-        merged_base_df.loc[mask_contact, 'barrel%'] = merged_base_df.loc[mask_contact, 'barrel'] / merged_base_df.loc[mask_contact, 'total_contact']
+        merged_base_df.loc[mask_contact, 'weak'] = merged_base_df.loc[mask_contact, 'weak'] / merged_base_df.loc[mask_contact, 'total_contact']
+        merged_base_df.loc[mask_contact, 'topped'] = merged_base_df.loc[mask_contact, 'topped'] / merged_base_df.loc[mask_contact, 'total_contact']
+        merged_base_df.loc[mask_contact, 'under'] = merged_base_df.loc[mask_contact, 'under'] / merged_base_df.loc[mask_contact, 'total_contact']
+        merged_base_df.loc[mask_contact, 'flare'] = merged_base_df.loc[mask_contact, 'flare'] / merged_base_df.loc[mask_contact, 'total_contact']
+        merged_base_df.loc[mask_contact, 'solid_contact'] = merged_base_df.loc[mask_contact, 'solid_contact'] / merged_base_df.loc[mask_contact, 'total_contact']
+        merged_base_df.loc[mask_contact, 'barrel'] = merged_base_df.loc[mask_contact, 'barrel'] / merged_base_df.loc[mask_contact, 'total_contact']
 
     merged_base_df['plus_lsa4'] = merged_base_df['flare'] + merged_base_df['solid_contact'] + merged_base_df['barrel']
     
