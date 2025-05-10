@@ -596,7 +596,7 @@ def show_main_page():
                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
 
                 season_events_df = seoson_inplay_events(batter_raw_df)
-
+                season_events_df = season_events_df.rename(columns={'game_year':'연도', 'events':'구분','pitch_name':'인플레이수','exit_velocity':'타구속도','launch_angleX':'발사각도', 'hit_spin_rate':'타구스핀량','hit_distance':'비거리'})
 
                 batter_str = str(batter)
                 batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
