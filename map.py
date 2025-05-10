@@ -1064,8 +1064,8 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     
     # 타구 비행시간에 따른 색상 맵 정의
     colors = {
-        'short': 'rgba(67,89,119,0.7)',  
-        'challenge': 'rgba(255,72,120,1)',     
+        'short': 'rgba(67,89,119,0.5)',  
+        'challenge': 'rgba(255,72,120,0.5)',     
         'long': 'rgba(140,86,75,0.3)'      
     }
     
