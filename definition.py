@@ -440,10 +440,10 @@ def swing_viewer_pthrows(dataframe):
 
     return swing_viewer_pthrows_df
 
-# def event_viewer(dataframe):
+def event_viewer(dataframe):
 
-#     event_viewer_df = dataframe[['events','pitch_name', 'exit_velocity','launch_angleX','hit_spin_rate','hit_distance']]
-#     event_viewer_df = event_viewer_df.rename(columns={'events':'타격결과','pitch_name':'투구수', 'exit_velocity':'타구속도','launch_angleX':'발사각도','hit_spin_rate':'타구스핀량','hit_distance':'비거리'})
+    event_viewer_df = dataframe[['events','pitch_name', 'exit_velocity','launch_angleX','hit_spin_rate','hit_distance']]
+    event_viewer_df = event_viewer_df.rename(columns={'events':'타격결과','pitch_name':'투구수', 'exit_velocity':'타구속도','launch_angleX':'발사각도','hit_spin_rate':'타구스핀량','hit_distance':'비거리'})
 
     return event_viewer_df
 
