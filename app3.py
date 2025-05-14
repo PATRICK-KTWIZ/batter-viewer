@@ -1032,28 +1032,7 @@ def show_main_page():
                 batter_name = batter_finder.iloc[0]['NAME']
             
                 st.subheader(f"{batter_name}")
-
-                # st.markdown("""
-                #         <style>
-                #             .element-container {
-                #                 padding: 0 !important;
-                #             }
-                #             .stPlotlyChart {
-                #                 margin: 0 !important;
-                #                 padding: 0 !important;
-                #             }
-                #             .block-container {
-                #                 padding-top: 1rem;
-                #                 padding-bottom: 1rem;
-                #                 padding-left: 1rem;
-                #                 padding-right: 1rem;
-                #             }
-                #             div[data-testid="column"] {
-                #                 padding: 0 0.3rem;
-                #             }
-                #         </style>
-                #     """, unsafe_allow_html=True)
-                
+  
                 # 'game_year' 컬럼을 명시적으로 사용
                 year_col = 'game_year'
                 
@@ -1115,27 +1094,48 @@ def show_main_page():
                     else:
                         st.info("스트라이크 존 분석을 위한 데이터가 없습니다.")
 
+
+
+
+
+
+                
+
                 with st.expander(f" by 타구비행시간: {batter_name}"):
                     st.write("타구 비행시간")
                     
                     # 탭 생성
                     tab_recent, tab_pitcher_type = st.tabs(["최근 시즌", "투수 유형별"])
                     
-                    # 첫 번째 탭: 최근 시즌
+                    # 첫 번째 탭: 최근 3년 시즌 (1행 3열)
                     with tab_recent:
-                        # 최근 시즌 데이터만 필터링 (가장 최근 연도)
-                        if len(display_years) > 0:
-                            recent_year = display_years[0]  # 첫 번째가 최근 시즌이라고 가정
-                            recent_data = batter_raw_df[batter_raw_df[year_col] == recent_year]
-                            
-                            # Spray Chart 데이터 생성
-                            recent_spraychart_dataframe = spraychart_df(recent_data)
-                            
-                            # 타구 비행시간 차트 표시
-                            spraychart_hangtime_fig = season_hangtime_spraychart(recent_spraychart_dataframe, batter_name=f"{batter_name} ({recent_year})")
-                            st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_recent_{batter}", use_container_width=True)
-                        else:
-                            st.info("최근 시즌 데이터가 없습니다.")
+                        # 3개 컬럼 생성
+                        recent_cols = st.columns(3)
+                        
+                        # 최근 3년 데이터 표시 (최대 3개 연도)
+                        for i in range(min(3, len(display_years))):
+                            with recent_cols[i]:
+                                current_year = display_years[i]
+                                st.write(f"#### {current_year} 시즌")
+                                
+                                # 해당 연도 데이터 필터링
+                                year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
+                                
+                                # Spray Chart 데이터 생성
+                                year_spraychart_dataframe = spraychart_df(year_data)
+                                
+                                # 타구 비행시간 차트 표시
+                                spraychart_hangtime_fig = season_hangtime_spraychart(
+                                    year_spraychart_dataframe, 
+                                    batter_name=f"{batter_name} ({current_year})"
+                                )
+                                st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_recent_{batter}_{current_year}", use_container_width=True)
+                        
+                        # 남은 컬럼에 빈 내용 표시
+                        for i in range(len(display_years), 3):
+                            with recent_cols[i]:
+                                st.write("#### 시즌 정보 없음")
+                                st.info("해당 시즌의 데이터가 없습니다.")
                     
                     # 두 번째 탭: 투수 유형별 (우투수/좌투수)
                     with tab_pitcher_type:
