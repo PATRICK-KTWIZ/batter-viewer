@@ -731,10 +731,10 @@ def dataframe(level, player_id, password):
         player_df = player_df.reset_index(drop=True)
         player_df['game_date'] = pd.to_datetime(player_df['game_date'])
         
-            else:
-                raise ValueError("데이터가 존재하지 않습니다.")
+    else:
+        raise ValueError("데이터가 존재하지 않습니다.")
             
-            return player_df
+    return player_df
     
 
 
