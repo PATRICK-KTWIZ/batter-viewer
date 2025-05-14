@@ -534,7 +534,10 @@ def dataframe(level, player_id, password):
         df['cs'] = df['description'].apply(lambda x: 1 if x == 'called_strike' else None)
 
 
+        # github용
         df['game_date'] = pd.to_datetime(df['game_date'], format='mixed', dayfirst=True)
+
+        # # vscode용
         # df['game_date'] = pd.to_datetime(df['game_date'], errors='coerce')
 
         condition1 = [
