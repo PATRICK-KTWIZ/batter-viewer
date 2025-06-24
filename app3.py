@@ -18,7 +18,7 @@ COOKIE_TOKEN = "my_unique_cookie_token"
 # 페이지 설정
 st.set_page_config(
     layout="wide",
-    # initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
     page_title="KT WIZ BATTING ANALYTICS"
 )
 
@@ -215,6 +215,7 @@ def LoggedIn_Clicked(userName, password):
     if login(userName, password):
         set_user_id(userName)  # Set the user ID in the session cookie
         st.session_state['loggedIn'] = True
+        st.rerun()
     else:
         st.session_state['loggedIn'] = False
         st.error("유효하지 않은 ID 또는 패스워드 입니다.")
@@ -322,6 +323,8 @@ def show_login_page():
 
 def show_main_page():
     # Check if the user is logged in
+
+    st.sidebar.markdown("")
     
     if not is_user_logged_in():
         show_login_page()
