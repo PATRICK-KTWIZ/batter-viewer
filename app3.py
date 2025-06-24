@@ -838,7 +838,7 @@ def show_main_page():
             
                 st.subheader(f"{batter_name}, {game_year}")
             
-                col1, col2, col3, col4 = st.columns(4)
+                col1, col2, col3, col4 = st.columns([1, 1, 1, 1,])
             
                 pitched_factor = 'player_name'
                 swing_factor = 'swing'
@@ -847,16 +847,18 @@ def show_main_page():
                 with col1:
                     original_title = '<p style="text-align: center; color:gray; font-size: 25px;">투구지점</p>'
                     st.markdown(original_title, unsafe_allow_html=True)
+                    
                     season_pitched_fig = factor_year_count_map(batter_recent_df, pitched_factor)
-                    season_pitched_fig.update_layout(height=400, width=450)
+                    season_pitched_fig.update_layout(height=400, width=450, autosize=False, margin=dict(l=10, r=10, t=10, b=10))
                     season_pitched_fig.update_coloraxes(showscale=False)
                     st.plotly_chart(season_pitched_fig, layout="wide", key=f"season_pitched_{batter}")
             
                 with col2:
                     original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점</p>'
                     st.markdown(original_title, unsafe_allow_html=True)
+                    
                     season_swing_fig = factor_year_sum_map(batter_recent_df, swing_factor)
-                    season_swing_fig.update_layout(height=400, width=450)
+                    season_swing_fig.update_layout(height=400, width=450, autosize=False, margin=dict(l=10, r=10, t=10, b=10))
                     season_swing_fig.update_coloraxes(showscale=False)
                     st.plotly_chart(season_swing_fig, layout="wide", key=f"season_swing_{batter}")
             
@@ -865,16 +867,18 @@ def show_main_page():
                 with col3:
                     original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
                     st.markdown(original_title, unsafe_allow_html=True)
+                    
                     season_lsa_fig = factor_year_sum_map_scatter(batter_recent_las4)
-                    season_lsa_fig.update_layout(height=400, width=450)
+                    season_lsa_fig.update_layout(height=400, width=450, autosize=False, margin=dict(l=10, r=10, t=10, b=10))
                     season_lsa_fig.update_coloraxes(showscale=False)
                     st.plotly_chart(season_lsa_fig, layout="wide", key=f"season_lsa_{batter}")
             
                 with col4:
                     original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
                     st.markdown(original_title, unsafe_allow_html=True)
+                    
                     season_lsa_fig = factor_year_sum_plate_map_scatter(batter_recent_las4)
-                    season_lsa_fig.update_layout(height=400, width=430)
+                    season_lsa_fig.update_layout(height=400, width=430, autosize=False, margin=dict(l=10, r=10, t=10, b=10))
                     season_lsa_fig.update_coloraxes(showscale=False)
                     st.plotly_chart(season_lsa_fig, layout="wide", key=f"season_lsa_plate_{batter}")
                 
@@ -905,32 +909,36 @@ def show_main_page():
                         with col1:
                             original_title = '<p style="text-align: center; color:gray; font-size: 25px;">투구지점 (히트맵)</p>'
                             st.markdown(original_title, unsafe_allow_html=True)
+                            
                             year_pitched_heatmap = factor_year_count_map(year_df, pitched_factor)
-                            year_pitched_heatmap.update_layout(height=400, width=450)
+                            year_pitched_heatmap.update_layout(height=400, width=450, autosize=False, margin=dict(l=10, r=10, t=10, b=10))
                             year_pitched_heatmap.update_coloraxes(showscale=False)
                             st.plotly_chart(year_pitched_heatmap, layout="wide", key=f"year_pitched_heatmap_{batter}_{year}")
                         
                         with col2:
                             original_title = '<p style="text-align: center; color:gray; font-size: 25px;">스윙지점 (히트맵)</p>'
                             st.markdown(original_title, unsafe_allow_html=True)
+                            
                             year_swing_heatmap = factor_year_sum_map(year_df, swing_factor)
-                            year_swing_heatmap.update_layout(height=400, width=450)
+                            year_swing_heatmap.update_layout(height=400, width=450, autosize=False, margin=dict(l=10, r=10, t=10, b=10))
                             year_swing_heatmap.update_coloraxes(showscale=False)
                             st.plotly_chart(year_swing_heatmap, layout="wide", key=f"year_swing_heatmap_{batter}_{year}")
                         
                         with col3:
                             original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Zone</p>'
                             st.markdown(original_title, unsafe_allow_html=True)
+                            
                             year_lsa_fig = factor_year_sum_map_scatter(year_lsa4_df)
-                            year_lsa_fig.update_layout(height=400, width=450)
+                            year_lsa_fig.update_layout(height=400, width=450, autosize=False, margin=dict(l=10, r=10, t=10, b=10))
                             year_lsa_fig.update_coloraxes(showscale=False)
                             st.plotly_chart(year_lsa_fig, layout="wide", key=f"year_lsa_fig_{batter}_{year}")
                         
                         with col4:
                             original_title = '<p style="text-align: center; color:gray; font-size: 25px;">LSA 4+ Plate</p>'
                             st.markdown(original_title, unsafe_allow_html=True)
+                            
                             year_lsa_plate_fig = factor_year_sum_plate_map_scatter(year_lsa4_df)
-                            year_lsa_plate_fig.update_layout(height=400, width=430)
+                            year_lsa_plate_fig.update_layout(height=400, width=430, autosize=False, margin=dict(l=10, r=10, t=10, b=10))
                             year_lsa_plate_fig.update_coloraxes(showscale=False)
                             st.plotly_chart(year_lsa_plate_fig, layout="wide", key=f"year_lsa_plate_fig_{batter}_{year}")
                         
