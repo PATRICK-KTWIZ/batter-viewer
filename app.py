@@ -1193,7 +1193,7 @@ def show_main_page():
                     # 두 탭 모두에 적용되는 범례
                     st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                             <span style="font-weight: bold;">색상 범례:</span> 
-                            붉은색: 1~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상
+                            붉은색: 2~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상
                             </div>
                             """, 
                             unsafe_allow_html=True)
@@ -1260,272 +1260,272 @@ def show_main_page():
 # -------------------------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------------
 
-            st.title('[시즌 :red[Plate Discipline]]')
+            # st.title('[시즌 :red[Plate Discipline]]')
 
-            # 최근 경기의 타석 결과를 타석별로 scatter chart로 표시
-            for batter, batter_df in batter_dataframes.items():
-                batter_raw_df = globals()[f"df_{batter}"] = batter_df
+            # # 최근 경기의 타석 결과를 타석별로 scatter chart로 표시
+            # for batter, batter_df in batter_dataframes.items():
+            #     batter_raw_df = globals()[f"df_{batter}"] = batter_df
             
-                batter_str = str(batter)
-                batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
-                batter_name = batter_finder.iloc[0]['NAME']
+            #     batter_str = str(batter)
+            #     batter_finder = selected_player_df[selected_player_df['TM_ID'] == batter_str]
+            #     batter_name = batter_finder.iloc[0]['NAME']
                 
-                # 최근 경기 데이터 필터링
-                recent_game_date = batter_raw_df['game_date'].max()
-                recent_game_df = batter_raw_df[batter_raw_df['game_date'] == recent_game_date]
+            #     # 최근 경기 데이터 필터링
+            #     recent_game_date = batter_raw_df['game_date'].max()
+            #     recent_game_df = batter_raw_df[batter_raw_df['game_date'] == recent_game_date]
             
-                st.subheader(f"{batter_name} ({recent_game_date})")
+            #     st.subheader(f"{batter_name} ({recent_game_date})")
                 
-                # 타석별 결과 시각화
-                colors = {
-                    'called_strike': 'rgba(24,85,144,0.6)', 
-                    'swinging_strike': 'rgba(247,222,52,1)', 
-                    'ball': 'rgba(108,122,137,0.7)', 
-                    'foul': 'rgba(241,106,227,0.5)', 
-                    'hit_into_play_no_out': 'rgba(255,105,97,1)', 
-                    'hit_into_play_score': 'rgba(255,105,97,1)',
-                    'hit_into_play': 'rgba(140,86,75,0.6)'
-                }
+            #     # 타석별 결과 시각화
+            #     colors = {
+            #         'called_strike': 'rgba(24,85,144,0.6)', 
+            #         'swinging_strike': 'rgba(247,222,52,1)', 
+            #         'ball': 'rgba(108,122,137,0.7)', 
+            #         'foul': 'rgba(241,106,227,0.5)', 
+            #         'hit_into_play_no_out': 'rgba(255,105,97,1)', 
+            #         'hit_into_play_score': 'rgba(255,105,97,1)',
+            #         'hit_into_play': 'rgba(140,86,75,0.6)'
+            #     }
                 
-                symbols = {
-                    '4-Seam Fastball': 'circle', 
-                    '2-Seam Fastball': 'triangle-down', 
-                    'Cutter': 'triangle-se', 
-                    'Slider': 'triangle-right', 
-                    'Curveball': 'triangle-up', 
-                    'Changeup': 'diamond', 
-                    'Split-Finger': 'square', 
-                    'Sweeper': 'cross'
-                }
+            #     symbols = {
+            #         '4-Seam Fastball': 'circle', 
+            #         '2-Seam Fastball': 'triangle-down', 
+            #         'Cutter': 'triangle-se', 
+            #         'Slider': 'triangle-right', 
+            #         'Curveball': 'triangle-up', 
+            #         'Changeup': 'diamond', 
+            #         'Split-Finger': 'square', 
+            #         'Sweeper': 'cross'
+            #     }
                 
-                # 이닝 목록 가져오기 (최대 5개)
-                innings = sorted(recent_game_df['inning'].unique())[:5]
+            #     # 이닝 목록 가져오기 (최대 5개)
+            #     innings = sorted(recent_game_df['inning'].unique())[:5]
                 
-                # 5개 컬럼 생성
-                cols = st.columns(5)
+            #     # 5개 컬럼 생성
+            #     cols = st.columns(5)
                 
-                # 각 이닝별 데이터 표시
-                for i in range(5):  # 항상 5개 컬럼 생성
-                    with cols[i]:
-                        if i < len(innings):  # 이닝 데이터가 있는 경우
-                            current_inning = innings[i]
+            #     # 각 이닝별 데이터 표시
+            #     for i in range(5):  # 항상 5개 컬럼 생성
+            #         with cols[i]:
+            #             if i < len(innings):  # 이닝 데이터가 있는 경우
+            #                 current_inning = innings[i]
                             
-                            # 해당 이닝 데이터 필터링
-                            inning_data = recent_game_df[recent_game_df['inning'] == current_inning]
+            #                 # 해당 이닝 데이터 필터링
+            #                 inning_data = recent_game_df[recent_game_df['inning'] == current_inning]
                             
-                            # 투수 이름 가져오기
-                            if not inning_data.empty:
-                                pitcher_name = inning_data['player_name'].iloc[0]
-                                st.write(f"#### {current_inning}회 - {pitcher_name}")
-                            else:
-                                st.write(f"#### {current_inning}회")
+            #                 # 투수 이름 가져오기
+            #                 if not inning_data.empty:
+            #                     pitcher_name = inning_data['player_name'].iloc[0]
+            #                     st.write(f"#### {current_inning}회 - {pitcher_name}")
+            #                 else:
+            #                     st.write(f"#### {current_inning}회")
                             
-                            # 이닝별 차트 생성
-                            inning_fig = px.scatter(
-                                inning_data, 
-                                x='plate_x', 
-                                y='plate_z', 
-                                color='description', 
-                                symbol='pitch_name',
-                                text='pitch_number',
-                                color_discrete_map=colors,
-                                hover_name="player_name", 
-                                hover_data=["rel_speed(km)", "pitch_name", "events", "exit_velocity", "description", "launch_speed_angle", "launch_angle"],
-                                template="simple_white",
-                                height=300, 
-                                width=250
-                            )
+            #                 # 이닝별 차트 생성
+            #                 inning_fig = px.scatter(
+            #                     inning_data, 
+            #                     x='plate_x', 
+            #                     y='plate_z', 
+            #                     color='description', 
+            #                     symbol='pitch_name',
+            #                     text='pitch_number',
+            #                     color_discrete_map=colors,
+            #                     hover_name="player_name", 
+            #                     hover_data=["rel_speed(km)", "pitch_name", "events", "exit_velocity", "description", "launch_speed_angle", "launch_angle"],
+            #                     template="simple_white",
+            #                     height=300, 
+            #                     width=250
+            #                 )
                             
-                            # 텍스트 크기와 색상 설정
-                            inning_fig.update_traces(
-                                textfont=dict(
-                                    size=18,
-                                    color='rgba(0,0,0,1)'  # 검은색으로 설정 (완전 불투명)
-                                )
-                            )
+            #                 # 텍스트 크기와 색상 설정
+            #                 inning_fig.update_traces(
+            #                     textfont=dict(
+            #                         size=18,
+            #                         color='rgba(0,0,0,1)'  # 검은색으로 설정 (완전 불투명)
+            #                     )
+            #                 )
                             
-                            # 심볼 설정
-                            for a, b in enumerate(inning_fig.data):
-                                pitch_name = inning_fig.data[a].name.split(', ')[1] if ',' in inning_fig.data[a].name else inning_fig.data[a].name
-                                if pitch_name in symbols:
-                                    inning_fig.data[a].marker.symbol = symbols[pitch_name]
+            #                 # 심볼 설정
+            #                 for a, b in enumerate(inning_fig.data):
+            #                     pitch_name = inning_fig.data[a].name.split(', ')[1] if ',' in inning_fig.data[a].name else inning_fig.data[a].name
+            #                     if pitch_name in symbols:
+            #                         inning_fig.data[a].marker.symbol = symbols[pitch_name]
                             
-                            # 차트 레이아웃 설정
-                            inning_fig.update_layout(
-                                showlegend=False,
-                                autosize=False,
-                                margin=dict(l=10, r=10, t=10, b=10),
-                                plot_bgcolor='rgba(255,255,255,0.1)', 
-                                paper_bgcolor='rgba(255,255,255,1)',
-                            )
+            #                 # 차트 레이아웃 설정
+            #                 inning_fig.update_layout(
+            #                     showlegend=False,
+            #                     autosize=False,
+            #                     margin=dict(l=10, r=10, t=10, b=10),
+            #                     plot_bgcolor='rgba(255,255,255,0.1)', 
+            #                     paper_bgcolor='rgba(255,255,255,1)',
+            #                 )
                             
-                            # x, y 범위 설정
-                            inning_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
-                            inning_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
+            #                 # x, y 범위 설정
+            #                 inning_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
+            #                 inning_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
                             
-                            inning_fig.update_traces(marker=dict(size=30, opacity=1))  # 마커 크기 조정 및 불투명도 설정
-                            inning_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
+            #                 inning_fig.update_traces(marker=dict(size=30, opacity=1))  # 마커 크기 조정 및 불투명도 설정
+            #                 inning_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
                             
-                            # 스트라이크 존과 코어 존 추가
-                            # 스트라이크 존 라인 추가
-                            inning_fig.add_hline(y=0.59, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
-                            inning_fig.add_hline(y=0.91, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
-                            inning_fig.add_vline(x=-0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
-                            inning_fig.add_vline(x=0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+            #                 # 스트라이크 존과 코어 존 추가
+            #                 # 스트라이크 존 라인 추가
+            #                 inning_fig.add_hline(y=0.59, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+            #                 inning_fig.add_hline(y=0.91, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+            #                 inning_fig.add_vline(x=-0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+            #                 inning_fig.add_vline(x=0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
                             
-                            # Core Zone 추가
-                            homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
-                            homey = [0.59, 0.59, 0.91, 0.91, 0.59]
-                            inning_fig.add_trace(go.Scatter(
-                                x=homex, 
-                                y=homey, 
-                                mode='lines', 
-                                line=dict(color='red', width=2),
-                                showlegend=False
-                            ))
+            #                 # Core Zone 추가
+            #                 homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
+            #                 homey = [0.59, 0.59, 0.91, 0.91, 0.59]
+            #                 inning_fig.add_trace(go.Scatter(
+            #                     x=homex, 
+            #                     y=homey, 
+            #                     mode='lines', 
+            #                     line=dict(color='red', width=2),
+            #                     showlegend=False
+            #                 ))
                             
-                            # Strike Zone 추가
-                            homex = [-0.26, 0.26, 0.26, -0.26, -0.26]
-                            homey = [0.45, 0.45, 1.05, 1.05, 0.45]
-                            inning_fig.add_trace(go.Scatter(
-                                x=homex, 
-                                y=homey, 
-                                mode='lines', 
-                                line=dict(color='rgba(108,122,137,0.9)', width=2),
-                                showlegend=False
-                            ))
+            #                 # Strike Zone 추가
+            #                 homex = [-0.26, 0.26, 0.26, -0.26, -0.26]
+            #                 homey = [0.45, 0.45, 1.05, 1.05, 0.45]
+            #                 inning_fig.add_trace(go.Scatter(
+            #                     x=homex, 
+            #                     y=homey, 
+            #                     mode='lines', 
+            #                     line=dict(color='rgba(108,122,137,0.9)', width=2),
+            #                     showlegend=False
+            #                 ))
                             
-                            # 차트 표시 - 고유한 키 추가
-                            st.plotly_chart(inning_fig, use_container_width=True, key=f"recent_{batter}_{current_inning}_{i}_{recent_game_date}")
+            #                 # 차트 표시 - 고유한 키 추가
+            #                 st.plotly_chart(inning_fig, use_container_width=True, key=f"recent_{batter}_{current_inning}_{i}_{recent_game_date}")
                         
-                        else:  # 이닝 데이터가 없는 경우
-                            st.write("#### -")
-                            st.info("-")
+            #             else:  # 이닝 데이터가 없는 경우
+            #                 st.write("#### -")
+            #                 st.info("-")
                 
-                st.markdown("""
-                <div style="text-align: left; font-size: 0.9em;">
-                <span style="font-weight: bold;">색상 범례:</span> 
-                파란색: 콜드 스트라이크 / 노란색: 스윙 스트라이크 / 회색: 볼 / 분홍색: 파울 / 빨간색: 안타 / 갈색: 아웃
-                </div>
-                """, unsafe_allow_html=True)
+            #     st.markdown("""
+            #     <div style="text-align: left; font-size: 0.9em;">
+            #     <span style="font-weight: bold;">색상 범례:</span> 
+            #     파란색: 콜드 스트라이크 / 노란색: 스윙 스트라이크 / 회색: 볼 / 분홍색: 파울 / 빨간색: 안타 / 갈색: 아웃
+            #     </div>
+            #     """, unsafe_allow_html=True)
                 
-                # 선수별 expander로 시즌 경기별 타석 결과 차트 표시
-                with st.expander(f"시즌 경기별 타석 결과(최근 5경기): {batter_name}"):
-                    # 시즌 데이터에서 게임 날짜 목록 가져오기
-                    game_dates = sorted(batter_raw_df['game_date'].unique(), reverse=True)
+            #     # 선수별 expander로 시즌 경기별 타석 결과 차트 표시
+            #     with st.expander(f"시즌 경기별 타석 결과(최근 5경기): {batter_name}"):
+            #         # 시즌 데이터에서 게임 날짜 목록 가져오기
+            #         game_dates = sorted(batter_raw_df['game_date'].unique(), reverse=True)
                     
-                    for date_idx, game_date in enumerate(game_dates[:5]):  # 최근 5경기만 표시
-                        st.write(f"### 경기 날짜: {game_date}")
+            #         for date_idx, game_date in enumerate(game_dates[:5]):  # 최근 5경기만 표시
+            #             st.write(f"### 경기 날짜: {game_date}")
                         
-                        # 해당 날짜의 데이터 필터링
-                        game_df = batter_raw_df[batter_raw_df['game_date'] == game_date]
+            #             # 해당 날짜의 데이터 필터링
+            #             game_df = batter_raw_df[batter_raw_df['game_date'] == game_date]
                         
-                        # 이닝 목록 가져오기 (최대 5개)
-                        game_innings = sorted(game_df['inning'].unique())[:5]
+            #             # 이닝 목록 가져오기 (최대 5개)
+            #             game_innings = sorted(game_df['inning'].unique())[:5]
                         
-                        # 5개 컬럼 생성
-                        game_cols = st.columns(5)
+            #             # 5개 컬럼 생성
+            #             game_cols = st.columns(5)
                         
-                        # 각 이닝별 데이터 표시
-                        for i in range(5):  # 항상 5개 컬럼 생성
-                            with game_cols[i]:
-                                if i < len(game_innings):  # 이닝 데이터가 있는 경우
-                                    current_inning = game_innings[i]
+            #             # 각 이닝별 데이터 표시
+            #             for i in range(5):  # 항상 5개 컬럼 생성
+            #                 with game_cols[i]:
+            #                     if i < len(game_innings):  # 이닝 데이터가 있는 경우
+            #                         current_inning = game_innings[i]
                                     
-                                    # 해당 이닝 데이터 필터링
-                                    inning_data = game_df[game_df['inning'] == current_inning]
+            #                         # 해당 이닝 데이터 필터링
+            #                         inning_data = game_df[game_df['inning'] == current_inning]
                                     
-                                    # 투수 이름 가져오기
-                                    if not inning_data.empty:
-                                        pitcher_name = inning_data['player_name'].iloc[0]
-                                        st.write(f"#### {current_inning}회 - {pitcher_name}")
-                                    else:
-                                        st.write(f"#### {current_inning}회")
+            #                         # 투수 이름 가져오기
+            #                         if not inning_data.empty:
+            #                             pitcher_name = inning_data['player_name'].iloc[0]
+            #                             st.write(f"#### {current_inning}회 - {pitcher_name}")
+            #                         else:
+            #                             st.write(f"#### {current_inning}회")
                                     
-                                    # 이닝별 차트 생성
-                                    inning_fig = px.scatter(
-                                        inning_data, 
-                                        x='plate_x', 
-                                        y='plate_z', 
-                                        color='description', 
-                                        symbol='pitch_name',
-                                        text='pitch_number',
-                                        color_discrete_map=colors,
-                                        hover_name="player_name", 
-                                        hover_data=["rel_speed(km)", "pitch_name", "events", "exit_velocity", "description", "launch_speed_angle", "launch_angle"],
-                                        template="simple_white",
-                                        height=300, 
-                                        width=250
-                                    )
+            #                         # 이닝별 차트 생성
+            #                         inning_fig = px.scatter(
+            #                             inning_data, 
+            #                             x='plate_x', 
+            #                             y='plate_z', 
+            #                             color='description', 
+            #                             symbol='pitch_name',
+            #                             text='pitch_number',
+            #                             color_discrete_map=colors,
+            #                             hover_name="player_name", 
+            #                             hover_data=["rel_speed(km)", "pitch_name", "events", "exit_velocity", "description", "launch_speed_angle", "launch_angle"],
+            #                             template="simple_white",
+            #                             height=300, 
+            #                             width=250
+            #                         )
                                     
-                                    # 텍스트 크기와 색상 설정
-                                    inning_fig.update_traces(
-                                        textfont=dict(
-                                            size=18,
-                                            color='rgba(0,0,0,1)'  # 검은색으로 설정 (완전 불투명)
-                                        )
-                                    )
+            #                         # 텍스트 크기와 색상 설정
+            #                         inning_fig.update_traces(
+            #                             textfont=dict(
+            #                                 size=18,
+            #                                 color='rgba(0,0,0,1)'  # 검은색으로 설정 (완전 불투명)
+            #                             )
+            #                         )
                                     
-                                    # 심볼 설정
-                                    for a, b in enumerate(inning_fig.data):
-                                        pitch_name = inning_fig.data[a].name.split(', ')[1] if ',' in inning_fig.data[a].name else inning_fig.data[a].name
-                                        if pitch_name in symbols:
-                                            inning_fig.data[a].marker.symbol = symbols[pitch_name]
+            #                         # 심볼 설정
+            #                         for a, b in enumerate(inning_fig.data):
+            #                             pitch_name = inning_fig.data[a].name.split(', ')[1] if ',' in inning_fig.data[a].name else inning_fig.data[a].name
+            #                             if pitch_name in symbols:
+            #                                 inning_fig.data[a].marker.symbol = symbols[pitch_name]
                                     
-                                    # 차트 레이아웃 설정
-                                    inning_fig.update_layout(
-                                        showlegend=False,
-                                        autosize=False,
-                                        margin=dict(l=10, r=10, t=10, b=10),
-                                        plot_bgcolor='rgba(255,255,255,0.1)', 
-                                        paper_bgcolor='rgba(255,255,255,1)',
-                                    )
+            #                         # 차트 레이아웃 설정
+            #                         inning_fig.update_layout(
+            #                             showlegend=False,
+            #                             autosize=False,
+            #                             margin=dict(l=10, r=10, t=10, b=10),
+            #                             plot_bgcolor='rgba(255,255,255,0.1)', 
+            #                             paper_bgcolor='rgba(255,255,255,1)',
+            #                         )
                                     
-                                    # x, y 범위 설정
-                                    inning_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
-                                    inning_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
+            #                         # x, y 범위 설정
+            #                         inning_fig.update_xaxes(range=[-0.6, 0.6], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
+            #                         inning_fig.update_yaxes(range=[0.0, 1.5], showgrid=False, zeroline=False, showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True, showticklabels=False, title_text='')
                                     
-                                    inning_fig.update_traces(marker=dict(size=30, opacity=1))  # 마커 크기 조정 및 불투명도 설정
-                                    inning_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
+            #                         inning_fig.update_traces(marker=dict(size=30, opacity=1))  # 마커 크기 조정 및 불투명도 설정
+            #                         inning_fig.update_traces(textfont_size=18)      # 텍스트 크기 조정
                                     
-                                    # 스트라이크 존과 코어 존 추가
-                                    # 스트라이크 존 라인 추가
-                                    inning_fig.add_hline(y=0.59, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
-                                    inning_fig.add_hline(y=0.91, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
-                                    inning_fig.add_vline(x=-0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
-                                    inning_fig.add_vline(x=0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+            #                         # 스트라이크 존과 코어 존 추가
+            #                         # 스트라이크 존 라인 추가
+            #                         inning_fig.add_hline(y=0.59, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+            #                         inning_fig.add_hline(y=0.91, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+            #                         inning_fig.add_vline(x=-0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
+            #                         inning_fig.add_vline(x=0.12, line_width=2, line_dash='dash', line_color='rgba(30,30,30,0.8)')
                                     
-                                    # Core Zone 추가
-                                    homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
-                                    homey = [0.59, 0.59, 0.91, 0.91, 0.59]
-                                    inning_fig.add_trace(go.Scatter(
-                                        x=homex, 
-                                        y=homey, 
-                                        mode='lines', 
-                                        line=dict(color='red', width=2),
-                                        showlegend=False
-                                    ))
+            #                         # Core Zone 추가
+            #                         homex = [-0.12, 0.12, 0.12, -0.12, -0.12]
+            #                         homey = [0.59, 0.59, 0.91, 0.91, 0.59]
+            #                         inning_fig.add_trace(go.Scatter(
+            #                             x=homex, 
+            #                             y=homey, 
+            #                             mode='lines', 
+            #                             line=dict(color='red', width=2),
+            #                             showlegend=False
+            #                         ))
                                     
-                                    # Strike Zone 추가
-                                    homex = [-0.26, 0.26, 0.26, -0.26, -0.26]
-                                    homey = [0.45, 0.45, 1.05, 1.05, 0.45]
-                                    inning_fig.add_trace(go.Scatter(
-                                        x=homex, 
-                                        y=homey, 
-                                        mode='lines', 
-                                        line=dict(color='rgba(108,122,137,0.9)', width=2),
-                                        showlegend=False
-                                    ))
+            #                         # Strike Zone 추가
+            #                         homex = [-0.26, 0.26, 0.26, -0.26, -0.26]
+            #                         homey = [0.45, 0.45, 1.05, 1.05, 0.45]
+            #                         inning_fig.add_trace(go.Scatter(
+            #                             x=homex, 
+            #                             y=homey, 
+            #                             mode='lines', 
+            #                             line=dict(color='rgba(108,122,137,0.9)', width=2),
+            #                             showlegend=False
+            #                         ))
                                     
-                                    # 차트 표시 - 고유한 키 추가 (날짜와 이닝을 조합)
-                                    st.plotly_chart(inning_fig, use_container_width=True, key=f"history_{batter}_{game_date}_{current_inning}_{i}")
+            #                         # 차트 표시 - 고유한 키 추가 (날짜와 이닝을 조합)
+            #                         st.plotly_chart(inning_fig, use_container_width=True, key=f"history_{batter}_{game_date}_{current_inning}_{i}")
                                 
-                                else:  # 이닝 데이터가 없는 경우
-                                    st.write("#### -")
-                                    st.info("-")
+            #                     else:  # 이닝 데이터가 없는 경우
+            #                         st.write("#### -")
+            #                         st.info("-")
                         
-                        # 날짜별 구분선 추가
-                        st.markdown("---")
+            #             # 날짜별 구분선 추가
+            #             st.markdown("---")
             
             
 
