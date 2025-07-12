@@ -1193,7 +1193,7 @@ def show_main_page():
                     # 두 탭 모두에 적용되는 범례
                     st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                             <span style="font-weight: bold;">색상 범례:</span> 
-                            붉은색: 1~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상
+                            붉은색: 2~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상
                             </div>
                             """, 
                             unsafe_allow_html=True)
