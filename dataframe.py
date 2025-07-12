@@ -493,7 +493,7 @@ def dataframe(level, player_id, password):
         df['count_value'] = df['count'].apply(lambda x: count(x))
 
         def hangtime(x):
-            if x <= 1:
+            if x <= 2:
                 return 'short'
             elif x >= 4:
                 return 'long'
