@@ -433,9 +433,8 @@ def show_main_page():
 # -------------------------------------------------------------------------------------------------------
 
 
-            st.title('[시즌 :red[Spray Chart]]')
-
-
+            st.title('[시즌 :red[Spray Chart]] - 타구 비행시간 기준')
+            
             for batter, batter_df in batter_dataframes.items():
                 batter_raw_df = globals()[f"df_{batter}"] = batter_df
             
@@ -444,7 +443,7 @@ def show_main_page():
                 batter_name = batter_finder.iloc[0]['NAME']
             
                 st.subheader(f"{batter_name}")
-  
+            
                 # 'game_year' 컬럼을 명시적으로 사용
                 year_col = 'game_year'
                 
@@ -457,7 +456,7 @@ def show_main_page():
                 # 3개 컬럼 생성
                 cols = st.columns(3)
                 
-                # 각 연도별 데이터 표시
+                # 각 연도별 데이터 표시 (타구 비행시간 기준)
                 for i in range(min(3, len(display_years))):  # 실제 연도 수와 3 중 작은 값만큼 반복
                     with cols[i]:
                         current_year = display_years[i]
@@ -469,8 +468,12 @@ def show_main_page():
                         # Spray Chart 데이터 생성
                         year_spraychart_dataframe = spraychart_df(year_data)
                         
-                        # Spray Chart 표시
-                        season_spraychart(year_spraychart_dataframe, key=f"season_spray_{batter}_{current_year}")
+                        # 타구 비행시간 기준 Spray Chart 표시
+                        spraychart_hangtime_fig = season_hangtime_spraychart(
+                            year_spraychart_dataframe, 
+                            batter_name=f"{batter_name} ({current_year})"
+                        )
+                        st.plotly_chart(spraychart_hangtime_fig, key=f"season_hangtime_{batter}_{current_year}", use_container_width=True)
                 
                 # 남은 컬럼에 빈 내용 표시
                 for i in range(len(display_years), 3):
@@ -478,121 +481,254 @@ def show_main_page():
                         st.write("#### 시즌 정보 없음")
                         st.info("해당 시즌의 데이터가 없습니다.")
                 
-                # 색상 범례 표시
+                # 타구 비행시간 색상 범례 표시
                 st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                             <span style="font-weight: bold;">색상 범례:</span> 
-                            붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
+                            붉은색: 2~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상
                             </div>
                             """, 
                             unsafe_allow_html=True)
                 
-                # 스트라이크 존 기준 차트 (최근 연도만)
-                with st.expander(f" by 스트라이크 존:  {batter_name}(최근연도)"):
-                    if len(years) > 0:
-                        st.write(f"S존 기준차트 ({years[0]} 시즌)")
-                        
-                        # 최근 연도 데이터 필터링
-                        recent_year_data = batter_raw_df[batter_raw_df[year_col] == years[0]]
-                        recent_spraychart_dataframe = spraychart_df(recent_year_data)
-
-                        zone_spraychart_fig(recent_spraychart_dataframe, batter_name=f"{batter_name} ({years[0]})")
-                        
-                        st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
-                                <span style="font-weight: bold;">색상 범례:</span> 
-                                붉은색: 2루타 이상 / 파란색: 단타 / 옅은 갈색: 아웃
-                                </div>
-                                """, 
-                                unsafe_allow_html=True)
-                    else:
-                        st.info("스트라이크 존 분석을 위한 데이터가 없습니다.")
-
-
-
-
-
-
-                
-
-                with st.expander(f" by 타구비행시간: {batter_name}"):
-                    st.write("타구 비행시간")
+                # pkind 기준 차트 (Fastball vs Non-Fastball) - 타구 비행시간 기준
+                with st.expander(f"by 구종 분류: {batter_name} (타구 비행시간)"):
+                    st.write("구종별 스프레이 차트 - 타구 비행시간 기준")
                     
                     # 탭 생성
-                    tab_recent, tab_pitcher_type = st.tabs(["최근 시즌", "투수 유형별"])
+                    tab_fastball, tab_non_fastball = st.tabs(["Fastball", "Non-Fastball"])
                     
-                    # 첫 번째 탭: 최근 3년 시즌 (1행 3열)
-                    with tab_recent:
+                    # Fastball 탭
+                    with tab_fastball:
+                        st.write("### Fastball 상대 (타구 비행시간)")
                         # 3개 컬럼 생성
-                        recent_cols = st.columns(3)
+                        fb_cols = st.columns(3)
                         
-                        # 최근 3년 데이터 표시 (최대 3개 연도)
                         for i in range(min(3, len(display_years))):
-                            with recent_cols[i]:
+                            with fb_cols[i]:
                                 current_year = display_years[i]
                                 st.write(f"#### {current_year} 시즌")
                                 
-                                # 해당 연도 데이터 필터링
+                                # 해당 연도 및 Fastball 데이터 필터링
                                 year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
+                                fastball_data = year_data[year_data['pkind'] == 'Fastball']
                                 
-                                # Spray Chart 데이터 생성
-                                year_spraychart_dataframe = spraychart_df(year_data)
-                                
-                                # 타구 비행시간 차트 표시
-                                spraychart_hangtime_fig = season_hangtime_spraychart(
-                                    year_spraychart_dataframe, 
-                                    batter_name=f"{batter_name} ({current_year})"
-                                )
-                                st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_recent_{batter}_{current_year}", use_container_width=True)
+                                if len(fastball_data) > 0:
+                                    # Spray Chart 데이터 생성
+                                    fastball_spraychart_dataframe = spraychart_df(fastball_data)
+                                    
+                                    # Fastball 타구 비행시간 차트 표시 (동그라미 모양)
+                                    fastball_hangtime_fig = season_hangtime_spraychart_with_shape(
+                                        fastball_spraychart_dataframe, 
+                                        batter_name=f"{batter_name} Fastball ({current_year})",
+                                        shape='circle'
+                                    )
+                                    st.plotly_chart(fastball_hangtime_fig, key=f"fastball_hangtime_{batter}_{current_year}", use_container_width=True)
+                                else:
+                                    st.info(f"{current_year} 시즌 Fastball 데이터가 없습니다.")
                         
                         # 남은 컬럼에 빈 내용 표시
                         for i in range(len(display_years), 3):
-                            with recent_cols[i]:
+                            with fb_cols[i]:
                                 st.write("#### 시즌 정보 없음")
                                 st.info("해당 시즌의 데이터가 없습니다.")
                     
-                    # 두 번째 탭: 투수 유형별 (우투수/좌투수)
-                    with tab_pitcher_type:
-                        pitcher_types = ["우투수", "좌투수"]
+                    # Non-Fastball 탭
+                    with tab_non_fastball:
+                        st.write("### Non-Fastball 상대 (타구 비행시간)")
+                        # 3개 컬럼 생성
+                        nfb_cols = st.columns(3)
                         
-                        for pitcher_type in pitcher_types:
-                            st.write(f"### {pitcher_type} 상대")
-                            
-                            # 2행 3열 레이아웃 생성
-                            cols = st.columns(3)
-                            
-                            # 각 연도별 타구 비행시간 차트 표시 (최대 3개 연도)
-                            for i in range(min(3, len(display_years))):
-                                with cols[i]:
-                                    current_year = display_years[i]
-                                    st.write(f"#### {current_year} 시즌")
+                        for i in range(min(3, len(display_years))):
+                            with nfb_cols[i]:
+                                current_year = display_years[i]
+                                st.write(f"#### {current_year} 시즌")
+                                
+                                # 해당 연도 및 Non-Fastball 데이터 필터링
+                                year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
+                                non_fastball_data = year_data[year_data['pkind'] != 'Fastball']
+                                
+                                if len(non_fastball_data) > 0:
+                                    # Spray Chart 데이터 생성
+                                    non_fastball_spraychart_dataframe = spraychart_df(non_fastball_data)
                                     
-                                    # 해당 연도 및 투수 유형 데이터 필터링
-                                    year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
-                                    
-                                    # 투수 유형 필터링 (p_throws 또는 유사한 컬럼이 있다고 가정)
-                                    # 실제 데이터에 맞게 필터링 조건 수정 필요
-                                    pitcher_hand = 'R' if pitcher_type == "우투수" else 'L'
-                                    filtered_data = year_data[year_data['p_throws'] == pitcher_hand]
-                                    
-                                    if len(filtered_data) > 0:
-                                        # Spray Chart 데이터 생성
-                                        filtered_spraychart_dataframe = spraychart_df(filtered_data)
-                                        
-                                        # 타구 비행시간 차트 표시
-                                        spraychart_hangtime_fig = season_hangtime_spraychart(
-                                            filtered_spraychart_dataframe, 
-                                            batter_name=f"{batter_name} vs {pitcher_type} ({current_year})"
-                                        )
-                                        st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_{batter}_{pitcher_type}_{current_year}", use_container_width=True)
-                                    else:
-                                        st.info(f"{current_year} 시즌 {pitcher_type} 상대 데이터가 없습니다.")
-                            
-                            # 남은 컬럼에 빈 내용 표시
-                            for i in range(len(display_years), 3):
-                                with cols[i]:
-                                    st.write("#### 시즌 정보 없음")
-                                    st.info("해당 시즌의 데이터가 없습니다.")
+                                    # Non-Fastball 타구 비행시간 차트 표시 (세모 모양)
+                                    non_fastball_hangtime_fig = season_hangtime_spraychart_with_shape(
+                                        non_fastball_spraychart_dataframe, 
+                                        batter_name=f"{batter_name} Non-Fastball ({current_year})",
+                                        shape='triangle'
+                                    )
+                                    st.plotly_chart(non_fastball_hangtime_fig, key=f"non_fastball_hangtime_{batter}_{current_year}", use_container_width=True)
+                                else:
+                                    st.info(f"{current_year} 시즌 Non-Fastball 데이터가 없습니다.")
+                        
+                        # 남은 컬럼에 빈 내용 표시
+                        for i in range(len(display_years), 3):
+                            with nfb_cols[i]:
+                                st.write("#### 시즌 정보 없음")
+                                st.info("해당 시즌의 데이터가 없습니다.")
                     
-                    # 두 탭 모두에 적용되는 범례
+                    # 구종별 범례 (타구 비행시간)
+                    st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
+                            <span style="font-weight: bold;">모양 범례:</span> 
+                            동그라미: Fastball / 세모: Non-Fastball<br>
+                            <span style="font-weight: bold;">색상 범례:</span> 
+                            붉은색: 2~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상
+                            </div>
+                            """, 
+                            unsafe_allow_html=True)
+            
+                # 투수 유형별 타구 비행시간 expander
+                with st.expander(f"by 투수 유형별: {batter_name} (타구 비행시간)"):
+                    st.write("투수 유형별 타구 비행시간")
+                    
+                    # 탭 생성
+                    tab_righty, tab_lefty = st.tabs(["우투수", "좌투수"])
+                    
+                    # 우투수 탭
+                    with tab_righty:
+                        st.write("### 우투수 상대 (타구 비행시간)")
+                        # 3개 컬럼 생성
+                        righty_cols = st.columns(3)
+                        
+                        # 각 연도별 타구 비행시간 차트 표시 (최대 3개 연도)
+                        for i in range(min(3, len(display_years))):
+                            with righty_cols[i]:
+                                current_year = display_years[i]
+                                st.write(f"#### {current_year} 시즌")
+                                
+                                # 해당 연도 및 우투수 데이터 필터링
+                                year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
+                                righty_data = year_data[year_data['p_throws'] == 'R']
+                                
+                                if len(righty_data) > 0:
+                                    # Spray Chart 데이터 생성
+                                    righty_spraychart_dataframe = spraychart_df(righty_data)
+                                    
+                                    # 타구 비행시간 차트 표시
+                                    spraychart_hangtime_fig = season_hangtime_spraychart(
+                                        righty_spraychart_dataframe, 
+                                        batter_name=f"{batter_name} vs 우투수 ({current_year})"
+                                    )
+                                    st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_righty_{batter}_{current_year}", use_container_width=True)
+                                else:
+                                    st.info(f"{current_year} 시즌 우투수 상대 데이터가 없습니다.")
+                        
+                        # 남은 컬럼에 빈 내용 표시
+                        for i in range(len(display_years), 3):
+                            with righty_cols[i]:
+                                st.write("#### 시즌 정보 없음")
+                                st.info("해당 시즌의 데이터가 없습니다.")
+                    
+                    # 좌투수 탭
+                    with tab_lefty:
+                        st.write("### 좌투수 상대 (타구 비행시간)")
+                        # 3개 컬럼 생성
+                        lefty_cols = st.columns(3)
+                        
+                        # 각 연도별 타구 비행시간 차트 표시 (최대 3개 연도)
+                        for i in range(min(3, len(display_years))):
+                            with lefty_cols[i]:
+                                current_year = display_years[i]
+                                st.write(f"#### {current_year} 시즌")
+                                
+                                # 해당 연도 및 좌투수 데이터 필터링
+                                year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
+                                lefty_data = year_data[year_data['p_throws'] == 'L']
+                                
+                                if len(lefty_data) > 0:
+                                    # Spray Chart 데이터 생성
+                                    lefty_spraychart_dataframe = spraychart_df(lefty_data)
+                                    
+                                    # 타구 비행시간 차트 표시
+                                    spraychart_hangtime_fig = season_hangtime_spraychart(
+                                        lefty_spraychart_dataframe, 
+                                        batter_name=f"{batter_name} vs 좌투수 ({current_year})"
+                                    )
+                                    st.plotly_chart(spraychart_hangtime_fig, key=f"hangtime_lefty_{batter}_{current_year}", use_container_width=True)
+                                else:
+                                    st.info(f"{current_year} 시즌 좌투수 상대 데이터가 없습니다.")
+                        
+                        # 남은 컬럼에 빈 내용 표시
+                        for i in range(len(display_years), 3):
+                            with lefty_cols[i]:
+                                st.write("#### 시즌 정보 없음")
+                                st.info("해당 시즌의 데이터가 없습니다.")
+                    
+                    # 투수 유형별 범례
+                    st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
+                            <span style="font-weight: bold;">색상 범례:</span> 
+                            붉은색: 2~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상
+                            </div>
+                            """, 
+                            unsafe_allow_html=True)
+            
+                # KT_WIZ 투수별 분석 expander (타구 비행시간)
+                with st.expander(f"vs KT_WIZ 투수별: {batter_name} (타구 비행시간)"):
+                    st.write("KT_WIZ 투수별 스프레이 차트 - 타구 비행시간 기준")
+                    
+                    # KT_WIZ 투수 데이터 필터링
+                    kt_wiz_data = batter_raw_df[batter_raw_df['pitcherteam'] == 'KT_WIZ']
+                    
+                    if len(kt_wiz_data) > 0:
+                        # KT_WIZ 투수 목록 추출
+                        kt_pitchers = kt_wiz_data['player_name'].unique()
+                        
+                        if len(kt_pitchers) > 0:
+                            # 투수별 탭 생성 (최대 10명까지)
+                            pitcher_tabs = st.tabs([f"{pitcher}" for pitcher in kt_pitchers[:10]])
+                            
+                            for idx, pitcher in enumerate(kt_pitchers[:10]):
+                                with pitcher_tabs[idx]:
+                                    st.write(f"### vs {pitcher} (타구 비행시간)")
+                                    
+                                    # 해당 투수 데이터 필터링
+                                    pitcher_data = kt_wiz_data[kt_wiz_data['player_name'] == pitcher]
+                                    
+                                    # 연도별 컬럼 생성
+                                    pitcher_cols = st.columns(3)
+                                    
+                                    # 해당 투수와의 연도별 데이터 표시
+                                    pitcher_years = sorted(pitcher_data[year_col].unique(), reverse=True)
+                                    display_pitcher_years = pitcher_years[:3]
+                                    
+                                    for i in range(min(3, len(display_pitcher_years))):
+                                        with pitcher_cols[i]:
+                                            current_year = display_pitcher_years[i]
+                                            st.write(f"#### {current_year} 시즌")
+                                            
+                                            # 해당 연도 및 투수 데이터 필터링
+                                            year_pitcher_data = pitcher_data[pitcher_data[year_col] == current_year]
+                                            
+                                            if len(year_pitcher_data) > 0:
+                                                # Spray Chart 데이터 생성
+                                                pitcher_spraychart_dataframe = spraychart_df(year_pitcher_data)
+                                                
+                                                # 투수별 타구 비행시간 스프레이 차트 표시
+                                                pitcher_hangtime_fig = season_hangtime_spraychart(
+                                                    pitcher_spraychart_dataframe, 
+                                                    batter_name=f"{batter_name} vs {pitcher} ({current_year})"
+                                                )
+                                                st.plotly_chart(pitcher_hangtime_fig, key=f"kt_pitcher_hangtime_{batter}_{pitcher}_{current_year}", use_container_width=True)
+                                                
+                                                # 간단한 통계 표시
+                                                total_pitches = len(year_pitcher_data)
+                                                hits = len(year_pitcher_data[year_pitcher_data['events'].notna()])
+                                                st.write(f"총 대결: {total_pitches}구")
+                                                if hits > 0:
+                                                    st.write(f"안타: {hits}개")
+                                            else:
+                                                st.info(f"{current_year} 시즌 데이터 없음")
+                                    
+                                    # 남은 컬럼에 빈 내용 표시
+                                    for i in range(len(display_pitcher_years), 3):
+                                        with pitcher_cols[i]:
+                                            st.write("#### 시즌 정보 없음")
+                                            st.info("해당 시즌의 데이터가 없습니다.")
+                        else:
+                            st.info("KT_WIZ 투수 데이터가 없습니다.")
+                    else:
+                        st.info(f"{batter_name}의 KT_WIZ 상대 데이터가 없습니다.")
+                    
+                    # KT_WIZ 투수별 범례 (타구 비행시간)
                     st.markdown(""" <div style="text-align: left; font-size: 0.9em;">
                             <span style="font-weight: bold;">색상 범례:</span> 
                             붉은색: 2~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상
