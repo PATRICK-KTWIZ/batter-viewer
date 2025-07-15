@@ -509,7 +509,7 @@ def show_main_page():
                                 
                                 # 해당 연도 및 Fastball 데이터 필터링
                                 year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
-                                fastball_data = year_data[year_data['pkind'] == 'Fastball']
+                                fastball_data = year_data[year_data['p_kind'] == 'Fastball']
                                 
                                 if len(fastball_data) > 0:
                                     # Spray Chart 데이터 생성
@@ -544,7 +544,7 @@ def show_main_page():
                                 
                                 # 해당 연도 및 Non-Fastball 데이터 필터링
                                 year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
-                                non_fastball_data = year_data[year_data['pkind'] != 'Fastball']
+                                non_fastball_data = year_data[year_data['p_kind'] != 'Fastball']
                                 
                                 if len(non_fastball_data) > 0:
                                     # Spray Chart 데이터 생성
