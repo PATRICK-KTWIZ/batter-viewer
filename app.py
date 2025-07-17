@@ -580,11 +580,11 @@ def show_main_page():
                                     st.write("#### 시즌 정보 없음")
                                     st.info("해당 시즌의 데이터가 없습니다.")
                 
-                # after_2s 컬럼 확인
-                after_2s_col = 'after_2s' if 'after_2s' in batter_raw_df.columns else None
+                # count_value 컬럼 확인
+                count_value_col = 'count_value' if 'count_value' in batter_raw_df.columns else None
                 
                 # Expander 2: 2S 이후 (투수유형별/연도별)
-                if pitcher_hand_col is not None and after_2s_col is not None:
+                if pitcher_hand_col is not None and count_value_col is not None:
                     with st.expander(f"2S 이후 (투수유형별/연도별): {batter_name}"):
                         st.write("2스트라이크 이후 투수 유형별 타구 비행시간 (연도별)")
                         
@@ -603,7 +603,7 @@ def show_main_page():
                                     
                                     # 해당 연도, 우투수, 2스트라이크 이후 데이터 필터링
                                     year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
-                                    righty_2s_data = year_data[(year_data[pitcher_hand_col] == 'R') & (year_data[after_2s_col] == 1)]
+                                    righty_2s_data = year_data[(year_data[pitcher_hand_col] == 'R') & (year_data[count_value_col] == 'After_2S')]
                                     
                                     if len(righty_2s_data) > 0 and pitch_type_col is not None:
                                         # Fastball과 Non-Fastball 구분 (p_kind 컬럼 기준)
@@ -637,7 +637,7 @@ def show_main_page():
                                     
                                     # 해당 연도, 좌투수, 2스트라이크 이후 데이터 필터링
                                     year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
-                                    lefty_2s_data = year_data[(year_data[pitcher_hand_col] == 'L') & (year_data[after_2s_col] == 1)]
+                                    lefty_2s_data = year_data[(year_data[pitcher_hand_col] == 'L') & (year_data[count_value_col] == 'After_2S')]
                                     
                                     if len(lefty_2s_data) > 0 and pitch_type_col is not None:
                                         # Fastball과 Non-Fastball 구분 (p_kind 컬럼 기준)
