@@ -1271,7 +1271,7 @@ def season_hangtime_spraychart_combined(fastball_data, non_fastball_data, batter
     #     type="line", 
     #     x0=0, y0=28, x1=0, y1=130,  # 3루선 (좌측 파울라인)
     #     line=dict(color='rgba(108,122,137,0.5)', line_width=3, dash='dash')
-    )
+    # )
     
     # 야구장 요소 추가
     # 내야 각루 (홈플레이트를 중심으로 한 다이아몬드)
