@@ -1218,7 +1218,7 @@ def season_hangtime_spraychart_combined(fastball_data, non_fastball_data, batter
         
         fig.add_trace(go.Scatter(
             x=non_fastball_spraychart_df['groundX'],
-            y=non_fastball_scraychart_df['groundY'],
+            y=non_fastball_spraychart_df['groundY'],
             mode='markers',
             marker=dict(
                 symbol='triangle-up',
