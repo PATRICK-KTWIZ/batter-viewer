@@ -3,6 +3,7 @@ import streamlit as st
 from datetime import timedelta
 import plotly.express as px
 import plotly.graph_objects as go
+from definition import spraychart_df
 
 def factor_year_count_map(dataframe, y_factor):
 
