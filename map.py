@@ -1264,12 +1264,20 @@ def season_hangtime_spraychart_combined(fastball_data, non_fastball_data, batter
     # 야구장 요소 추가 (기존 함수와 동일)
     # 홈플레이트
     fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5)
+
+    # 홈플레이트 연장선
+    fig.add_vline(x=0.28, line_width=3, line_color='rgba(108,122,137,0.5)')
+    fig.add_hline(y=0.28, line_width=3, line_color='rgba(108,122,137,0.5)')
+
     
     # 외야 경계
     fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5)
     
-    # 내야-외야 경계선
+    # 외야 경계선
     fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width=5)
+
+    # 수비위치 경계선
+    fig.add_shape(type="path", path="M 0,70 Q 82,82 70,0", line_color="rgba(108,122,137,0.5)", line_width=3)
     
     return fig
 
