@@ -1184,7 +1184,7 @@ def season_hangtime_spraychart_combined(fastball_data, non_fastball_data, batter
                 size=22,
                 color=fastball_colors,
                 opacity=1,
-                line=dict(width=1, color='rgba(108,122,137,0.7)')
+                line=dict(width=0)  # 경계선 제거
             ),
             name='Fastball',
             text=hover_text,
@@ -1225,7 +1225,7 @@ def season_hangtime_spraychart_combined(fastball_data, non_fastball_data, batter
                 size=22,
                 color=non_fastball_colors,
                 opacity=1,
-                line=dict(width=1, color='rgba(108,122,137,0.7)')
+                line=dict(width=0)  # 경계선 제거
             ),
             name='Non-Fastball',
             text=hover_text,
@@ -1261,25 +1261,54 @@ def season_hangtime_spraychart_combined(fastball_data, non_fastball_data, batter
     # 범례 숨기기
     fig.update_layout(showlegend=False)
     
-    # 야구장 요소 추가 (기존 함수와 동일)
-    # 홈플레이트
+    # 야구장 요소 추가
+    # 내야 각루 (홈플레이트를 중심으로 한 다이아몬드)
     fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5)
 
-    # 홈플레이트 연장선
-    fig.add_vline(x=0.28, line_width=3, line_color='rgba(108,122,137,0.5)')
-    fig.add_hline(y=0.28, line_width=3, line_color='rgba(108,122,137,0.5)')
-
+    # 내야에서 외야로 연장되는 파울라인 (1루선과 3루선)
+    fig.add_shape(
+        type="line",
+        x0=28, y0=0, x1=130, y1=0,  # 1루선 (우측 파울라인)
+        line=dict(color='rgba(108,122,137,0.5)', width=3, dash='dash')
+    )
+    fig.add_shape(
+        type="line", 
+        x0=0, y0=28, x1=0, y1=130,  # 3루선 (좌측 파울라인)
+        line=dict(color='rgba(108,122,137,0.5)', width=3, dash='dash')
+    )
     
     # 외야 경계
     fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5)
     
-    # 외야 경계선
+    # 외야 경계선 (호 모양)
     fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width=5)
 
-    # 수비위치 경계선
-    fig.add_shape(type="path", path="M 0,70 Q 82,82 70,0", line_color="rgba(108,122,137,0.5)", line_width=3)
+    # 수비위치 경계선 (내야와 외야 사이)
+    fig.add_shape(type="path", path="M 0,75 Q 90,90 75,0", line=dict(color="rgba(108,122,137,0.5)", width=3, dash="dash"))
+
+        # 수비위치 경계선에 "75" 텍스트 추가
+    fig.add_annotation(
+        x=0, y=75,  # 좌측 y축 기준선
+        text="75",
+        showarrow=False,
+        font=dict(size=12, color="rgba(108,122,137,0.8)"),
+        xanchor="right",
+        yanchor="middle",
+        xshift=-5  # 축에서 약간 왼쪽으로 이동
+    )
+    
+    fig.add_annotation(
+        x=75, y=0,  # 하단 x축 기준선
+        text="75",
+        showarrow=False,
+        font=dict(size=12, color="rgba(108,122,137,0.8)"),
+        xanchor="center",
+        yanchor="top",
+        yshift=-5  # 축에서 약간 아래로 이동
+    )
     
     return fig
+
 
 
 
