@@ -919,7 +919,6 @@ def show_main_page():
                                             
                                             # 해당 투수와의 연도별 데이터 표시
                                             pitcher_years = sorted(pitcher_data[year_col].unique(), reverse=True)
-                                                                            pitcher_years = sorted(pitcher_data[year_col].unique(), reverse=True)
                                             display_pitcher_years = pitcher_years[:3]
                                             
                                             for i in range(min(3, len(display_pitcher_years))):
@@ -969,6 +968,8 @@ def show_main_page():
                                 unsafe_allow_html=True)
                 else:
                     st.info("투수 정보가 없어 KT_WIZ 투수별 분석을 건너뜁니다.")
+
+
 
                 
 
