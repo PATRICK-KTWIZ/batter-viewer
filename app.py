@@ -455,18 +455,8 @@ def show_main_page():
                 # 3개 컬럼 생성 - 기본 타구비행시간 차트
                 cols = st.columns(3)
                 
-                # 구종 컬럼 확인
-                pitch_type_col = None
-                possible_pitch_cols = ['pkind', 'pitch_type', 'pitch_name', 'pitch_code', 'ptype']
-                
-                for col in possible_pitch_cols:
-                    if col in batter_raw_df.columns:
-                        pitch_type_col = col
-                        break
-                
-                # Fastball 판별 로직
-                fastball_types = ['Fastball', 'FF', '4-Seam Fastball', 'Fourseam', 'Four-Seam Fastball', 
-                                'Sinker', 'SI', 'Two-Seam Fastball', 'Twoseam', 'FT']
+                # p_kind 컬럼 확인
+                pitch_type_col = 'p_kind' if 'p_kind' in batter_raw_df.columns else None
                 
                 # 각 연도별 기본 데이터 표시 (Fastball: 동그라미, Non-Fastball: 세모)
                 for i in range(min(3, len(display_years))):
@@ -478,9 +468,9 @@ def show_main_page():
                         year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
                         
                         if len(year_data) > 0 and pitch_type_col is not None:
-                            # Fastball과 Non-Fastball 구분
-                            fastball_data = year_data[year_data[pitch_type_col].isin(fastball_types)]
-                            non_fastball_data = year_data[~year_data[pitch_type_col].isin(fastball_types)]
+                            # Fastball과 Non-Fastball 구분 (p_kind 컬럼 기준)
+                            fastball_data = year_data[year_data[pitch_type_col] == 'Fastball']
+                            non_fastball_data = year_data[year_data[pitch_type_col] != 'Fastball']
                             
                             # 통합 차트 생성 (모양으로 구분: Fastball=동그라미, Non-Fastball=세모)
                             combined_fig = season_hangtime_spraychart_combined(
@@ -543,9 +533,9 @@ def show_main_page():
                                     righty_data = year_data[year_data[pitcher_hand_col] == 'R']
                                     
                                     if len(righty_data) > 0 and pitch_type_col is not None:
-                                        # Fastball과 Non-Fastball 구분
-                                        fastball_data = righty_data[righty_data[pitch_type_col].isin(fastball_types)]
-                                        non_fastball_data = righty_data[~righty_data[pitch_type_col].isin(fastball_types)]
+                                        # Fastball과 Non-Fastball 구분 (p_kind 컬럼 기준)
+                                        fastball_data = righty_data[righty_data[pitch_type_col] == 'Fastball']
+                                        non_fastball_data = righty_data[righty_data[pitch_type_col] != 'Fastball']
                                         
                                         # 통합 차트 생성
                                         combined_fig = season_hangtime_spraychart_combined(
@@ -577,9 +567,9 @@ def show_main_page():
                                     lefty_data = year_data[year_data[pitcher_hand_col] == 'L']
                                     
                                     if len(lefty_data) > 0 and pitch_type_col is not None:
-                                        # Fastball과 Non-Fastball 구분
-                                        fastball_data = lefty_data[lefty_data[pitch_type_col].isin(fastball_types)]
-                                        non_fastball_data = lefty_data[~lefty_data[pitch_type_col].isin(fastball_types)]
+                                        # Fastball과 Non-Fastball 구분 (p_kind 컬럼 기준)
+                                        fastball_data = lefty_data[lefty_data[pitch_type_col] == 'Fastball']
+                                        non_fastball_data = lefty_data[lefty_data[pitch_type_col] != 'Fastball']
                                         
                                         # 통합 차트 생성
                                         combined_fig = season_hangtime_spraychart_combined(
@@ -628,9 +618,9 @@ def show_main_page():
                                     righty_2s_data = year_data[(year_data[pitcher_hand_col] == 'R') & (year_data[strikes_col] == 2)]
                                     
                                     if len(righty_2s_data) > 0 and pitch_type_col is not None:
-                                        # Fastball과 Non-Fastball 구분
-                                        fastball_data = righty_2s_data[righty_2s_data[pitch_type_col].isin(fastball_types)]
-                                        non_fastball_data = righty_2s_data[~righty_2s_data[pitch_type_col].isin(fastball_types)]
+                                        # Fastball과 Non-Fastball 구분 (p_kind 컬럼 기준)
+                                        fastball_data = righty_2s_data[righty_2s_data[pitch_type_col] == 'Fastball']
+                                        non_fastball_data = righty_2s_data[righty_2s_data[pitch_type_col] != 'Fastball']
                                         
                                         # 통합 차트 생성
                                         combined_fig = season_hangtime_spraychart_combined(
@@ -662,9 +652,9 @@ def show_main_page():
                                     lefty_2s_data = year_data[(year_data[pitcher_hand_col] == 'L') & (year_data[strikes_col] == 2)]
                                     
                                     if len(lefty_2s_data) > 0 and pitch_type_col is not None:
-                                        # Fastball과 Non-Fastball 구분
-                                        fastball_data = lefty_2s_data[lefty_2s_data[pitch_type_col].isin(fastball_types)]
-                                        non_fastball_data = lefty_2s_data[~lefty_2s_data[pitch_type_col].isin(fastball_types)]
+                                        # Fastball과 Non-Fastball 구분 (p_kind 컬럼 기준)
+                                        fastball_data = lefty_2s_data[lefty_2s_data[pitch_type_col] == 'Fastball']
+                                        non_fastball_data = lefty_2s_data[lefty_2s_data[pitch_type_col] != 'Fastball']
                                         
                                         # 통합 차트 생성
                                         combined_fig = season_hangtime_spraychart_combined(
@@ -748,9 +738,9 @@ def show_main_page():
                                                     year_pitcher_data = pitcher_all_data[pitcher_all_data[year_col] == current_year]
                                                     
                                                     if len(year_pitcher_data) > 0 and pitch_type_col is not None:
-                                                        # Fastball과 Non-Fastball 구분
-                                                        fastball_data = year_pitcher_data[year_pitcher_data[pitch_type_col].isin(fastball_types)]
-                                                        non_fastball_data = year_pitcher_data[~year_pitcher_data[pitch_type_col].isin(fastball_types)]
+                                                        # Fastball과 Non-Fastball 구분 (p_kind 컬럼 기준)
+                                                        fastball_data = year_pitcher_data[year_pitcher_data[pitch_type_col] == 'Fastball']
+                                                        non_fastball_data = year_pitcher_data[year_pitcher_data[pitch_type_col] != 'Fastball']
                                                         
                                                         # 통합 차트 생성
                                                         combined_fig = season_hangtime_spraychart_combined(
