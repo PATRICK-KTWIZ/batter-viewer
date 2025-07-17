@@ -580,11 +580,11 @@ def show_main_page():
                                     st.write("#### 시즌 정보 없음")
                                     st.info("해당 시즌의 데이터가 없습니다.")
                 
-                # 스트라이크 컬럼 확인 (strikes 사용)
-                strikes_col = 'strikes' if 'strikes' in batter_raw_df.columns else None
+                # after_2s 컬럼 확인
+                after_2s_col = 'after_2s' if 'after_2s' in batter_raw_df.columns else None
                 
                 # Expander 2: 2S 이후 (투수유형별/연도별)
-                if pitcher_hand_col is not None and strikes_col is not None:
+                if pitcher_hand_col is not None and after_2s_col is not None:
                     with st.expander(f"2S 이후 (투수유형별/연도별): {batter_name}"):
                         st.write("2스트라이크 이후 투수 유형별 타구 비행시간 (연도별)")
                         
@@ -601,9 +601,9 @@ def show_main_page():
                                     current_year = display_years[i]
                                     st.write(f"#### {current_year} 시즌")
                                     
-                                    # 해당 연도, 우투수, 2스트라이크 데이터 필터링
+                                    # 해당 연도, 우투수, 2스트라이크 이후 데이터 필터링
                                     year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
-                                    righty_2s_data = year_data[(year_data[pitcher_hand_col] == 'R') & (year_data[strikes_col] == 2)]
+                                    righty_2s_data = year_data[(year_data[pitcher_hand_col] == 'R') & (year_data[after_2s_col] == 1)]
                                     
                                     if len(righty_2s_data) > 0 and pitch_type_col is not None:
                                         # Fastball과 Non-Fastball 구분 (p_kind 컬럼 기준)
@@ -635,9 +635,9 @@ def show_main_page():
                                     current_year = display_years[i]
                                     st.write(f"#### {current_year} 시즌")
                                     
-                                    # 해당 연도, 좌투수, 2스트라이크 데이터 필터링
+                                    # 해당 연도, 좌투수, 2스트라이크 이후 데이터 필터링
                                     year_data = batter_raw_df[batter_raw_df[year_col] == current_year]
-                                    lefty_2s_data = year_data[(year_data[pitcher_hand_col] == 'L') & (year_data[strikes_col] == 2)]
+                                    lefty_2s_data = year_data[(year_data[pitcher_hand_col] == 'L') & (year_data[after_2s_col] == 1)]
                                     
                                     if len(lefty_2s_data) > 0 and pitch_type_col is not None:
                                         # Fastball과 Non-Fastball 구분 (p_kind 컬럼 기준)
