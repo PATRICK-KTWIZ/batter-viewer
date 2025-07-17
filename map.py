@@ -1136,6 +1136,144 @@ def season_hangtime_spraychart(dataframe, batter_name=None):
     
     return hangtime_fig
 
+def season_hangtime_spraychart_combined(fastball_data, non_fastball_data, batter_name=None):
+    """
+    Fastball과 Non-Fastball 데이터를 하나의 차트에 다른 모양으로 표시
+    """
+    import plotly.graph_objects as go
+    
+    # 타구 비행시간에 따른 색상 맵 정의
+    colors = {
+        'short': 'rgba(67,89,119,0.5)',  
+        'challenge': 'rgba(255,72,120,0.5)',     
+        'long': 'rgba(140,86,75,0.3)'      
+    }
+    
+    fig = go.Figure()
+    
+    # Fastball 데이터 처리 (동그라미)
+    if len(fastball_data) > 0:
+        fastball_spraychart_df = spraychart_df(fastball_data)
+        
+        # hangtime_type에 따른 색상 적용
+        fastball_colors = []
+        for hangtime_type in fastball_spraychart_df['hangtime_type']:
+            fastball_colors.append(colors.get(hangtime_type, 'rgba(128,128,128,0.5)'))
+        
+        # hover_data 준비
+        hover_text = []
+        for idx, row in fastball_spraychart_df.iterrows():
+            hover_info = f"<b>Fastball</b><br>"
+            if 'hang_time' in row:
+                hover_info += f"Hang Time: {row['hang_time']:.2f}s<br>"
+            if 'exit_velocity' in row:
+                hover_info += f"Exit Velocity: {row['exit_velocity']}<br>"
+            if 'launch_angle' in row:
+                hover_info += f"Launch Angle: {row['launch_angle']}°<br>"
+            if 'events' in row:
+                hover_info += f"Result: {row['events']}<br>"
+            hover_text.append(hover_info)
+        
+        fig.add_trace(go.Scatter(
+            x=fastball_spraychart_df['groundX'],
+            y=fastball_spraychart_df['groundY'],
+            mode='markers',
+            marker=dict(
+                symbol='circle',
+                size=22,
+                color=fastball_colors,
+                opacity=1,
+                line=dict(width=1, color='rgba(108,122,137,0.7)')
+            ),
+            name='Fastball',
+            text=hover_text,
+            hovertemplate='%{text}<extra></extra>'
+        ))
+    
+    # Non-Fastball 데이터 처리 (세모)
+    if len(non_fastball_data) > 0:
+        non_fastball_spraychart_df = spraychart_df(non_fastball_data)
+        
+        # hangtime_type에 따른 색상 적용
+        non_fastball_colors = []
+        for hangtime_type in non_fastball_spraychart_df['hangtime_type']:
+            non_fastball_colors.append(colors.get(hangtime_type, 'rgba(128,128,128,0.5)'))
+        
+        # hover_data 준비
+        hover_text = []
+        for idx, row in non_fastball_spraychart_df.iterrows():
+            hover_info = f"<b>Non-Fastball</b><br>"
+            if 'hang_time' in row:
+                hover_info += f"Hang Time: {row['hang_time']:.2f}s<br>"
+            if 'exit_velocity' in row:
+                hover_info += f"Exit Velocity: {row['exit_velocity']}<br>"
+            if 'launch_angle' in row:
+                hover_info += f"Launch Angle: {row['launch_angle']}°<br>"
+            if 'events' in row:
+                hover_info += f"Result: {row['events']}<br>"
+            if 'pitch_name' in row:
+                hover_info += f"Pitch: {row['pitch_name']}<br>"
+            hover_text.append(hover_info)
+        
+        fig.add_trace(go.Scatter(
+            x=non_fastball_spraychart_df['groundX'],
+            y=non_fastball_scraychart_df['groundY'],
+            mode='markers',
+            marker=dict(
+                symbol='triangle-up',
+                size=22,
+                color=non_fastball_colors,
+                opacity=1,
+                line=dict(width=1, color='rgba(108,122,137,0.7)')
+            ),
+            name='Non-Fastball',
+            text=hover_text,
+            hovertemplate='%{text}<extra></extra>'
+        ))
+    
+    # 타이틀 설정
+    if batter_name:
+        fig.update_layout(title=f"{batter_name} - 타구 비행시간")
+    
+    # 레이아웃 설정 (기존 함수와 동일)
+    fig.update_layout(
+        autosize=False, 
+        margin=dict(l=0, r=10, t=30, b=0), 
+        xaxis_range=[-10, 130], 
+        yaxis_range=[-10, 130],
+        plot_bgcolor='rgba(255,255,255,1)', 
+        paper_bgcolor='rgba(255,255,255,1)',
+        height=450, 
+        width=600
+    )
+
+    # 모든 subplot에 대한 y축 제목 제거
+    fig.update_xaxes(title_text='', showticklabels=False)
+    fig.update_yaxes(title_text='', showticklabels=False)
+    
+    # 그리드 및 축 설정
+    fig.update_yaxes(gridcolor='rgba(255,255,255,1)')
+    fig.update_xaxes(gridcolor='rgba(255,255,255,1)')
+    fig.update_xaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    fig.update_yaxes(showline=True, linewidth=1, linecolor='rgba(108,122,137,0.9)', mirror=True)
+    
+    # 범례 숨기기
+    fig.update_layout(showlegend=False)
+    
+    # 야구장 요소 추가 (기존 함수와 동일)
+    # 홈플레이트
+    fig.add_shape(type="rect", x0=0, y0=0, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)"), line_width=5)
+    
+    # 외야 경계
+    fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5)
+    
+    # 내야-외야 경계선
+    fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width=5)
+    
+    return fig
+
+
+
 
 
 
