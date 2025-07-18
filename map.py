@@ -1270,19 +1270,11 @@ def season_hangtime_spraychart_combined(fastball_data, non_fastball_data, batter
     # 외야 경계
     fig.add_shape(type="rect", x0=0, y0=0, x1=135, y1=135, line=dict(color="rgba(108,122,137,0.7)"), line_width=5)
 
-    # # 연장선
-    # fig.add_shape(type="rect", x0=0, y0=28, x1=135, y1=135,
-    #               line=dict(color="rgba(108,122,137,0.7)", width=3, dash="dash"))
     # 연장선
-    fig.add_shape(type="rect", x0=28, y0=0, x1=135, y1=135,
-                  line=dict(color="rgba(108,122,137,0.7)", width=3, dash="dash"))
-
-    # 연장선
-    fig.add_shape(
-        type="path", 
-        path="M 28 28 L 135 28 L 135 135 Z",
-        line=dict(color="rgba(108,122,137,0.7)", width=3, dash="dash")
-    )
+    fig.add_shape(type="line", x0=120, y0=120, x1=0, y1=0, line=dict(color="rgba(108,122,137,0.7)", width=3, dash="dash"))
+    fig.add_shape(type="line", x0=105, y0=28, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)", width=3, dash="dash"))
+    fig.add_shape(type="line", x0=28, y0=105, x1=28, y1=28, line=dict(color="rgba(108,122,137,0.7)", width=3, dash="dash"))
+    
     
     # 외야 경계선 (호 모양)
     fig.add_shape(type="path", path="M 0,100 Q 120,120 100,0", line_color="rgba(108,122,137,0.7)", line_width=5)
