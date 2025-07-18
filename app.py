@@ -679,31 +679,54 @@ def show_main_page():
                 # Expander 3: KT WIZ 투수별
                 if pitcher_team_col is not None and pitcher_name_col is not None:
                     with st.expander(f"KT WIZ 투수별: {batter_name}"):
-                        st.write("KT WIZ 투수별 타구 비행시간")
+                        st.write("KT WIZ 투수별 타구 비행시간 (선수 ID 기준)")
                         
-                        # KT_WIZ 데이터 필터링
+                        # 1단계: KT_WIZ 팀 데이터 필터링
                         kt_wiz_data = batter_raw_df[batter_raw_df[pitcher_team_col] == 'KT_WIZ']
                         
                         if len(kt_wiz_data) > 0:
-                            # 2025년 KT WIZ 투수 목록을 먼저 추출 (기준점)
+                            # 2단계: 2025년 KT WIZ 투수 데이터 필터링
                             kt_wiz_2025_data = kt_wiz_data[kt_wiz_data[year_col] == 2025]
                             
                             if len(kt_wiz_2025_data) > 0:
-                                # 2025년에 KT WIZ에 소속된 투수들만 추출
-                                kt_pitchers_2025 = kt_wiz_2025_data[pitcher_name_col].unique()
-                                st.write(f"2025년 KT WIZ 투수 기준 필터링: {len(kt_pitchers_2025)}명")
-                                st.write(f"투수 목록: {', '.join(kt_pitchers_2025)}")
+                                # 3단계: 2025년 KT WIZ 소속 투수들의 선수 ID 추출
+                                kt_pitcher_ids_2025 = kt_wiz_2025_data['pitcher'].unique()  # 선수 ID 컬럼
+                                kt_pitcher_names_2025 = kt_wiz_2025_data[pitcher_name_col].unique()  # 선수 이름
                                 
-                                # 2025년 KT WIZ 투수들의 전체 연도 데이터 필터링
-                                kt_filtered_data = kt_wiz_data[kt_wiz_data[pitcher_name_col].isin(kt_pitchers_2025)]
+                                st.write(f"2025년 KT WIZ 투수 기준 필터링: {len(kt_pitcher_ids_2025)}명")
+                                st.write(f"투수 목록: {', '.join(kt_pitcher_names_2025)}")
                                 
-                                # 각 투수별로 expander 생성
-                                for pitcher in kt_pitchers_2025[:20]:  # 최대 20명으로 제한
-                                    with st.expander(f"vs {pitcher}"):
-                                        # 해당 투수의 모든 연도 데이터
-                                        pitcher_data = kt_filtered_data[kt_filtered_data[pitcher_name_col] == pitcher]
+                                # 4단계: 해당 투수 ID들의 전체 데이터프레임에서 모든 연도 데이터 추출
+                                all_pitcher_data = batter_raw_df[batter_raw_df['pitcher'].isin(kt_pitcher_ids_2025)]
+                                
+                                # 투수 ID와 이름 매핑 딕셔너리 생성 (최신 이름 기준)
+                                pitcher_id_to_name = {}
+                                for pitcher_id in kt_pitcher_ids_2025:
+                                    pitcher_name_data = all_pitcher_data[all_pitcher_data['pitcher'] == pitcher_id]
+                                    if len(pitcher_name_data) > 0:
+                                        # 가장 최근 연도의 이름 사용
+                                        latest_year_data = pitcher_name_data[pitcher_name_data[year_col] == pitcher_name_data[year_col].max()]
+                                        pitcher_name = latest_year_data[pitcher_name_col].iloc[0]
+                                        pitcher_id_to_name[pitcher_id] = pitcher_name
+                                
+                                # 각 투수별로 expander 생성 (선수 ID 기준)
+                                for pitcher_id in list(kt_pitcher_ids_2025)[:20]:  # 최대 20명으로 제한
+                                    pitcher_name = pitcher_id_to_name.get(pitcher_id, f"ID_{pitcher_id}")
+                                    
+                                    with st.expander(f"vs {pitcher_name} (ID: {pitcher_id})"):
+                                        # 해당 투수 ID의 모든 연도 데이터
+                                        pitcher_data = all_pitcher_data[all_pitcher_data['pitcher'] == pitcher_id]
                                         
-                                        st.write(f"### vs {pitcher}")
+                                        st.write(f"### vs {pitcher_name}")
+                                        st.write(f"**선수 ID:** {pitcher_id}")
+                                        
+                                        # 투수의 팀 이력 표시
+                                        team_history = pitcher_data.groupby([year_col, pitcher_team_col]).size().reset_index()
+                                        team_history = team_history.sort_values(year_col, ascending=False)
+                                        if len(team_history) > 1:
+                                            st.write("**팀 이력:**")
+                                            for _, row in team_history.iterrows():
+                                                st.write(f"- {row[year_col]}년: {row[pitcher_team_col]}")
                                         
                                         # 연도별 컬럼 생성
                                         pitcher_cols = st.columns(3)
@@ -715,10 +738,15 @@ def show_main_page():
                                         for i in range(min(3, len(display_pitcher_years))):
                                             with pitcher_cols[i]:
                                                 current_year = display_pitcher_years[i]
-                                                st.write(f"#### {current_year} 시즌")
                                                 
-                                                # 해당 연도 및 투수 데이터 필터링
+                                                # 해당 연도 투수 데이터 필터링
                                                 year_pitcher_data = pitcher_data[pitcher_data[year_col] == current_year]
+                                                
+                                                # 해당 연도의 팀 정보
+                                                year_team = year_pitcher_data[pitcher_team_col].iloc[0] if len(year_pitcher_data) > 0 else "Unknown"
+                                                
+                                                st.write(f"#### {current_year} 시즌")
+                                                st.write(f"**소속팀:** {year_team}")
                                                 
                                                 if len(year_pitcher_data) > 0 and pitch_type_col is not None:
                                                     # Fastball과 Non-Fastball 구분 (p_kind 컬럼 기준)
@@ -728,13 +756,18 @@ def show_main_page():
                                                     # 통합 차트 생성
                                                     combined_fig = season_hangtime_spraychart_combined(
                                                         fastball_data, non_fastball_data,
-                                                        batter_name=f"{batter_name} vs {pitcher} ({current_year})"
+                                                        batter_name=f"{batter_name} vs {pitcher_name} ({current_year}, {year_team})"
                                                     )
-                                                    st.plotly_chart(combined_fig, key=f"kt_{batter}_{pitcher}_{current_year}", use_container_width=True)
+                                                    st.plotly_chart(combined_fig, key=f"kt_{batter}_{pitcher_id}_{current_year}", use_container_width=True)
                                                     
                                                     # 간단한 통계 표시
                                                     total_pitches = len(year_pitcher_data)
-                                                    st.write(f"총 대결: {total_pitches}구")
+                                                    fastball_count = len(fastball_data)
+                                                    non_fastball_count = len(non_fastball_data)
+                                                    
+                                                    st.write(f"**총 대결:** {total_pitches}구")
+                                                    st.write(f"- Fastball: {fastball_count}구")
+                                                    st.write(f"- Non-Fastball: {non_fastball_count}구")
                                                 else:
                                                     st.info(f"{current_year} 시즌 데이터 없음")
                                         
@@ -743,6 +776,12 @@ def show_main_page():
                                             with pitcher_cols[i]:
                                                 st.write("#### 시즌 정보 없음")
                                                 st.info("해당 시즌의 데이터가 없습니다.")
+                                        
+                                        # 전체 통계 요약
+                                        total_matchups = len(pitcher_data)
+                                        if total_matchups > 0:
+                                            st.write("---")
+                                            st.write(f"**전체 대결 통계:** {total_matchups}구 ({min(pitcher_years)}~{max(pitcher_years)})")
                             else:
                                 st.info("2025년 KT_WIZ 투수 데이터가 없습니다.")
                         else:
@@ -752,7 +791,8 @@ def show_main_page():
                 st.markdown("""
                 <div style="text-align: left; font-size: 0.9em; margin-top: 20px;">
                 <span style="font-weight: bold;">모양 구분:</span> ● Fastball / ▲ Non-Fastball<br>
-                <span style="font-weight: bold;">색상 범례:</span> 붉은색: 2~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상
+                <span style="font-weight: bold;">색상 범례:</span> 붉은색: 2~4초 비행 / 옅은 파란색: 1초 미만 / 옅은 갈색: 4초 이상<br>
+                <span style="font-weight: bold;">※ 선수 ID 기준:</span> 시즌간 이적한 투수의 모든 팀 데이터 포함
                 </div>
                 """, unsafe_allow_html=True)
 
