@@ -692,7 +692,7 @@ def show_main_page():
                                 st.write(f"KT WIZ 투수 목록: {', '.join(kt_pitchers)}")
                                 
                                 # 각 투수별로 expander 생성
-                                for pitcher in kt_pitchers[:15]:  # 최대 15명으로 제한
+                                for pitcher in kt_pitchers[:20]:  # 최대 15명으로 제한
                                     with st.expander(f"vs {pitcher}"):
                                         # 해당 투수의 모든 데이터
                                         pitcher_data = kt_wiz_data[kt_wiz_data[pitcher_name_col] == pitcher]
