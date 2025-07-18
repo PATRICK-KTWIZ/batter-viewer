@@ -1280,7 +1280,7 @@ def season_hangtime_spraychart_combined(fastball_data, non_fastball_data, batter
     # 연장선
     fig.add_shape(
         type="path", 
-        path="M 0 28 L 135 28 L 135 135 Z",
+        path="M 28 28 L 135 28 L 135 135 Z",
         line=dict(color="rgba(108,122,137,0.7)", width=3, dash="dash")
     )
     
