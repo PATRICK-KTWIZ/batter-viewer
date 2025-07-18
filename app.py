@@ -685,17 +685,23 @@ def show_main_page():
                         kt_wiz_data = batter_raw_df[batter_raw_df[pitcher_team_col] == 'KT_WIZ']
                         
                         if len(kt_wiz_data) > 0:
-                            # KT WIZ 투수 목록 추출
-                            kt_pitchers = kt_wiz_data[pitcher_name_col].unique()
+                            # 2025년 KT WIZ 투수 목록을 먼저 추출 (기준점)
+                            kt_wiz_2025_data = kt_wiz_data[kt_wiz_data[year_col] == 2025]
                             
-                            if len(kt_pitchers) > 0:
-                                st.write(f"KT WIZ 투수 목록: {', '.join(kt_pitchers)}")
+                            if len(kt_wiz_2025_data) > 0:
+                                # 2025년에 KT WIZ에 소속된 투수들만 추출
+                                kt_pitchers_2025 = kt_wiz_2025_data[pitcher_name_col].unique()
+                                st.write(f"2025년 KT WIZ 투수 기준 필터링: {len(kt_pitchers_2025)}명")
+                                st.write(f"투수 목록: {', '.join(kt_pitchers_2025)}")
+                                
+                                # 2025년 KT WIZ 투수들의 전체 연도 데이터 필터링
+                                kt_filtered_data = kt_wiz_data[kt_wiz_data[pitcher_name_col].isin(kt_pitchers_2025)]
                                 
                                 # 각 투수별로 expander 생성
-                                for pitcher in kt_pitchers[:20]:  # 최대 15명으로 제한
+                                for pitcher in kt_pitchers_2025[:20]:  # 최대 20명으로 제한
                                     with st.expander(f"vs {pitcher}"):
-                                        # 해당 투수의 모든 데이터
-                                        pitcher_data = kt_wiz_data[kt_wiz_data[pitcher_name_col] == pitcher]
+                                        # 해당 투수의 모든 연도 데이터
+                                        pitcher_data = kt_filtered_data[kt_filtered_data[pitcher_name_col] == pitcher]
                                         
                                         st.write(f"### vs {pitcher}")
                                         
@@ -738,7 +744,7 @@ def show_main_page():
                                                 st.write("#### 시즌 정보 없음")
                                                 st.info("해당 시즌의 데이터가 없습니다.")
                             else:
-                                st.info("KT_WIZ 투수 데이터가 없습니다.")
+                                st.info("2025년 KT_WIZ 투수 데이터가 없습니다.")
                         else:
                             st.info(f"{batter_name}의 KT_WIZ 상대 데이터가 없습니다.")
                 
