@@ -99,7 +99,7 @@ required_columns = [
     'groundX', 'groundY', 'hang_time'
 ]
 
-@st.cache_data(ttl=3600)
+@st.cache_data(ttl=3600, show_spinner=False)
 def get_kbo_data():
     """KBO 1군 데이터만 가져오는 함수"""
     try:
@@ -108,7 +108,7 @@ def get_kbo_data():
         # 릴리스 정보 가져오기
         release_url = f"https://api.github.com/repos/{OWNER}/{REPO}/releases/tags/{TAG_NAME}"
         headers = {"Authorization": f"token {TOKEN}"}
-        response = requests.get(release_url, headers=headers, timeout=30)
+        response = requests.get(release_url, headers=headers, timeout=60)
 
         if response.status_code != 200:
             print(f"❌ GitHub API 오류: {response.status_code}")
@@ -135,10 +135,16 @@ def get_kbo_data():
         }
 
         asset_response = requests.get(asset_url, headers=download_headers, 
-                                    allow_redirects=True, timeout=120)
+                                    allow_redirects=True, timeout=180, stream=True)
 
         if asset_response.status_code == 200:
-            df = pd.read_parquet(BytesIO(asset_response.content), engine="pyarrow")
+            # 메모리 효율적인 방식으로 데이터 로드
+            content = BytesIO()
+            for chunk in asset_response.iter_content(chunk_size=8192):
+                content.write(chunk)
+            content.seek(0)
+            
+            df = pd.read_parquet(content, engine="pyarrow")
             
             # 필요한 컬럼만 선택 (메모리 최적화)
             available_columns = [col for col in required_columns if col in df.columns]
