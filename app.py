@@ -72,6 +72,7 @@ st.markdown("""
         color: black !important;
     }
 
+
     /* 사이드바 selectbox 내부 텍스트 색상 변경 */
     [data-testid="stSidebar"] .stSelectbox > div > div > div {
         color: black !important;
