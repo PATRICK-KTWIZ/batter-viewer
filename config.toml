@@ -1,0 +1,24 @@
+# .streamlit/config.toml
+[server]
+maxUploadSize = 1028
+enableCORS = false
+enableXsrfProtection = false
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"
+showErrorDetails = true
+
+# 타임아웃 설정
+[server]
+runOnSave = true
+port = 8501
+headless = true
+enableStaticServing = false
+maxRequestSize = 1028
+
+# 세션 타임아웃 증가
+[global]
+developmentMode = false
