@@ -922,7 +922,7 @@ def show_login_page():
     """, unsafe_allow_html=True)
 
 def show_analysis_page():
-    """메인 분석 페이지"""
+    """메인 분석 페이지 - 최적화 버전"""
     
     st.markdown("""
     <style>
@@ -970,96 +970,163 @@ def show_analysis_page():
     col1, col2 = st.sidebar.columns(2)
     with col1:
         if st.button('선수추가', key="add_player_btn"):
-            st.session_state.selected_players.append({
-                'Team': select_team, 
-                'Player Name': select_player, 
-                'Level': option, 
-                'ID': player_id
-            })
+            if option != "-":  # 리그가 선택된 경우만 추가
+                st.session_state.selected_players.append({
+                    'Team': select_team, 
+                    'Player Name': select_player, 
+                    'Level': option, 
+                    'ID': player_id
+                })
+                st.success(f"✅ {select_player} 추가됨")
+            else:
+                st.warning("⚠️ 리그를 선택해주세요!")
     with col2:
         if st.button('새로고침', key="refresh_btn"):
             st.session_state.selected_players = []
+            st.success("🔄 선수 목록이 초기화되었습니다")
 
     # 선택된 선수 표시
     selected_player_df = pd.DataFrame()
     if st.session_state.selected_players:
         st.subheader('Selected Players:')
         
-        for player_info in st.session_state.selected_players:
-            st.write(f"Team: {player_info['Team']}, Player Name: {player_info['Player Name']}, Level: {player_info['Level']}, ID: {player_info['ID']}")
+        for i, player_info in enumerate(st.session_state.selected_players):
+            col1, col2 = st.columns([8, 1])
+            with col1:
+                st.write(f"**{i+1}.** {player_info['Team']} - {player_info['Player Name']} ({player_info['Level']})")
+            with col2:
+                if st.button("❌", key=f"remove_{i}", help="선수 제거"):
+                    st.session_state.selected_players.pop(i)
+                    st.rerun()
+            
             select_player_df = id_dataset[(id_dataset['team'] == player_info['Team']) & (id_dataset['TM_ID'] == player_info['ID'])]
             selected_player_df = pd.concat([selected_player_df, select_player_df])
 
     # 🚀 실행 버튼
-    if st.sidebar.button('실행'):
-
+    if st.sidebar.button('🚀 분석 실행', key="execute_analysis", type="primary"):
+        
+        # 초기화
         st.session_state.analysis_completed = False
 
         if not st.session_state.selected_players:
             st.warning("⚠️ 선수를 먼저 추가해주세요!")
-        else:
-            # 🎯 선택된 선수들의 레벨 추출 및 변환
-            selected_levels = []
-            for player_info in st.session_state.selected_players:
-                converted_level = select_level(player_info['Level'])
-                if converted_level and converted_level not in selected_levels:
-                    selected_levels.append(converted_level)
-                    
-           # 프로그레스 바 생성
-            progress_bar = st.progress(0)
-            status_text = st.empty() 
-             
-            # 필요한 레벨의 데이터만 로드
-            with st.spinner('선택된 레벨의 데이터를 로딩 중입니다...'):
-                full_data = get_data_by_level(selected_levels)
+            return
+
+        # 🎯 선택된 선수들의 레벨 추출 및 변환
+        selected_levels = []
+        for player_info in st.session_state.selected_players:
+            converted_level = select_level(player_info['Level'])
+            if converted_level and converted_level not in selected_levels:
+                selected_levels.append(converted_level)
+        
+        if not selected_levels:
+            st.error("❌ 유효한 리그가 선택되지 않았습니다.")
+            return
+
+        # 메인 컨테이너 생성
+        main_container = st.container()
+        
+        with main_container:
+            # 상태 표시용 컨테이너들
+            status_container = st.container()
+            progress_container = st.container()
             
-            if full_data.empty:
-                st.error("❌ 데이터를 가져올 수 없습니다.")
-            else:
+            try:
+                with status_container:
+                    st.info("🔄 데이터 로딩을 시작합니다...")
+                
+                with progress_container:
+                    progress_bar = st.progress(0, text="데이터 로딩 중...")
+                
+                # 1단계: 데이터 로드
+                progress_bar.progress(20, text="선택된 레벨의 데이터를 로딩 중...")
+                full_data = get_data_by_level(selected_levels)
+                
+                if full_data.empty:
+                    status_container.error("❌ 데이터를 가져올 수 없습니다.")
+                    return
+                
+                progress_bar.progress(40, text=f"데이터 로드 완료: {len(full_data):,}개 레코드")
+                
+                # 2단계: 선수별 데이터 처리
                 concatenated_df = pd.DataFrame()
-                               
-                # # 배치 처리로 최적화
-                # progress_bar = st.progress(0)
+                total_players = len(st.session_state.selected_players)
                 
                 for i, player_info in enumerate(st.session_state.selected_players):
-                    progress_bar.progress((i + 1) / len(st.session_state.selected_players))
+                    current_progress = 40 + (i / total_players) * 40  # 40-80% 구간
+                    progress_bar.progress(
+                        int(current_progress), 
+                        text=f"선수 데이터 처리 중... ({i+1}/{total_players}) {player_info['Player Name']}"
+                    )
                     
                     player_id = player_info['ID']
                     player_name = player_info['Player Name']
+                    player_level = select_level(player_info['Level'])
                     
-                    # 🎯 여기가 핵심! select_level로 변환
-                    player_level = select_level(player_info['Level'])  # 변환된 값 사용
-                                      
                     try:
-                        # 변환된 level 값으로 필터링 (이미 로드된 full_data에서)
+                        # 변환된 level 값으로 필터링
                         player_df = filter_player_data(full_data, player_id, player_level)
                         
                         if not player_df.empty:
                             player_df = player_df.copy()
                             player_df['player_name'] = player_name
                             player_df['team'] = player_info['Team']
-                            player_df['selected_level'] = player_info['Level']  # 원본 표시용
+                            player_df['selected_level'] = player_info['Level']
                             
                             concatenated_df = pd.concat([concatenated_df, player_df], ignore_index=True)
+                            
+                            with status_container:
+                                st.success(f"✅ {player_name}: {len(player_df):,}개 데이터 처리 완료")
                         else:
-                            st.warning(f"⚠️ {player_name}: 해당 조건에 맞는 데이터가 없습니다")
+                            with status_container:
+                                st.warning(f"⚠️ {player_name}: 해당 조건에 맞는 데이터가 없습니다")
                             
                     except Exception as e:
-                        st.error(f"❌ {player_name} 데이터 처리 중 오류: {str(e)}")
+                        with status_container:
+                            st.error(f"❌ {player_name} 데이터 처리 중 오류: {str(e)}")
                         continue
                 
-                progress_bar.empty()
-                
+                # 3단계: 분석 실행
                 if not concatenated_df.empty:
+                    progress_bar.progress(80, text="분석을 실행 중...")
+                    
                     # 🎯 분석 실행 및 저장
                     execute_analysis(concatenated_df, selected_player_df, id_dataset)
-
+                    
+                    progress_bar.progress(100, text="분석 완료!")
+                    
                     # 🎯 분석 완료 후 상태 업데이트
                     st.session_state.analysis_completed = True
                     
+                    with status_container:
+                        st.success(f"🎉 분석이 완료되었습니다! 총 {len(concatenated_df):,}개의 데이터를 분석했습니다.")
+                    
+                    # 프로그레스 바 제거
+                    progress_container.empty()
+                    
                 else:
-                    st.error("❌ 결합된 데이터가 없습니다.")
-    
+                    with status_container:
+                        st.error("❌ 결합된 데이터가 없습니다.")
+                    
+            except Exception as e:
+                with status_container:
+                    st.error(f"❌ 분석 중 오류가 발생했습니다: {str(e)}")
+                
+                # 디버깅 정보 표시 (개발 중에만)
+                with st.expander("🔍 디버깅 정보"):
+                    st.write(f"선택된 레벨: {selected_levels}")
+                    st.write(f"선택된 선수 수: {len(st.session_state.selected_players)}")
+                    st.write(f"오류 상세: {str(e)}")
+            
+            finally:
+                # 정리 작업
+                if 'progress_bar' in locals():
+                    try:
+                        progress_container.empty()
+                    except:
+                        pass
+
+    # 사이드바 하단 네비게이션
     with st.sidebar:
         st.markdown("---")
         st.markdown("### 📄 페이지 이동")
@@ -1072,11 +1139,11 @@ def show_analysis_page():
         
         with col2:
             if st.button("🖨️ 프린트", key="sidebar_print"):
-                if st.session_state.get('print_charts'):
+                if st.session_state.get('print_charts') and st.session_state.get('analysis_completed'):
                     st.session_state.current_page = "print"
                     st.rerun()
                 else:
-                    st.error("프린트할 데이터가 없습니다!")    
+                    st.error("프린트할 데이터가 없습니다!")
 
 def execute_analysis(concatenated_df, selected_player_df, id_dataset):
     """분석 실행 함수"""
