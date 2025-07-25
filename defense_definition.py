@@ -85,8 +85,8 @@ def filter_player_data(full_data, player_id, player_league=None):
 
 # GitHub 설정
 OWNER = "Henryjeon1"
-REPO = "Trackman"
-TOKEN = "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"
+REPO = "ktdata"
+# TOKEN = "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"
 TAG_NAME = "KoreaBaseballOrganization"
 
 # 필요한 컬럼만 선택 (메모리 최적화)
@@ -107,8 +107,10 @@ def get_kbo_data():
         
         # 릴리스 정보 가져오기
         release_url = f"https://api.github.com/repos/{OWNER}/{REPO}/releases/tags/{TAG_NAME}"
-        headers = {"Authorization": f"token {TOKEN}"}
-        response = requests.get(release_url, headers=headers, timeout=30)
+        # headers = {"Authorization": f"token {TOKEN}"}
+        response = requests.get(release_url, 
+                                # headers=headers, 
+                                timeout=30)
 
         if response.status_code != 200:
             print(f"❌ GitHub API 오류: {response.status_code}")
@@ -130,7 +132,7 @@ def get_kbo_data():
         # 파일 다운로드
         asset_url = target_asset["url"]
         download_headers = {
-            "Authorization": f"token {TOKEN}",
+            # "Authorization": f"token {TOKEN}",
             "Accept": "application/octet-stream"
         }
 
@@ -169,8 +171,10 @@ def get_minors_data():
         
         # 릴리스 정보 가져오기
         release_url = f"https://api.github.com/repos/{OWNER}/{REPO}/releases/tags/{TAG_NAME}"
-        headers = {"Authorization": f"token {TOKEN}"}
-        response = requests.get(release_url, headers=headers, timeout=30)
+        # headers = {"Authorization": f"token {TOKEN}"}
+        response = requests.get(release_url, 
+                                # headers=headers, 
+                                timeout=30)
 
         if response.status_code != 200:
             print(f"❌ GitHub API 오류: {response.status_code}")
@@ -192,7 +196,7 @@ def get_minors_data():
         # 파일 다운로드
         asset_url = target_asset["url"]
         download_headers = {
-            "Authorization": f"token {TOKEN}",
+            # "Authorization": f"token {TOKEN}",
             "Accept": "application/octet-stream"
         }
 
