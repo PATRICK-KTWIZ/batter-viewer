@@ -1004,6 +1004,10 @@ def show_analysis_page():
                 converted_level = select_level(player_info['Level'])
                 if converted_level and converted_level not in selected_levels:
                     selected_levels.append(converted_level)
+                    
+           # 프로그레스 바 생성
+            progress_bar = st.progress(0)
+            status_text = st.empty() 
              
             # 필요한 레벨의 데이터만 로드
             with st.spinner('선택된 레벨의 데이터를 로딩 중입니다...'):
@@ -1014,8 +1018,8 @@ def show_analysis_page():
             else:
                 concatenated_df = pd.DataFrame()
                                
-                # 배치 처리로 최적화
-                progress_bar = st.progress(0)
+                # # 배치 처리로 최적화
+                # progress_bar = st.progress(0)
                 
                 for i, player_info in enumerate(st.session_state.selected_players):
                     progress_bar.progress((i + 1) / len(st.session_state.selected_players))
