@@ -99,7 +99,7 @@ required_columns = [
     'groundX', 'groundY', 'hang_time'
 ]
 
-@st.cache_data(ttl=3600)
+@st.cache_data(ttl=7200)
 def get_kbo_data():
     """KBO 1군 데이터만 가져오는 함수"""
     try:
