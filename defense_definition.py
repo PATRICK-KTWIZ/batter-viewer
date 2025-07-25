@@ -86,7 +86,7 @@ def filter_player_data(full_data, player_id, player_league=None):
 # GitHub 설정
 OWNER = "Henryjeon1"
 REPO = "Trackman"
-TOKEN = "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"
+TOKEN = "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"
 TAG_NAME = "KoreaBaseballOrganization"
 
 # 필요한 컬럼만 선택 (메모리 최적화)
