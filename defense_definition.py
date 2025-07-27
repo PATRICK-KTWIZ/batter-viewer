@@ -110,7 +110,7 @@ def get_kbo_data():
         # headers = {"Authorization": f"token {TOKEN}"}
         response = requests.get(release_url, 
                                 # headers=headers, 
-                                timeout=30)
+                                timeout=240)
 
         if response.status_code != 200:
             print(f"❌ GitHub API 오류: {response.status_code}")
@@ -137,7 +137,7 @@ def get_kbo_data():
         }
 
         asset_response = requests.get(asset_url, headers=download_headers, 
-                                    allow_redirects=True, timeout=120)
+                                    allow_redirects=True, timeout=240)
 
         if asset_response.status_code == 200:
             df = pd.read_parquet(BytesIO(asset_response.content), engine="pyarrow")
@@ -163,7 +163,7 @@ def get_kbo_data():
         print(f"❌ KBO 1군 데이터 처리 중 오류: {str(e)}")
         return None
 
-@st.cache_data(ttl=3600)
+@st.cache_data(ttl=7200)
 def get_minors_data():
     """KBO 2군 데이터만 가져오는 함수"""
     try:
@@ -174,7 +174,7 @@ def get_minors_data():
         # headers = {"Authorization": f"token {TOKEN}"}
         response = requests.get(release_url, 
                                 # headers=headers, 
-                                timeout=30)
+                                timeout=240)
 
         if response.status_code != 200:
             print(f"❌ GitHub API 오류: {response.status_code}")
@@ -201,7 +201,7 @@ def get_minors_data():
         }
 
         asset_response = requests.get(asset_url, headers=download_headers, 
-                                    allow_redirects=True, timeout=120)
+                                    allow_redirects=True, timeout=240)
 
         if asset_response.status_code == 200:
             df = pd.read_parquet(BytesIO(asset_response.content), engine="pyarrow")
